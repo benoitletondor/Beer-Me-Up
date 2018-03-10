@@ -1,12 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'model/beer.dart';
 
 void main() => runApp(new MyApp());
 
@@ -83,6 +88,37 @@ class _MyHomePageState extends State<MyHomePage> {
     return user;
   }
 
+  Future<List<Beer>> _getUserBeersCollection(FirebaseUser user) async {
+    try {
+      DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
+      if( doc == null || !doc.exists ) {
+        debugPrint("Creating document reference for id ${user.uid}");
+        final DocumentReference ref = Firestore.instance.collection("users").document(user.uid);
+        await ref.setData({"id" : user.uid});
+        doc = await ref.get();
+      }
+
+      final beersCollection = await doc.reference.getCollection("beers").getDocuments();
+      if( beersCollection.documents.isEmpty ) {
+        debugPrint("No beers registered for that user");
+        return new List(0);
+      }
+
+      final beersArray = beersCollection.documents;
+      debugPrint("Found ${beersArray.length} beers");
+
+      List<Beer> beers = new List();
+      for(final beerDocument in beersArray) {
+        beers.add(new Beer(beerDocument.data["id"] as String));
+      }
+
+      return beers;
+    } catch (e) {
+      debugPrint("Error querying the DB: $e");
+      return new List(0);
+    }
+  }
+
   _loadData() async {
     final FirebaseUser user = await _ensureLoggedIn();
     if( user == null ) {
@@ -94,14 +130,20 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint("User logged in $user");
     }
 
-    String dataURL = "https://jsonplaceholder.typicode.com/posts/1";
     setState(() {
       _content = "Loading...";
     });
 
-    http.Response response = await http.get(dataURL);
+    List<Beer> beers = await _getUserBeersCollection(user);
+    if( beers == null ) {
+      setState(() {
+        _content = "Error fetching beers";
+      });
+      return;
+    }
+
     setState(() {
-      _content = response.body;
+      _content = "$beers";
     });
   }
 
