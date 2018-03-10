@@ -1,19 +1,16 @@
-import 'dart:async';
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
 import 'page/home/homepage.dart';
+import 'page/onboarding/onboardingpage.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = new FirebaseAnalytics();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -21,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: new HomePage(title: 'Beer Me Up'),
+      home: new HomePage(),
+      routes: <String, WidgetBuilder> {
+        ONBOARDING_PAGE_ROUTE: (BuildContext context) => new OnboardingPage(),
+      },
       navigatorObservers: [
         new FirebaseAnalyticsObserver(analytics: analytics),
       ],

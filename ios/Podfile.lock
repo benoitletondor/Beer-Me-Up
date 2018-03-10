@@ -105,6 +105,8 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.5.0)
+  - shared_preferences (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore-0.3.0/ios`)
@@ -112,6 +114,7 @@ DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.5.0/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-3.0.0/ios`)
+  - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.0/ios`)
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -124,6 +127,8 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/flutter/ios
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in-3.0.0/ios
+  shared_preferences:
+    :path: Pods/.symlinks/plugins/shared_preferences-0.4.0/ios
 
 SPEC CHECKSUMS:
   BoringSSL: 84318770d120503ab1a6aaf1df777c5ca053697e
@@ -150,6 +155,7 @@ SPEC CHECKSUMS:
   leveldb-library: 4f9eedf84ab46b4fa3b7893bf30714b2a1a74022
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
 
 PODFILE CHECKSUM: a79f959eecdf55e10f88a07c1ad294a5459d9e4b
 

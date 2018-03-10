@@ -6,16 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/beer.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn _googleSignIn = new GoogleSignIn();
+import '../onboarding/onboardingpage.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => new _HomePageState();
@@ -24,6 +21,9 @@ class HomePage extends StatefulWidget {
 enum _HomePageStateStatus { AUTHENTICATING, AUTHENTICATED, ERROR_AUTHENTICATING, LOADING, LOAD, ERROR }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = new GoogleSignIn();
+
   FirebaseUser _currentUser;
   List<Beer> _beers = new List();
   _HomePageStateStatus _status = _HomePageStateStatus.AUTHENTICATING;
@@ -31,7 +31,43 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     _loadData();
+  }
+
+  _loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool sawOnboarding = prefs.getBool(USER_SAW_ONBOARDING_KEY);
+    if( sawOnboarding == null || !sawOnboarding ) {
+      Navigator.of(context).pushReplacementNamed(ONBOARDING_PAGE_ROUTE);
+      return;
+    }
+
+    _currentUser = await _ensureLoggedIn();
+    if( _currentUser == null ) {
+      setState(() {
+        _status = _HomePageStateStatus.ERROR_AUTHENTICATING;
+      });
+      return;
+    }
+
+    debugPrint("User logged in $_currentUser");
+
+    setState(() {
+      _status = _HomePageStateStatus.LOADING;
+    });
+
+    _beers = await _getUserBeersCollection(_currentUser);
+    if( _beers == null ) {
+      setState(() {
+        _status = _HomePageStateStatus.ERROR;
+      });
+      return;
+    }
+
+    setState(() {
+      _status = _HomePageStateStatus.LOAD;
+    });
   }
 
   Future<FirebaseUser> _ensureLoggedIn() async {
@@ -57,9 +93,6 @@ class _HomePageState extends State<HomePage> {
     assert(user.displayName != null);
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
-
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
 
     return user;
   }
@@ -91,61 +124,18 @@ class _HomePageState extends State<HomePage> {
       return beers;
     } catch (e) {
       debugPrint("Error querying the DB: $e");
-      return new List(0);
+      return null;
     }
-  }
-
-  _loadData() async {
-    _currentUser = await _ensureLoggedIn();
-    if( _currentUser == null ) {
-      setState(() {
-        _status = _HomePageStateStatus.ERROR_AUTHENTICATING;
-      });
-      return;
-    }
-
-    debugPrint("User logged in $_currentUser");
-
-    setState(() {
-      _status = _HomePageStateStatus.LOADING;
-    });
-
-    _beers = await _getUserBeersCollection(_currentUser);
-    if( _beers == null ) {
-      setState(() {
-        _status = _HomePageStateStatus.ERROR;
-      });
-      return;
-    }
-
-    setState(() {
-      _status = _HomePageStateStatus.LOAD;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.title),
+        title: new Text('Beer Me Up'),
       ),
       body: new Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: new Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug paint" (press "p" in the console where you ran
-          // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-          // window in IntelliJ) to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
@@ -162,7 +152,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: null,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
