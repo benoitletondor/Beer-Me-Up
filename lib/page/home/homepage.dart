@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => new _HomePageState();
 }
 
-enum _HomePageStateStatus { AUTHENTICATING, AUTHENTICATED, ERROR_AUTHENTICATING, LOADING, READY, ERROR }
+enum _HomePageStateStatus { AUTHENTICATING, ERROR_AUTHENTICATING, LOADING, READY, ERROR }
 
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -53,15 +53,18 @@ class _HomePageState extends State<HomePage> {
       _status = _HomePageStateStatus.AUTHENTICATING;
     });
 
-    _currentUser = await _ensureLoggedIn();
-    if( _currentUser == null ) {
+    try {
+      _currentUser = await _ensureLoggedIn();
+    } catch(e) {
+      debugPrint(e.toString());
+
+      _error = e.toString();
       setState(() {
-        _error = "Unable to authenticate you";
         _status = _HomePageStateStatus.ERROR_AUTHENTICATING;
       });
+
       return;
     }
-
     debugPrint("User logged in $_currentUser");
 
     setState(() {
@@ -74,6 +77,8 @@ class _HomePageState extends State<HomePage> {
         _status = _HomePageStateStatus.READY;
       });
     } catch (e) {
+      debugPrint(e.toString());
+
       _error = e.toString();
       setState(() {
         _status = _HomePageStateStatus.ERROR;
@@ -92,7 +97,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if( googleUser == null ) {
-      return null;
+      throw new Exception("No user found");
     }
 
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -124,8 +129,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     switch (_status) {
       case _HomePageStateStatus.AUTHENTICATING:
-        return _buildLoadingWidget();
-      case _HomePageStateStatus.AUTHENTICATED:
         return _buildLoadingWidget();
       case _HomePageStateStatus.ERROR_AUTHENTICATING:
         return _buildErrorWidget();

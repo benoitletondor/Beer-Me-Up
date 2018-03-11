@@ -16,7 +16,9 @@ class ErrorOccurredWidget extends StatelessWidget {
             "An error occurred",
             style: new TextStyle(fontWeight: FontWeight.bold),
           ),
+          new Padding(padding: const EdgeInsets.only(top: 10.0)),
           new Text(_error),
+          new Padding(padding: const EdgeInsets.only(top: 30.0)),
           new RaisedButton(
             onPressed: () {_retryCallback();},
             child: new Text("Retry"),
