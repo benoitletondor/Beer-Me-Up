@@ -74,8 +74,8 @@ class _HomePageState extends State<HomePage> {
         _status = _HomePageStateStatus.READY;
       });
     } catch (e) {
+      _error = e.toString();
       setState(() {
-        _error = e.toString();
         _status = _HomePageStateStatus.ERROR;
       });
     }
@@ -124,24 +124,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     switch (_status) {
       case _HomePageStateStatus.AUTHENTICATING:
-        return _buildLoading();
+        return _buildLoadingWidget();
       case _HomePageStateStatus.AUTHENTICATED:
-        return _buildLoading();
+        return _buildLoadingWidget();
       case _HomePageStateStatus.ERROR_AUTHENTICATING:
-        return _buildError();
+        return _buildErrorWidget();
       case _HomePageStateStatus.LOADING:
-        return _buildLoading();
+        return _buildLoadingWidget();
       case _HomePageStateStatus.ERROR:
-        return _buildError();
+        return _buildErrorWidget();
       case _HomePageStateStatus.READY:
         // Continue
         break;
     }
 
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Beer Me Up'),
-      ),
+      appBar: _buildAppBar(),
       body: new Center(
         child: new Stack(
           children: <Widget>[
@@ -184,19 +182,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildLoading() {
+  Widget _buildLoadingWidget() {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Beer Me Up'),
-      ),
+      appBar: _buildAppBar(),
       body: new LoadingWidget(),
     );
   }
 
-  Widget _buildError() {
-    return new ErrorOccurredWidget(
-      _error,
-          () {_loadData(); },
+  Widget _buildErrorWidget() {
+    return new Scaffold(
+      appBar: _buildAppBar(),
+      body: new ErrorOccurredWidget(
+        _error,
+        () {_loadData(); },
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return new AppBar(
+      title: new Text('Beer Me Up'),
     );
   }
 }
