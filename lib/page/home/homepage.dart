@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +11,7 @@ import '../../common/widget/loadingwidget.dart';
 import '../../common/widget/erroroccurredwidget.dart';
 import 'profile/profilepage.dart';
 import 'history/historypage.dart';
+import '../../service/userservice.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -50,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       _status = _HomePageStateStatus.AUTHENTICATING;
     });
 
-    _currentUser = await FirebaseAuth.instance.currentUser();
+    _currentUser = await UserService.instance.getCurrentUser();
     if( _currentUser == null ) {
       Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_ROUTE);
       return;

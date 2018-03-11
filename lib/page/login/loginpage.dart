@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../common/widget/loadingwidget.dart';
+import '../../service/userservice.dart';
 
 const String LOGIN_PAGE_ROUTE = "/login";
 
@@ -19,9 +17,6 @@ class LoginPage extends StatefulWidget {
 enum _LoginPageStateStatus { SIGN_UP, SIGN_IN, AUTHENTICATING, SIGN_UP_ERROR, SIGN_IN_ERROR }
 
 class _LoginPageState extends State<LoginPage> {
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   _LoginPageStateStatus _status = _LoginPageStateStatus.SIGN_UP;
   String _error;
 
@@ -93,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _signInWithGoogle(); },
+                onPressed: () { _handleSignInWithGoogle(); },
                 child: new Text("Sign-in with Google"),
               ),
               new Divider(height: 50.0),
@@ -165,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _signInWithGoogle(); },
+                onPressed: () { _handleSignInWithGoogle(); },
                 child: new Text("Sign-in with Google"),
               ),
               new Divider(height: 50.0),
@@ -253,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await _signUpWithAccount(email, pass);
+      await UserService.instance.signUpWithAccount(email, pass);
       Navigator.of(context).pushReplacementNamed("/");
     } catch(e) {
       _error = e.toString();
@@ -317,7 +312,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await _loginWithAccount(email, pass);
+      await UserService.instance.signInWithAccount(email, pass);
       Navigator.of(context).pushReplacementNamed("/");
     } catch(e) {
       _error = e.toString();
@@ -328,30 +323,13 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _signInWithGoogle() async {
+  _handleSignInWithGoogle() async {
     try {
       setState(() {
         _status = _LoginPageStateStatus.AUTHENTICATING;
       });
 
-      GoogleSignInAccount googleUser = await _googleSignIn.signInSilently();
-      if( googleUser == null ) {
-        googleUser = await _googleSignIn.signIn();
-      }
-
-      if( googleUser == null ) {
-        throw new Exception("No user found");
-      }
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final FirebaseUser user = await _auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      assert(user.email != null);
-      assert(user.displayName != null);
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
+      await UserService.instance.signInWithGoogle();
 
       Navigator.of(context).pushReplacementNamed("/");
     } catch (e) {
@@ -360,48 +338,5 @@ class _LoginPageState extends State<LoginPage> {
         _status = _LoginPageStateStatus.SIGN_IN_ERROR;
       });
     }
-
   }
-
-  Future<FirebaseUser> _loginWithAccount(String email, String pass) async {
-    if( email == null || email.isEmpty ) {
-      throw new Exception("Email is empty");
-    }
-
-    if( pass == null || pass.isEmpty ){
-      throw new Exception("Password is empty");
-    }
-
-    final FirebaseUser user = await _auth.signInWithEmailAndPassword(email: email, password: pass);
-    if( user == null ) {
-      throw new Exception("Unable to login");
-    }
-    assert(user.email != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    return user;
-  }
-
-  Future<FirebaseUser> _signUpWithAccount(String email, String pass) async {
-    if( email == null || email.isEmpty ) {
-      throw new Exception("Email is empty");
-    }
-
-    if( pass == null || pass.isEmpty ){
-      throw new Exception("Password is empty");
-    }
-
-    final FirebaseUser user = await _auth.createUserWithEmailAndPassword(email: email, password: pass);
-    if( user == null ) {
-      throw new Exception("Unable to login");
-    }
-
-    assert(user.email != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    return user;
-  }
-
 }
