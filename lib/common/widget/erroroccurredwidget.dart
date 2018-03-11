@@ -4,7 +4,7 @@ class ErrorOccurredWidget extends StatelessWidget {
   ErrorOccurredWidget(this._error, this._retryCallback, {Key key}) : super(key: key);
 
   final String _error;
-  final Function _retryCallback;
+  final VoidCallback _retryCallback;
 
   @override
   Widget build(BuildContext context) {

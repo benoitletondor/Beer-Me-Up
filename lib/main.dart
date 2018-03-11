@@ -5,6 +5,7 @@ import 'package:firebase_analytics/observer.dart';
 
 import 'page/home/homepage.dart';
 import 'page/onboarding/onboardingpage.dart';
+import 'page/login/loginpage.dart';
 
 void main() => runApp(new MyApp());
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: new HomePage(),
       routes: <String, WidgetBuilder> {
         ONBOARDING_PAGE_ROUTE: (BuildContext context) => new OnboardingPage(),
+        LOGIN_PAGE_ROUTE: (BuildContext context) => new LoginPage(),
       },
       navigatorObservers: [
         new FirebaseAnalyticsObserver(analytics: analytics),

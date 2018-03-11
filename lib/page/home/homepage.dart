@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../onboarding/onboardingpage.dart';
+import '../login/loginpage.dart';
 import '../../common/widget/loadingwidget.dart';
 import '../../common/widget/erroroccurredwidget.dart';
 import 'profile/profilepage.dart';
@@ -21,12 +21,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => new _HomePageState();
 }
 
-enum _HomePageStateStatus { AUTHENTICATING, ERROR_AUTHENTICATING, LOADING, READY, ERROR }
+enum _HomePageStateStatus { AUTHENTICATING, LOADING, READY, ERROR }
 
 class _HomePageState extends State<HomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-
   FirebaseUser _currentUser;
   String _error;
   DocumentSnapshot _userDoc;
@@ -53,18 +50,12 @@ class _HomePageState extends State<HomePage> {
       _status = _HomePageStateStatus.AUTHENTICATING;
     });
 
-    try {
-      _currentUser = await _ensureLoggedIn();
-    } catch(e) {
-      debugPrint(e.toString());
-
-      _error = e.toString();
-      setState(() {
-        _status = _HomePageStateStatus.ERROR_AUTHENTICATING;
-      });
-
+    _currentUser = await FirebaseAuth.instance.currentUser();
+    if( _currentUser == null ) {
+      Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_ROUTE);
       return;
     }
+
     debugPrint("User logged in $_currentUser");
 
     setState(() {
@@ -86,33 +77,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<FirebaseUser> _ensureLoggedIn() async {
-    setState(() {
-      _status = _HomePageStateStatus.AUTHENTICATING;
-    });
-
-    GoogleSignInAccount googleUser = await _googleSignIn.signInSilently();
-    if( googleUser == null ) {
-      googleUser = await _googleSignIn.signIn();
-    }
-
-    if( googleUser == null ) {
-      throw new Exception("No user found");
-    }
-
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final FirebaseUser user = await _auth.signInWithGoogle(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    return user;
-  }
-
   Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
       DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
       if( doc == null || !doc.exists ) {
@@ -130,8 +94,6 @@ class _HomePageState extends State<HomePage> {
     switch (_status) {
       case _HomePageStateStatus.AUTHENTICATING:
         return _buildLoadingWidget();
-      case _HomePageStateStatus.ERROR_AUTHENTICATING:
-        return _buildErrorWidget();
       case _HomePageStateStatus.LOADING:
         return _buildLoadingWidget();
       case _HomePageStateStatus.ERROR:
