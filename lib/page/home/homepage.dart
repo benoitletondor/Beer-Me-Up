@@ -8,8 +8,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../model/beer.dart';
 import '../onboarding/onboardingpage.dart';
+import '../../common/widget/loadingwidget.dart';
+import '../../common/widget/erroroccurredwidget.dart';
+import 'profile/profilepage.dart';
+import 'history/historypage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -18,15 +21,18 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => new _HomePageState();
 }
 
-enum _HomePageStateStatus { AUTHENTICATING, AUTHENTICATED, ERROR_AUTHENTICATING, LOADING, LOAD, ERROR }
+enum _HomePageStateStatus { AUTHENTICATING, AUTHENTICATED, ERROR_AUTHENTICATING, LOADING, READY, ERROR }
 
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
   FirebaseUser _currentUser;
-  List<Beer> _beers = new List();
+  String _error;
+  DocumentSnapshot _userDoc;
   _HomePageStateStatus _status = _HomePageStateStatus.AUTHENTICATING;
+
+  int _index = 0;
 
   @override
   void initState() {
@@ -43,9 +49,14 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
+    setState(() {
+      _status = _HomePageStateStatus.AUTHENTICATING;
+    });
+
     _currentUser = await _ensureLoggedIn();
     if( _currentUser == null ) {
       setState(() {
+        _error = "Unable to authenticate you";
         _status = _HomePageStateStatus.ERROR_AUTHENTICATING;
       });
       return;
@@ -57,17 +68,17 @@ class _HomePageState extends State<HomePage> {
       _status = _HomePageStateStatus.LOADING;
     });
 
-    _beers = await _getUserBeersCollection(_currentUser);
-    if( _beers == null ) {
+    try {
+      this._userDoc = await _connectDB(_currentUser);
       setState(() {
+        _status = _HomePageStateStatus.READY;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
         _status = _HomePageStateStatus.ERROR;
       });
-      return;
     }
-
-    setState(() {
-      _status = _HomePageStateStatus.LOAD;
-    });
   }
 
   Future<FirebaseUser> _ensureLoggedIn() async {
@@ -97,8 +108,7 @@ class _HomePageState extends State<HomePage> {
     return user;
   }
 
-  Future<List<Beer>> _getUserBeersCollection(FirebaseUser user) async {
-    try {
+  Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
       DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
       if( doc == null || !doc.exists ) {
         debugPrint("Creating document reference for id ${user.uid}");
@@ -107,43 +117,47 @@ class _HomePageState extends State<HomePage> {
         doc = await ref.get();
       }
 
-      final beersCollection = await doc.reference.getCollection("beers").getDocuments();
-      if( beersCollection.documents.isEmpty ) {
-        debugPrint("No beers registered for that user");
-        return new List(0);
-      }
-
-      final beersArray = beersCollection.documents;
-      debugPrint("Found ${beersArray.length} beers");
-
-      List<Beer> beers = new List();
-      for(final beerDocument in beersArray) {
-        beers.add(new Beer(beerDocument.data["id"] as String));
-      }
-
-      return beers;
-    } catch (e) {
-      debugPrint("Error querying the DB: $e");
-      return null;
-    }
+      return doc;
   }
 
   @override
   Widget build(BuildContext context) {
+    switch (_status) {
+      case _HomePageStateStatus.AUTHENTICATING:
+        return _buildLoading();
+      case _HomePageStateStatus.AUTHENTICATED:
+        return _buildLoading();
+      case _HomePageStateStatus.ERROR_AUTHENTICATING:
+        return _buildError();
+      case _HomePageStateStatus.LOADING:
+        return _buildLoading();
+      case _HomePageStateStatus.ERROR:
+        return _buildError();
+      case _HomePageStateStatus.READY:
+        // Continue
+        break;
+    }
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Beer Me Up'),
       ),
       body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: new Stack(
           children: <Widget>[
-            new Text(
-              'Current status:',
+            new Offstage(
+              offstage: _index != 0,
+              child: new TickerMode(
+                enabled: _index == 0,
+                child: new ProfilePage(_userDoc),
+              ),
             ),
-            new Text(
-              _getStatusText(),
-              style: Theme.of(context).textTheme.body1,
+            new Offstage(
+              offstage: _index != 1,
+              child: new TickerMode(
+                enabled: _index == 0,
+                child: new HistoryPage(_userDoc),
+              ),
             ),
           ],
         ),
@@ -153,25 +167,36 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ),
+      bottomNavigationBar: new BottomNavigationBar(
+        currentIndex: _index,
+        onTap: (int index) { setState((){ this._index = index; }); },
+        items: <BottomNavigationBarItem>[
+          new BottomNavigationBarItem(
+            icon: new Icon(Icons.person),
+            title: new Text("Profile"),
+          ),
+          new BottomNavigationBarItem(
+            icon: new Icon(Icons.history),
+            title: new Text("History"),
+          ),
+        ],
+      ),
     );
   }
 
-  String _getStatusText() {
-    switch (_status) {
-      case _HomePageStateStatus.AUTHENTICATING:
-        return "Authenticating";
-      case _HomePageStateStatus.AUTHENTICATED:
-        return "Authenticated";
-      case _HomePageStateStatus.ERROR_AUTHENTICATING:
-        return "Error while authenticating";
-      case _HomePageStateStatus.LOADING:
-        return "Loading data...";
-      case _HomePageStateStatus.LOAD:
-        return "Found ${_beers.length} beers";
-      case _HomePageStateStatus.ERROR:
-        return "Error while loading data";
-    }
+  Widget _buildLoading() {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Beer Me Up'),
+      ),
+      body: new LoadingWidget(),
+    );
+  }
 
-    return "Unknown";
+  Widget _buildError() {
+    return new ErrorOccurredWidget(
+      _error,
+          () {_loadData(); },
+    );
   }
 }
