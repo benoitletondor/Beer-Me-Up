@@ -3,18 +3,25 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class UserService {
-  static UserService instance = new _UserServiceImpl();
+abstract class AuthenticationService {
+  static final AuthenticationService instance = new _AuthenticationServiceImpl();
 
   Future<FirebaseUser> signInWithGoogle();
   Future<FirebaseUser> signInWithAccount(String email, String password);
   Future<FirebaseUser> signUpWithAccount(String email, String password);
 
   Future<FirebaseUser> getCurrentUser();
+  Future<void> signOut();
+
+  Future<bool> hasUserSeenOnboarding();
+  Future<void> setUserSawOnboarding();
 }
 
-class _UserServiceImpl extends UserService {
+const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
+
+class _AuthenticationServiceImpl extends AuthenticationService {
 
   @override
   Future<FirebaseUser> getCurrentUser() async {
@@ -94,6 +101,23 @@ class _UserServiceImpl extends UserService {
     assert(await user.getIdToken() != null);
 
     return user;
+  }
+
+  @override
+  signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Future<bool> hasUserSeenOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_USER_SAW_ONBOARDING_KEY);
+  }
+
+  @override
+  Future<void> setUserSawOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(_USER_SAW_ONBOARDING_KEY, true);
   }
 
 }

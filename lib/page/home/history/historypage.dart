@@ -1,86 +1,81 @@
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:beer_me_up/common/widget/loadingwidget.dart';
+import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
+import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/service/userdataservice.dart';
+import 'package:beer_me_up/common/mvi/viewstate.dart';
 
-import '../../../common/widget/loadingwidget.dart';
-import '../../../common/widget/erroroccurredwidget.dart';
-import '../../../model/beer.dart';
+import 'model.dart';
+import 'intent.dart';
+import 'state.dart';
 
 class HistoryPage extends StatefulWidget {
-  HistoryPage(this.userDoc, {Key key}) : super(key: key);
+  final HistoryIntent intent;
+  final HistoryViewModel model;
 
-  final DocumentSnapshot userDoc;
+  HistoryPage._({
+    Key key,
+    @required this.intent,
+    @required this.model,
+  }) : super(key: key);
+
+  factory HistoryPage({Key key,
+    HistoryIntent intent,
+    HistoryViewModel model,
+    UserDataService dataService}) {
+
+    final _intent = intent ?? new HistoryIntent();
+    final _model = model ?? new HistoryViewModel(
+      dataService ?? UserDataService.instance,
+      _intent.retry,
+    );
+
+    return new HistoryPage._(key: key, intent: _intent, model: _model);
+  }
 
   @override
-  _HistoryPageState createState() => new _HistoryPageState(userDoc);
+  _HistoryPageState createState() => new _HistoryPageState(intent: intent, model: model);
 }
 
-enum _HistoryStateStatus { LOADING, LOAD, ERROR }
+class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, HistoryIntent, HistoryState> {
 
-class _HistoryPageState extends State<HistoryPage> {
-  _HistoryPageState(this.userDoc);
-
-  final DocumentSnapshot userDoc;
-
-  String _error;
-  List<Beer> _beers;
-  _HistoryStateStatus _status = _HistoryStateStatus.LOADING;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  _loadData() async {
-    try {
-      setState(() {
-        _status = _HistoryStateStatus.LOADING;
-      });
-
-      final beersCollection = await userDoc.reference.getCollection("beers").getDocuments();
-      if( beersCollection.documents.isEmpty ) {
-        debugPrint("No beers registered for that user");
-        _beers = new List(0);
-
-        setState(() {
-          _status = _HistoryStateStatus.LOAD;
-        });
-
-        return;
-      }
-
-      final beersArray = beersCollection.documents;
-      debugPrint("Found ${beersArray.length} beers");
-
-      _beers = new List();
-      for(final beerDocument in beersArray) {
-        _beers.add(new Beer(beerDocument.data["id"] as String));
-      }
-
-      setState(() {
-        _status = _HistoryStateStatus.LOAD;
-      });
-    } catch (e) {
-      _error = e;
-      setState(() {
-        _status = _HistoryStateStatus.ERROR;
-      });
-    }
-  }
+  _HistoryPageState({
+    @required HistoryIntent intent,
+    @required HistoryViewModel model
+  }): super(intent, model);
 
   @override
   Widget build(BuildContext context) {
-    switch(_status) {
-      case _HistoryStateStatus.LOADING:
-        return new LoadingWidget();
-      case _HistoryStateStatus.ERROR:
-        return new ErrorOccurredWidget(_error, () {_loadData();});
-      case _HistoryStateStatus.LOAD:
-      // continue
-        break;
-    }
+    return new StreamBuilder(
+      stream: stream,
+      builder: (BuildContext context, AsyncSnapshot<HistoryState> snapshot) {
+        if( !snapshot.hasData ) {
+          return new Container();
+        }
 
-    return new Text("Beers: ${_beers.length}");
+        return snapshot.data.join(
+          (loading) => _buildLoadingWidget(),
+          (load) => _buildLoadWidget(beers: load.beers),
+          (error) => _buildErrorWidget(error: error.error),
+        );
+      },
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return new LoadingWidget();
+  }
+
+  Widget _buildErrorWidget({@required String error}) {
+    return new ErrorOccurredWidget(
+        error,
+            () { intent.retry(); }
+    );
+  }
+
+  Widget _buildLoadWidget({List<Beer> beers}) {
+    return new Text("Beers: ${beers.length}");
   }
 }

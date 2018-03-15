@@ -1,137 +1,118 @@
-import 'dart:async';
-
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:beer_me_up/common/mvi/viewstate.dart';
+import 'package:beer_me_up/common/widget/loadingwidget.dart';
+import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
+import 'package:beer_me_up/page/home/profile/profilepage.dart';
+import 'package:beer_me_up/page/home/history/historypage.dart';
+import 'package:beer_me_up/service/authenticationservice.dart';
+import 'package:beer_me_up/service/userdataservice.dart';
 
-import '../onboarding/onboardingpage.dart';
-import '../login/loginpage.dart';
-import '../../common/widget/loadingwidget.dart';
-import '../../common/widget/erroroccurredwidget.dart';
-import 'profile/profilepage.dart';
-import 'history/historypage.dart';
-import '../../service/userservice.dart';
+import 'state.dart';
+import 'model.dart';
+import 'intent.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  final HomeIntent intent;
+  final HomeViewModel model;
+
+  HomePage._({
+    Key key,
+    @required this.intent,
+    @required this.model,
+  }) : super(key: key);
+
+  factory HomePage({Key key,
+    HomeIntent intent,
+    HomeViewModel model,
+    AuthenticationService authService,
+    UserDataService dataService}) {
+
+    final _intent = intent ?? new HomeIntent();
+    final _model = model ?? new HomeViewModel(
+      authService ?? AuthenticationService.instance,
+      dataService ?? UserDataService.instance,
+      _intent.showProfile,
+      _intent.showHistory,
+      _intent.retry,
+      _intent.beerCheckIn,
+    );
+
+    return new HomePage._(key: key, intent: _intent, model: _model);
+  }
 
   @override
-  _HomePageState createState() => new _HomePageState();
+  _HomePageState createState() => new _HomePageState(intent: intent, model: model);
 }
 
-enum _HomePageStateStatus { AUTHENTICATING, LOADING, READY, ERROR }
+class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, HomeState> {
 
-class _HomePageState extends State<HomePage> {
-  FirebaseUser _currentUser;
-  String _error;
-  DocumentSnapshot _userDoc;
-  _HomePageStateStatus _status = _HomePageStateStatus.AUTHENTICATING;
+  static const _TAB_PROFILE_INDEX = 0;
+  static const _TAB_HISTORY_INDEX = 1;
 
-  int _index = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loadData();
-  }
-
-  _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool sawOnboarding = prefs.getBool(USER_SAW_ONBOARDING_KEY);
-    if( sawOnboarding == null || !sawOnboarding ) {
-      Navigator.of(context).pushReplacementNamed(ONBOARDING_PAGE_ROUTE);
-      return;
-    }
-
-    setState(() {
-      _status = _HomePageStateStatus.AUTHENTICATING;
-    });
-
-    _currentUser = await UserService.instance.getCurrentUser();
-    if( _currentUser == null ) {
-      Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_ROUTE);
-      return;
-    }
-
-    debugPrint("User logged in $_currentUser");
-
-    setState(() {
-      _status = _HomePageStateStatus.LOADING;
-    });
-
-    try {
-      this._userDoc = await _connectDB(_currentUser);
-      setState(() {
-        _status = _HomePageStateStatus.READY;
-      });
-    } catch (e) {
-      debugPrint(e.toString());
-
-      _error = e.toString();
-      setState(() {
-        _status = _HomePageStateStatus.ERROR;
-      });
-    }
-  }
-
-  Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
-      DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
-      if( doc == null || !doc.exists ) {
-        debugPrint("Creating document reference for id ${user.uid}");
-        final DocumentReference ref = Firestore.instance.collection("users").document(user.uid);
-        await ref.setData({"id" : user.uid});
-        doc = await ref.get();
-      }
-
-      return doc;
-  }
+  _HomePageState({
+    @required HomeIntent intent,
+    @required HomeViewModel model
+  }): super(intent, model);
 
   @override
   Widget build(BuildContext context) {
-    switch (_status) {
-      case _HomePageStateStatus.AUTHENTICATING:
-        return _buildLoadingWidget();
-      case _HomePageStateStatus.LOADING:
-        return _buildLoadingWidget();
-      case _HomePageStateStatus.ERROR:
-        return _buildErrorWidget();
-      case _HomePageStateStatus.READY:
-        // Continue
-        break;
-    }
+    return new StreamBuilder(
+      stream: stream,
+      builder: (BuildContext context, AsyncSnapshot<HomeState> snapshot) {
+        if( !snapshot.hasData ) {
+          return new Container();
+        }
 
+        return snapshot.data.join(
+          (authenticating) => _buildLoadingWidget(),
+          (loading) => _buildLoadingWidget(),
+          (tabProfile) => _buildContentWidget(_TAB_PROFILE_INDEX),
+          (tabHistory) => _buildContentWidget(_TAB_HISTORY_INDEX),
+          (error) =>  _buildErrorWidget(error: error.error),
+        );
+      },
+    );
+  }
+
+  Widget _buildContentWidget(int index) {
     return new Scaffold(
       appBar: _buildAppBar(),
       body: new Center(
         child: new Stack(
           children: <Widget>[
             new Offstage(
-              offstage: _index != 0,
+              offstage: index != _TAB_PROFILE_INDEX,
               child: new TickerMode(
-                enabled: _index == 0,
-                child: new ProfilePage(_userDoc),
+                enabled: index == _TAB_PROFILE_INDEX,
+                child: new ProfilePage(),
               ),
             ),
             new Offstage(
-              offstage: _index != 1,
+              offstage: index != _TAB_HISTORY_INDEX,
               child: new TickerMode(
-                enabled: _index == 0,
-                child: new HistoryPage(_userDoc),
+                enabled: index == _TAB_HISTORY_INDEX,
+                child: new HistoryPage(),
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Increment',
+        onPressed: () => intent.beerCheckIn(),
+        tooltip: 'Check-in',
         child: new Icon(Icons.add),
       ),
       bottomNavigationBar: new BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (int index) { setState((){ this._index = index; }); },
+        currentIndex: index,
+        onTap: (int index) {
+          if( index == _TAB_PROFILE_INDEX ) {
+            return intent.showProfile();
+          } else {
+            return intent.showHistory();
+          }
+        },
         items: <BottomNavigationBarItem>[
           new BottomNavigationBarItem(
             icon: new Icon(Icons.person),
@@ -153,12 +134,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildErrorWidget() {
+  Widget _buildErrorWidget({@required String error}) {
     return new Scaffold(
       appBar: _buildAppBar(),
       body: new ErrorOccurredWidget(
-        _error,
-        () {_loadData(); },
+        error,
+        () => intent.retry(),
       ),
     );
   }

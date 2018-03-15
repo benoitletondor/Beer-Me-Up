@@ -13,6 +13,9 @@ dependencies:
 
   shared_preferences: 0.4.0
 
+  sealed_unions: 2.0.0
+  flutter_stream_friends: 0.7.0
+
   google_sign_in: 3.0.0
   firebase_auth: 0.5.0
   cloud_firestore: 0.3.0

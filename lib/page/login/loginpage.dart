@@ -1,41 +1,74 @@
-import 'dart:async';
+import 'package:meta/meta.dart';
 
 import 'package:flutter/material.dart';
 
-import '../../common/widget/loadingwidget.dart';
-import '../../service/userservice.dart';
+import 'package:beer_me_up/common/widget/loadingwidget.dart';
+import 'package:beer_me_up/service/authenticationservice.dart';
+import 'package:beer_me_up/common/mvi/viewstate.dart';
+
+import 'model.dart';
+import 'intent.dart';
+import 'state.dart';
 
 const String LOGIN_PAGE_ROUTE = "/login";
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  final LoginIntent intent;
+  final LoginViewModel model;
+
+  LoginPage._({
+    Key key,
+    @required this.intent,
+    @required this.model}) : super(key: key);
+
+  factory LoginPage({Key key,
+    LoginIntent intent,
+    LoginViewModel model,
+    AuthenticationService userService}) {
+
+    final _intent = intent ?? new LoginIntent();
+    final _model = model ?? new LoginViewModel(
+      userService ?? AuthenticationService.instance,
+      _intent.showSignIn,
+      _intent.showSignUp,
+      _intent.signIn,
+      _intent.signUp,
+      _intent.signInWithGoogle,
+      _intent.signUpWithGoogle,
+    );
+
+    return new LoginPage._(key: key, intent: _intent, model: _model);
+  }
 
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => new _LoginPageState(intent: intent, model: model);
 }
 
-enum _LoginPageStateStatus { SIGN_UP, SIGN_IN, AUTHENTICATING, SIGN_UP_ERROR, SIGN_IN_ERROR }
+class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, LoginState> {
 
-class _LoginPageState extends State<LoginPage> {
-  _LoginPageStateStatus _status = _LoginPageStateStatus.SIGN_UP;
-  String _error;
+  _LoginPageState({
+    @required LoginIntent intent,
+    @required LoginViewModel model
+  }): super(intent, model);
 
   @override
   Widget build(BuildContext context) {
-    switch(_status) {
-      case _LoginPageStateStatus.SIGN_UP:
-        return _buildSignUpScreen(context);
-      case _LoginPageStateStatus.SIGN_IN:
-        return _buildLoginScreen(context);
-      case _LoginPageStateStatus.AUTHENTICATING:
-        return _buildAuthenticatingScreen(context);
-      case _LoginPageStateStatus.SIGN_UP_ERROR:
-        return _buildSignUpScreen(context, error: _error);
-      case _LoginPageStateStatus.SIGN_IN_ERROR:
-        return _buildLoginScreen(context, error: _error);
-    }
+    return new StreamBuilder(
+      stream: stream,
+      builder: (BuildContext context, AsyncSnapshot<LoginState> snapshot) {
+        if( !snapshot.hasData ) {
+          return new Container();
+        }
 
-    return null;
+        return snapshot.data.join(
+          (signUp) => _buildSignUpScreen(context),
+          (signIn) => _buildLoginScreen(context),
+          (authenticating) => _buildAuthenticatingScreen(context),
+          (signUpError) => _buildSignUpScreen(context, error: signUpError.error),
+          (signInError) => _buildLoginScreen(context, error: signInError.error),
+        );
+      },
+    );
   }
 
   Widget _buildSignUpScreen(BuildContext context, {String error}) {
@@ -75,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _handleCreateAccount(emailController, passController); },
+                onPressed: () => intent.signUp(new LoginFormData(emailController.text, passController.text)),
                 child: new Text("Sign-up"),
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
@@ -88,14 +121,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _handleSignInWithGoogle(); },
+                onPressed: intent.signUpWithGoogle,
                 child: new Text("Sign-in with Google"),
               ),
               new Divider(height: 50.0),
               new FlatButton(
-                onPressed: () { setState((){
-                  _status = _LoginPageStateStatus.SIGN_IN;
-                }); },
+                onPressed: intent.showSignIn,
                 child: new Text(
                   "ALREADY HAVE AN ACCOUNT ? SIGN-IN",
                   style: new TextStyle(
@@ -147,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _handleLogin(emailController, passController); },
+                onPressed: () => intent.signIn(new LoginFormData(emailController.text, passController.text)),
                 child: new Text("Sign-in"),
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
@@ -160,14 +191,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () { _handleSignInWithGoogle(); },
+                onPressed: intent.signInWithGoogle,
                 child: new Text("Sign-in with Google"),
               ),
               new Divider(height: 50.0),
               new FlatButton(
-                onPressed: () { setState((){
-                  _status = _LoginPageStateStatus.SIGN_UP;
-                }); },
+                onPressed: intent.showSignUp,
                 child: new Text(
                   "DON'T HAVE AN ACCOUNT ? SIGN-UP",
                   style: new TextStyle(
@@ -193,150 +222,5 @@ class _LoginPageState extends State<LoginPage> {
     return new AppBar(
       title: new Text('Beer Me Up - Sign in'),
     );
-  }
-
-  _handleCreateAccount(TextEditingController emailController,TextEditingController passController) async {
-    final String email = emailController.text;
-    final String pass = passController.text;
-
-    if( email.isEmpty ) {
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text(
-            "Email is mandatory",
-            style: new TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: new Text("Please provide an email to sign-up."),
-          actions: <Widget>[
-            new FlatButton(
-                child: const Text('OK'),
-                onPressed: () { Navigator.pop(context); }
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    if( pass.isEmpty ) {
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text(
-            "Password is mandatory",
-            style: new TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: new Text("Please provide a password to sign-up."),
-          actions: <Widget>[
-            new FlatButton(
-                child: const Text('OK'),
-                onPressed: () { Navigator.pop(context); }
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _status = _LoginPageStateStatus.AUTHENTICATING;
-    });
-
-    try {
-      await UserService.instance.signUpWithAccount(email, pass);
-      Navigator.of(context).pushReplacementNamed("/");
-    } catch(e) {
-      _error = e.toString();
-
-      setState(() {
-        _status = _LoginPageStateStatus.SIGN_UP_ERROR;
-      });
-    }
-  }
-
-  _handleLogin(TextEditingController emailController,TextEditingController passController) async {
-    final String email = emailController.text;
-    final String pass = passController.text;
-    
-    if( email.isEmpty ) {
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text(
-            "Email is mandatory",
-            style: new TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: new Text("Please provide an email to sign-in."),
-          actions: <Widget>[
-            new FlatButton(
-              child: const Text('OK'),
-              onPressed: () { Navigator.pop(context); }
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    if( pass.isEmpty ) {
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text(
-            "Password is mandatory",
-            style: new TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: new Text("Please provide a password to sign-in."),
-          actions: <Widget>[
-            new FlatButton(
-                child: const Text('OK'),
-                onPressed: () { Navigator.pop(context); }
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _status = _LoginPageStateStatus.AUTHENTICATING;
-    });
-
-    try {
-      await UserService.instance.signInWithAccount(email, pass);
-      Navigator.of(context).pushReplacementNamed("/");
-    } catch(e) {
-      _error = e.toString();
-
-      setState(() {
-        _status = _LoginPageStateStatus.SIGN_IN_ERROR;
-      });
-    }
-  }
-
-  _handleSignInWithGoogle() async {
-    try {
-      setState(() {
-        _status = _LoginPageStateStatus.AUTHENTICATING;
-      });
-
-      await UserService.instance.signInWithGoogle();
-
-      Navigator.of(context).pushReplacementNamed("/");
-    } catch (e) {
-      _error = e.toString();
-      setState(() {
-        _status = _LoginPageStateStatus.SIGN_IN_ERROR;
-      });
-    }
   }
 }

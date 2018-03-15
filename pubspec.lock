@@ -111,6 +111,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_stream_friends:
+    dependency: "direct main"
+    description:
+      name: flutter_stream_friends
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -123,6 +130,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0-alpha.9"
+  func:
+    dependency: transitive
+    description:
+      name: func
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   glob:
     dependency: transitive
     description:
@@ -291,6 +305,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.28.0"
+  sealed_unions:
+    dependency: "direct main"
+    description:
+      name: sealed_unions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
