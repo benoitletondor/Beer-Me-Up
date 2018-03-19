@@ -10,3 +10,4 @@ packages
 .flutter-plugins
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
+/lib/private.dart

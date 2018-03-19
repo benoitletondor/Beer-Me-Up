@@ -21,7 +21,7 @@ abstract class AuthenticationService {
 
 const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
 
-class _AuthenticationServiceImpl extends AuthenticationService {
+class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   Future<FirebaseUser> getCurrentUser() async {

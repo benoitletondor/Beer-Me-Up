@@ -7,6 +7,8 @@ import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/page/onboarding/onboardingpage.dart';
 import 'package:beer_me_up/page/login/loginpage.dart';
+import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/page/checkin/checkinpage.dart';
 
 class HomeViewModel extends BaseViewModel<HomeState> {
   final AuthenticationService _authService;
@@ -78,7 +80,14 @@ class HomeViewModel extends BaseViewModel<HomeState> {
     _loadData();
   }
 
-  _beerCheckIn(Null event) {
-    // TODO
+  _beerCheckIn(Null event) async {
+    final Map returnValue = await pushNamed("/checkin");
+
+    if( returnValue != null ) {
+      final Beer selectedBeer = returnValue[SELECTED_BEER_KEY];
+      debugPrint("Selected beer: ${selectedBeer.name}");
+    } else {
+      debugPrint("No beer selected");
+    }
   }
 }

@@ -27,6 +27,8 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     _context = null;
   }
 
+  getBuildContext() => _context;
+
   bool setState(S newState) {
     final controller = _controller;
     if( controller == null ) {
@@ -43,6 +45,8 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     return true;
   }
 
+  S getState() => _currentState;
+
   bool pushReplacementNamed(String name) {
     final context = _context;
     if( context == null ) {
@@ -50,6 +54,25 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     }
 
     Navigator.of(context).pushReplacementNamed(name);
+    return true;
+  }
+
+  Future<dynamic> pushNamed(String name) {
+    final context = _context;
+    if( context == null ) {
+      return null;
+    }
+
+    return Navigator.of(context).pushNamed(name);
+  }
+
+  bool pop([dynamic result]) {
+    final context = _context;
+    if( context == null ) {
+      return false;
+    }
+
+    Navigator.of(context).pop(result);
     return true;
   }
 
