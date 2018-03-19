@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
@@ -104,7 +104,6 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
             onTap: (beer) => intent.beerSelected(beer),
           ),
         ],
-
       )
     );
   }
@@ -142,18 +141,18 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        alignment: Alignment.topLeft,
-        margin: new EdgeInsets.only(top: 4.0),
-        child: new TextField(
-          autofocus: true,
-          style: new TextStyle(color: Colors.white70, fontSize: 16.0),
-          decoration: new InputDecoration(
-              hintText: "Type a beer name",
-              hintStyle: new TextStyle(color: Colors.white30, fontSize: 16.0),
-              border: null
-          ),
-          onChanged: (input) => onInputChanged(input),
-        )
+      alignment: Alignment.topLeft,
+      margin: new EdgeInsets.only(top: 4.0),
+      child: new TextField(
+        autofocus: true,
+        style: new TextStyle(color: Colors.white70, fontSize: 16.0),
+        decoration: new InputDecoration(
+          hintText: "Type a beer name",
+          hintStyle: new TextStyle(color: Colors.white30, fontSize: 16.0),
+          border: null
+        ),
+        onChanged: (input) => onInputChanged(input),
+      ),
     );
   }
 }
@@ -189,7 +188,7 @@ class _BeerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ListTile(
-      leading: new Icon(Icons.local_drink),
+      leading: _buildThumbnailImage(),
       title: new Text(beer.name),
       onTap: () {
         if (onTap != null) {
@@ -197,6 +196,14 @@ class _BeerTile extends StatelessWidget {
         }
       },
     );
+  }
+
+  Widget _buildThumbnailImage() {
+    if( beer.thumbnailUrl == null ) {
+      return new Icon(Icons.local_drink);
+    }
+
+    return new Image.network(beer.thumbnailUrl);
   }
 }
 

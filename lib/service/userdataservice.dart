@@ -87,7 +87,17 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     return (data['data'] as List).map((beerJson) => new Beer(
         id: beerJson["id"] as String,
         name: beerJson["name"] as String,
-        description: beerJson["description"] as String)
+        description: beerJson["description"] as String,
+        thumbnailUrl: _extractThumbnailUrl(beerJson))
     ).toList(growable: false);
+  }
+
+  String _extractThumbnailUrl(Map beerJson) {
+    final labels = beerJson["labels"];
+    if( labels == null || !(labels is Map) ) {
+      return null;
+    }
+
+    return labels["icon"] as String;
   }
 }
