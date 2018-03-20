@@ -30,9 +30,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     try {
       setState(new ProfileState.loading());
 
-      final beers = await _dataService.fetchUserBeers();
-
-      setState(new ProfileState.load(beers));
+      // TODO load data
     } catch (e) {
       debugPrint(e.toString());
 

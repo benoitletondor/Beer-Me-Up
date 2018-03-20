@@ -30,9 +30,9 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
     try {
       setState(new HistoryState.loading());
 
-      final beers = await _dataService.fetchUserBeers();
+      final checkIns = await _dataService.fetchCheckinHistory();
 
-      setState(new HistoryState.load(beers));
+      setState(new HistoryState.load(checkIns));
     } catch (e) {
       debugPrint(e.toString());
 

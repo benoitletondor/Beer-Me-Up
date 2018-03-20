@@ -109,7 +109,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore-0.3.0/ios`)
+  - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore/ios`)
   - firebase_analytics (from `Pods/.symlinks/plugins/firebase_analytics-0.3.0/ios`)
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.5.0/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
@@ -118,7 +118,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   cloud_firestore:
-    :path: Pods/.symlinks/plugins/cloud_firestore-0.3.0/ios
+    :path: Pods/.symlinks/plugins/cloud_firestore/ios
   firebase_analytics:
     :path: Pods/.symlinks/plugins/firebase_analytics-0.3.0/ios
   firebase_auth:

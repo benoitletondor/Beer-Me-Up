@@ -86,6 +86,12 @@ class HomeViewModel extends BaseViewModel<HomeState> {
     if( returnValue != null ) {
       final Beer selectedBeer = returnValue[SELECTED_BEER_KEY];
       debugPrint("Selected beer: ${selectedBeer.name}");
+
+      try {
+        await _dataService.saveBeerCheckIn(selectedBeer);
+      } catch ( e ) {
+        debugPrint("Error saving checking: $e");
+      }
     } else {
       debugPrint("No beer selected");
     }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
-import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 
@@ -57,7 +57,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
-          (load) => _buildLoadWidget(beers: load.beers),
+          (load) => _buildLoadWidget(checkIns: load.checkIns),
           (error) => _buildErrorWidget(error: error.error),
         );
       },
@@ -75,7 +75,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
     );
   }
 
-  Widget _buildLoadWidget({List<Beer> beers}) {
-    return new Text("Beers: ${beers.length}");
+  Widget _buildLoadWidget({List<CheckIn> checkIns}) {
+    return new Text("CheckIns: ${checkIns.length}");
   }
 }

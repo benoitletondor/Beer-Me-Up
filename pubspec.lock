@@ -53,10 +53,12 @@ packages:
   cloud_firestore:
     dependency: "direct main"
     description:
-      name: cloud_firestore
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
+      path: "packages/cloud_firestore"
+      ref: "9cabcc57e63fbc9be4fafee08e6435a1a8c71d61"
+      resolved-ref: "9cabcc57e63fbc9be4fafee08e6435a1a8c71d61"
+      url: "git@github.com:theshiftstudio/flutter_plugins.git"
+    source: git
+    version: "0.2.10"
   collection:
     dependency: transitive
     description:

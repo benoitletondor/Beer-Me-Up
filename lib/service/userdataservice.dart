@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/brewerydbservice.dart';
 
 abstract class UserDataService {
@@ -14,10 +15,14 @@ abstract class UserDataService {
 
   Future<void> initDB(FirebaseUser currentUser);
 
-  Future<List<Beer>> fetchUserBeers();
+  Future<List<CheckIn>> fetchCheckinHistory({CheckIn startAfter});
+  Future<void> saveBeerCheckIn(Beer beer);
 
   Future<List<Beer>> findBeersMatching(String pattern);
 }
+
+const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
+const _BEER_VERSION = 1;
 
 class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   DocumentSnapshot _userDoc;
@@ -30,7 +35,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
     DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
-    if( doc == null || !doc.exists ) {
+    if( doc == null ) {
       debugPrint("Creating document reference for id ${user.uid}");
 
       final DocumentReference ref = Firestore.instance.collection("users").document(user.uid);
@@ -45,27 +50,92 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     return doc;
   }
 
-  @override
-  Future<List<Beer>> fetchUserBeers() async {
-    _assertDBInitialized();
-
-    final beersCollection = await _userDoc.reference.getCollection("beers").getDocuments();
-    if( beersCollection.documents.isEmpty ) {
-      return new List(0);
-    }
-
-    final beersArray = beersCollection.documents;
-    return beersArray.map((beerDocument) => new Beer(
-        id: beerDocument["id"] as String,
-        name: null,
-        description: null
-    )).toList(growable: false);
-  }
-
   _assertDBInitialized() {
     if( _userDoc == null ) {
       throw new Exception("DB is not initialized");
     }
+  }
+
+  @override
+  Future<List<CheckIn>> fetchCheckinHistory({CheckIn startAfter}) async {
+    _assertDBInitialized();
+
+    var query = _userDoc
+      .reference
+      .getCollection("history")
+      .orderBy("date", descending: true)
+      .limit(_NUMBER_OF_RESULTS_FOR_HISTORY);
+
+    if( startAfter != null ) {
+      query = query.startAfter([startAfter.date]);
+    }
+
+    final checkinCollection = await query.getDocuments();
+
+    final checkinArray = checkinCollection.documents;
+    if( checkinArray.isEmpty ) {
+      return new List(0);
+    }
+
+    return checkinArray.map((checkinDocument) => new CheckIn(
+      date: checkinDocument["date"],
+      beer: _parseBeerFromValue(checkinDocument["beer"], checkinDocument["beer_version"])
+    )).toList(growable: false);
+  }
+
+  @override
+  Future<void> saveBeerCheckIn(Beer beer) async {
+    _assertDBInitialized();
+
+    await _userDoc
+      .reference
+      .getCollection("history")
+      .add({
+        "date": new DateTime.now(),
+        "beer": _createValueForBeer(beer),
+        "beer_id": beer.id,
+        "beer_version": _BEER_VERSION,
+      });
+
+    final beerDocument = _userDoc
+      .reference
+      .getCollection("beers")
+      .document(beer.id);
+
+    await beerDocument
+      .setData(
+        {
+          "beer": _createValueForBeer(beer),
+          "beer_id": beer.id,
+          "beer_version": _BEER_VERSION,
+          "last_checkin": new DateTime.now(),
+        },
+        SetOptions.merge
+      );
+
+    await beerDocument
+      .getCollection("history")
+      .add({
+        "date": new DateTime.now(),
+      });
+  }
+
+  Beer _parseBeerFromValue(Map<String, dynamic> data, int version) {
+    return new Beer(
+      id: data["id"],
+      name: data["name"],
+      description: data["description"],
+      thumbnailUrl: data["thumbnail_url"],
+    );
+  }
+
+  Map<String, dynamic> _createValueForBeer(Beer beer) {
+    return {
+      "id": beer.id,
+      "name": beer.name,
+      "description": beer.description,
+      "thumbnail_url": beer.thumbnailUrl,
+    };
   }
 
   @override
@@ -100,4 +170,5 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     return labels["icon"] as String;
   }
+
 }
