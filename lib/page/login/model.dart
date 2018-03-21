@@ -16,10 +16,15 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       Stream<LoginFormData> onSignInButtonPressed,
       Stream<LoginFormData> onSignUpButtonPressed,
       Stream<Null> onSignInWithGoogleButtonPressed,
-      Stream<Null> onSignUpWithGoogleButtonPressed) {
+      Stream<Null> onSignUpWithGoogleButtonPressed,
+      Stream<Null> onSignInWithFacebookButtonPressed,
+      Stream<Null> onSignUpWithFacebookButtonPressed) {
 
     onSignInWithGoogleButtonPressed.listen(_signInWithGoogle);
     onSignUpWithGoogleButtonPressed.listen(_signUpWithGoogle);
+
+    onSignInWithFacebookButtonPressed.listen(_signInWithFacebook);
+    onSignUpWithFacebookButtonPressed.listen(_signUpWithFacebook);
   }
 
   @override
@@ -41,6 +46,28 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithGoogle();
+      pushReplacementNamed("/");
+    } catch (e) {
+      setState(new LoginState.signUpError(e.toString()));
+    }
+  }
+
+  _signInWithFacebook(Null event) async {
+    setState(new LoginState.authenticating());
+
+    try {
+      await _authService.signInWithFacebook();
+      pushReplacementNamed("/");
+    } catch (e) {
+      setState(new LoginState.signInError(e.toString()));
+    }
+  }
+
+  _signUpWithFacebook(Null event) async {
+    setState(new LoginState.authenticating());
+
+    try {
+      await _authService.signInWithFacebook();
       pushReplacementNamed("/");
     } catch (e) {
       setState(new LoginState.signUpError(e.toString()));

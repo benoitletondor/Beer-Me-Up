@@ -113,6 +113,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_facebook_login:
+    dependency: "direct main"
+    description:
+      name: flutter_facebook_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   flutter_stream_friends:
     dependency: "direct main"
     description:

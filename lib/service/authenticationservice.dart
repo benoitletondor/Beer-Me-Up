@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthenticationService {
   static final AuthenticationService instance = new _AuthenticationServiceImpl();
 
   Future<FirebaseUser> signInWithGoogle();
+  Future<FirebaseUser> signInWithFacebook();
   Future<FirebaseUser> signInWithAccount(String email, String password);
   Future<FirebaseUser> signUpWithAccount(String email, String password);
 
@@ -72,6 +74,36 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     if( user == null ) {
       throw new Exception("Unable to sign-in with Google");
     }
+
+    assert(user.email != null);
+    assert(user.displayName != null);
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    return user;
+  }
+
+  @override
+  Future<FirebaseUser> signInWithFacebook() async {
+    final facebookLogin = new FacebookLogin();
+    FacebookLoginResult result = await facebookLogin.logInWithReadPermissions(['email']);
+
+    // ignore: missing_enum_constant_in_switch
+    switch (result.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        throw new Exception("User cancelled");
+      case FacebookLoginStatus.error:
+        throw new Exception("Error occurred: ${result.errorMessage}");
+    }
+
+    if( result.status != FacebookLoginStatus.loggedIn ) {
+      throw new Exception("Unknown status: ${result.status}");
+    }
+
+    final token = result.accessToken.token;
+    final FirebaseUser user = await FirebaseAuth.instance.signInWithFacebook(
+      accessToken: token,
+    );
 
     assert(user.email != null);
     assert(user.displayName != null);

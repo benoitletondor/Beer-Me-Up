@@ -35,6 +35,8 @@ class LoginPage extends StatefulWidget {
       _intent.signUp,
       _intent.signInWithGoogle,
       _intent.signUpWithGoogle,
+      _intent.signInWithFacebook,
+      _intent.signUpWithFacebook,
     );
 
     return new LoginPage._(key: key, intent: _intent, model: _model);
@@ -124,6 +126,11 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 onPressed: intent.signUpWithGoogle,
                 child: new Text("Sign-in with Google"),
               ),
+              new Padding(padding: const EdgeInsets.only(top: 10.0)),
+              new RaisedButton(
+                onPressed: intent.signUpWithFacebook,
+                child: new Text("Sign-in with Facebook"),
+              ),
               new Divider(height: 50.0),
               new FlatButton(
                 onPressed: intent.showSignIn,
@@ -193,6 +200,11 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
               new RaisedButton(
                 onPressed: intent.signInWithGoogle,
                 child: new Text("Sign-in with Google"),
+              ),
+              new Padding(padding: const EdgeInsets.only(top: 10.0)),
+              new RaisedButton(
+                onPressed: intent.signInWithFacebook,
+                child: new Text("Sign-in with Facebook"),
               ),
               new Divider(height: 50.0),
               new FlatButton(

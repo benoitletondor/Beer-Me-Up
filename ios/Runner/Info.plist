@@ -58,5 +58,31 @@
         </dict>
     </array>
     <!-- End of the Google Sign-in Section -->
+
+    <!-- Facebook Sign-in -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb204596980298393</string>
+            </array>
+        </dict>
+    </array>
+
+    <key>FacebookAppID</key>
+    <string>204596980298393</string>
+    <key>FacebookDisplayName</key>
+    <string>Beer Me Up</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+
+    <!-- End of Facebook Sign-in -->
 </dict>
 </plist>

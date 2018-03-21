@@ -34,7 +34,14 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
-    DocumentSnapshot doc = await Firestore.instance.collection("users").document(user.uid).get();
+    DocumentSnapshot doc;
+    try {
+      doc = await Firestore.instance.collection("users").document(user.uid).get();
+    } catch (e) { // This should be removed when a fix will be available
+      debugPrint("Error in firestore while getting user collection: $e");
+      doc = null;
+    }
+
     if( doc == null ) {
       debugPrint("Creating document reference for id ${user.uid}");
 

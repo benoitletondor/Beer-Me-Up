@@ -1,4 +1,10 @@
 PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
   - BoringSSL (9.1):
     - BoringSSL/Implementation (= 9.1)
     - BoringSSL/Interface (= 9.1)
@@ -11,6 +17,10 @@ PODS:
     - Firebase/Database
     - Firebase/Firestore
     - Flutter
+  - FBSDKCoreKit (4.31.1):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.31.1):
+    - FBSDKCoreKit
   - Firebase/Auth (4.7.0):
     - Firebase/Core
     - FirebaseAuth (= 4.4.0)
@@ -54,6 +64,9 @@ PODS:
     - Protobuf (~> 3.1)
   - FirebaseInstanceID (2.0.7)
   - Flutter (1.0.0)
+  - flutter_facebook_login (0.0.1):
+    - FBSDKLoginKit (~> 4.29)
+    - Flutter
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 4.0)
@@ -113,6 +126,7 @@ DEPENDENCIES:
   - firebase_analytics (from `Pods/.symlinks/plugins/firebase_analytics-0.3.0/ios`)
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.5.0/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login-1.0.3/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-3.0.0/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.0/ios`)
 
@@ -125,25 +139,31 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/firebase_auth-0.5.0/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
+  flutter_facebook_login:
+    :path: Pods/.symlinks/plugins/flutter_facebook_login-1.0.3/ios
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in-3.0.0/ios
   shared_preferences:
     :path: Pods/.symlinks/plugins/shared_preferences-0.4.0/ios
 
 SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BoringSSL: 84318770d120503ab1a6aaf1df777c5ca053697e
-  cloud_firestore: 722bc698fd3ef1758b7c2523cdc51c93ce89cf43
+  cloud_firestore: 00886d0b271577dfadd33be97d6bb6095f49499d
+  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
+  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
   Firebase: dbfb98ccec2dcfcd21ab9cc1b4981a3f3c8c5e26
-  firebase_analytics: 38f3b57e9073fbf57dc6f3704ad993ce8ed509e8
-  firebase_auth: e160b55a14f5d776ca54163015eec4c43111a3d5
+  firebase_analytics: ad15e54404e21983408c8b0c24a9d11247be7f33
+  firebase_auth: 499d5bfb249606a276f6bddf292a3b2d44139f75
   FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
   FirebaseAuth: cdeee95b528958dbb7dcf220ad0fb804d3a284b0
   FirebaseCore: 6cf108b63997bc08c04a1ffa55a3ac0d71a59ffc
   FirebaseDatabase: 18ecb23e15c7f58bb0c4527e9cace06897cc40ca
   FirebaseFirestore: 0b62fdbe420f2f88b6b2037ba4d92bbd4525e04a
   FirebaseInstanceID: 148c25c986c8699e67304b114e365713dce467f2
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  google_sign_in: a747d969c4b8ee5314f69db37f5adee1d7528ed4
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_facebook_login: e3d2f0a348889fe0f49c302bc044b8cc66c691be
+  google_sign_in: 64523e9b42c475b01b726ff87e450425ea6d15bc
   GoogleSignIn: 3fdaa34a2ba04dbd7a25d7db39aecb0da98d5bdc
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   gRPC: b56decfd0094854d2ccfe80c8fb767237dace3be
@@ -152,11 +172,11 @@ SPEC CHECKSUMS:
   gRPC-RxLibrary: 4f46343e74e74a7ee8373ffeeaf772dfb330cbd7
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
-  leveldb-library: 4f9eedf84ab46b4fa3b7893bf30714b2a1a74022
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 
 PODFILE CHECKSUM: a79f959eecdf55e10f88a07c1ad294a5459d9e4b
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0
