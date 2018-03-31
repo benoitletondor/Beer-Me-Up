@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'state.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
@@ -61,8 +62,8 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       await _dataService.initDB(currentUser);
 
       setState(new HomeState.tabProfile());
-    } catch (e) {
-      debugPrint(e.toString());
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error loading home");
 
       setState(new HomeState.error(e.toString()));
     }
@@ -89,8 +90,8 @@ class HomeViewModel extends BaseViewModel<HomeState> {
 
       try {
         await _dataService.saveBeerCheckIn(selectedBeer);
-      } catch ( e ) {
-        debugPrint("Error saving checking: $e");
+      } catch ( e, stackTrace) {
+        printException(e, stackTrace, message: "Error saving checkin");
       }
     } else {
       debugPrint("No beer selected");

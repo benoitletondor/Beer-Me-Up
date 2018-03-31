@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/model/checkin.dart';
@@ -55,9 +56,8 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
       setState(new HistoryState.load(_items));
 
       _bindToUpdates();
-    } catch (e) {
-      debugPrint(e.toString());
-
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error loading history");
       setState(new HistoryState.error(e.toString()));
     }
   }
@@ -112,8 +112,8 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
       _items = await _buildItemList(_checkIns, _hasMore);
 
       setState(new HistoryState.load(_items));
-    } catch(e) {
-      debugPrint("Error loading more history checkins: $e");
+    } catch(e, stackTrace) {
+      printException(e, stackTrace, message: "Error loading more history checkins");
 
       _items.removeLast();
       _items.add(new HistoryListLoadMore());

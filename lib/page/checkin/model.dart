@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'state.dart';
 import 'checkinpage.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
@@ -41,8 +42,8 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
     try {
       final matchingBeers = await _dataService.findBeersMatching(userInput);
       setState(new CheckInState.predictions(matchingBeers));
-    } catch( e ) {
-      debugPrint("Error looking for beers matching $userInput: $e");
+    } catch( e, stackTrace ) {
+      printException(e, stackTrace, message: "Error looking for beers matching $userInput");
       setState(new CheckInState.error(e.toString()));
     }
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'state.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
@@ -36,7 +37,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     try {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
-    } catch (e) {
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error while _signInWithGoogle");
       setState(new LoginState.signInError(e.toString()));
     }
   }
@@ -47,7 +49,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     try {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
-    } catch (e) {
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error while _signUpWithGoogle");
       setState(new LoginState.signUpError(e.toString()));
     }
   }
@@ -58,7 +61,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     try {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
-    } catch (e) {
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error while _signInWithFacebook");
       setState(new LoginState.signInError(e.toString()));
     }
   }
@@ -69,7 +73,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     try {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
-    } catch (e) {
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error while _signUpWithFacebook");
       setState(new LoginState.signUpError(e.toString()));
     }
   }

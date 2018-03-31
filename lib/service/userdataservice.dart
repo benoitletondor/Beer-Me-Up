@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
@@ -29,7 +30,7 @@ class CheckinFetchResponse {
   CheckinFetchResponse(this.checkIns, this.hasMore);
 }
 
-const _NUMBER_OF_RESULTS_FOR_HISTORY = 1;
+const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
 const _BEER_VERSION = 1;
 
 class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
@@ -48,8 +49,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     DocumentSnapshot doc;
     try {
       doc = await _firestore.collection("users").document(user.uid).get();
-    } catch (e) { // This should be removed when a fix will be available
-      debugPrint("Error in firestore while getting user collection: $e");
+    } catch (e, stackTrace) { // This should be removed when a fix will be available
+      printException(e, stackTrace, message: "Error in firestore while getting user collection");
       doc = null;
     }
 

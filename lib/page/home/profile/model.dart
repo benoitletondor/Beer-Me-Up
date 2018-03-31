@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 
@@ -31,9 +32,8 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
       setState(new ProfileState.loading());
 
       // TODO load data
-    } catch (e) {
-      debugPrint(e.toString());
-
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, message: "Error loading profile");
       setState(new ProfileState.error(e.toString()));
     }
   }
