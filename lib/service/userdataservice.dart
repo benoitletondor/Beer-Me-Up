@@ -15,10 +15,17 @@ abstract class UserDataService {
 
   Future<void> initDB(FirebaseUser currentUser);
 
-  Future<List<CheckIn>> fetchCheckinHistory({CheckIn startAfter});
+  Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter});
   Future<void> saveBeerCheckIn(Beer beer);
 
   Future<List<Beer>> findBeersMatching(String pattern);
+}
+
+class CheckinFetchResponse {
+  final List<CheckIn> checkIns;
+  final bool hasMore;
+
+  CheckinFetchResponse(this.checkIns, this.hasMore);
 }
 
 const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
@@ -67,7 +74,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   @override
-  Future<List<CheckIn>> fetchCheckinHistory({CheckIn startAfter}) async {
+  Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter}) async {
     _assertDBInitialized();
 
     var query = _userDoc
@@ -84,13 +91,15 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final checkinArray = checkinCollection.documents;
     if( checkinArray.isEmpty ) {
-      return new List(0);
+      return new CheckinFetchResponse(new List(0), false);
     }
 
-    return checkinArray.map((checkinDocument) => new CheckIn(
+    List<CheckIn> checkIns = checkinArray.map((checkinDocument) => new CheckIn(
       date: checkinDocument["date"],
       beer: _parseBeerFromValue(checkinDocument["beer"], checkinDocument["beer_version"])
     )).toList(growable: false);
+
+    return new CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
   }
 
   @override
