@@ -45,44 +45,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <!-- Google Sign-in Section -->
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.468996567214-i32v48h3f65gi0ehrj4qbu2rl53mquhb</string>
-            </array>
-        </dict>
-    </array>
-    <!-- End of the Google Sign-in Section -->
-
-    <!-- Facebook Sign-in -->
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb204596980298393</string>
-            </array>
-        </dict>
-    </array>
-
-    <key>FacebookAppID</key>
-    <string>204596980298393</string>
-    <key>FacebookDisplayName</key>
-    <string>Beer Me Up</string>
-
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
-
-    <!-- End of Facebook Sign-in -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.468996567214-i32v48h3f65gi0ehrj4qbu2rl53mquhb</string>
+				<string>fb204596980298393</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>204596980298393</string>
+	<key>FacebookDisplayName</key>
+	<string>Beer Me Up</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

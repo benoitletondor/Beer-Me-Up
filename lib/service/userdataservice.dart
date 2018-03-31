@@ -139,7 +139,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       });
   }
 
-  Beer _parseBeerFromValue(Map<String, dynamic> data, int version) {
+  Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
     return new Beer(
       id: data["id"],
       name: data["name"],

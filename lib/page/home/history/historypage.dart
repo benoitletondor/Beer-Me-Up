@@ -1,6 +1,8 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/model/checkin.dart';
@@ -57,7 +59,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
-          (load) => _buildLoadWidget(checkIns: load.checkIns),
+          (load) => _buildLoadWidget(items: load.items),
           (error) => _buildErrorWidget(error: error.error),
         );
       },
@@ -75,7 +77,51 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
     );
   }
 
-  Widget _buildLoadWidget({@required List<CheckIn> checkIns}) {
-    return new Text("CheckIns: ${checkIns.length}");
+  Widget _buildLoadWidget({@required List<HistoryListItem> items}) {
+    return new ListView.builder(
+      itemCount: items.length,
+      padding: const EdgeInsets.all(20.0),
+      itemBuilder: (BuildContext context, int index) {
+        final item = items[index];
+
+        if( item is HistoryListSection ) {
+          return _buildListSectionWidget(item.date);
+        } else if( item is HistoryListRow ) {
+          return _buildListRow(item.checkIn);
+        } else if( item is HistoryListLoadMore ) {
+          return _buildListLoadMore();
+        }
+
+        return new Container();
+      },
+    );
+  }
+
+  Widget _buildListSectionWidget(DateTime date) {
+    return new Text(
+      new DateFormat.yMMMMd().format(date)
+    );
+  }
+
+  Widget _buildListRow(CheckIn checkIn) {
+    return new ListTile(
+      leading: _buildThumbnailImage(checkIn.beer),
+      title: new Text(checkIn.beer.name),
+    );
+  }
+
+  Widget _buildThumbnailImage(Beer beer) {
+    if( beer.thumbnailUrl == null ) {
+      return new Icon(Icons.local_drink);
+    }
+
+    return new Image.network(beer.thumbnailUrl);
+  }
+
+  Widget _buildListLoadMore() {
+    return new RaisedButton(
+      onPressed: null,
+      child: new Text("Load more"),
+    );
   }
 }

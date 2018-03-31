@@ -28,7 +28,7 @@ packages:
       name: barback
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.15.2+14"
+    version: "0.15.2+15"
   boolean_selector:
     dependency: transitive
     description:
@@ -53,12 +53,10 @@ packages:
   cloud_firestore:
     dependency: "direct main"
     description:
-      path: "packages/cloud_firestore"
-      ref: "61bd006842c0adf2c09cb2b5c5a2bf6f80b04764"
-      resolved-ref: "61bd006842c0adf2c09cb2b5c5a2bf6f80b04764"
-      url: "git@github.com:theshiftstudio/flutter_plugins.git"
-    source: git
-    version: "0.2.10"
+      name: cloud_firestore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   collection:
     dependency: transitive
     description:
@@ -188,6 +186,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.4"
   io:
     dependency: transitive
     description:
@@ -244,13 +249,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6"
-  mockito:
-    dependency: transitive
-    description:
-      name: mockito
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.3"
   multi_server_socket:
     dependency: transitive
     description:
@@ -416,7 +414,7 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.32+1"
+    version: "0.12.32+2"
   typed_data:
     dependency: transitive
     description:

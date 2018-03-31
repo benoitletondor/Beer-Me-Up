@@ -35,7 +35,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
       final CheckinFetchResponse response = await _dataService.fetchCheckinHistory();
       _checkIns.addAll(response.checkIns);
 
-      setState(new HistoryState.load(_checkIns, response.hasMore));
+      setState(new HistoryState.load(await _buildItemList(_checkIns, response.hasMore)));
     } catch (e) {
       debugPrint(e.toString());
 
@@ -46,4 +46,42 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   _retryLoading(Null event) async {
     _loadData();
   }
+
+  Future<List<HistoryListItem>> _buildItemList(List<CheckIn> checkIns, bool hasMore) async {
+    final items = new List<HistoryListItem>();
+    DateTime lastCheckInDate;
+
+    for(var checkIn in checkIns) {
+      final date = new DateTime(checkIn.date.year, checkIn.date.month, checkIn.date.day);
+      if( lastCheckInDate != date ) {
+        lastCheckInDate = date;
+        items.add(new HistoryListSection(date));
+      }
+
+      items.add(new HistoryListRow(checkIn));
+    }
+
+    if( hasMore ) {
+      items.add(new HistoryListLoadMore());
+    }
+
+    return items;
+  }
 }
+
+abstract class HistoryListItem {}
+
+class HistoryListSection extends HistoryListItem {
+  final DateTime date;
+
+  HistoryListSection(this.date);
+}
+
+class HistoryListRow extends HistoryListItem {
+  final CheckIn checkIn;
+
+  HistoryListRow(this.checkIn);
+}
+
+class HistoryListLoadMore extends HistoryListItem {}
+

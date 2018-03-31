@@ -16,15 +16,12 @@ dependencies:
   sealed_unions: 2.0.0
   flutter_stream_friends: 0.7.0
 
+  intl: 0.15.4
+
   google_sign_in: 3.0.0
   flutter_facebook_login: 1.1.0
   firebase_auth: 0.5.3
-  #cloud_firestore: 0.3.2
-  cloud_firestore:
-      git:
-        url: git@github.com:theshiftstudio/flutter_plugins.git
-        ref: 61bd006842c0adf2c09cb2b5c5a2bf6f80b04764
-        path: packages/cloud_firestore
+  cloud_firestore: 0.3.2
   firebase_analytics: 0.3.0
 
 dev_dependencies:
