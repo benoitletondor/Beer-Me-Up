@@ -10,12 +10,17 @@ import 'state.dart';
 class HistoryViewModel extends BaseViewModel<HistoryState> {
   final UserDataService _dataService;
   final List<CheckIn> _checkIns = new List();
+  List<HistoryListItem> _items = new List();
+  bool _hasMore = true;
+  StreamSubscription<CheckIn> _checkInSubscription;
 
   HistoryViewModel(
       this._dataService,
-      Stream<Null> onErrorRetryButtonPressed,) {
+      Stream<Null> onErrorRetryButtonPressed,
+      Stream<Null> onLoadMoreButtonPressed,) {
 
     onErrorRetryButtonPressed.listen(_retryLoading);
+    onLoadMoreButtonPressed.listen(_loadMore);
   }
 
   @override
@@ -28,14 +33,28 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
     return super.bind(context);
   }
 
+
+  @override
+  unbind() {
+    _checkInSubscription?.cancel();
+    _checkInSubscription = null;
+
+    super.unbind();
+  }
+
   _loadData() async {
     try {
       setState(new HistoryState.loading());
 
       final CheckinFetchResponse response = await _dataService.fetchCheckinHistory();
       _checkIns.addAll(response.checkIns);
+      _hasMore = response.hasMore;
 
-      setState(new HistoryState.load(await _buildItemList(_checkIns, response.hasMore)));
+      _items = await _buildItemList(_checkIns, _hasMore);
+
+      setState(new HistoryState.load(_items));
+
+      _bindToUpdates();
     } catch (e) {
       debugPrint(e.toString());
 
@@ -67,6 +86,41 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
     return items;
   }
+
+  void _bindToUpdates() {
+    _checkInSubscription = _dataService.listenForCheckin().listen(_onNewCheckin);
+  }
+
+  _onNewCheckin(CheckIn checkIn) async {
+    _checkIns.insert(0, checkIn);
+    _items = await _buildItemList(_checkIns, _hasMore);
+
+    setState(new HistoryState.load(_items));
+  }
+
+  void _loadMore(Null event) async {
+    _items.removeLast();
+    _items.add(new HistoryListLoading());
+
+    setState(new HistoryState.load(_items));
+
+    try {
+      final CheckinFetchResponse response = await _dataService.fetchCheckinHistory(startAfter: _checkIns.last);
+      _checkIns.addAll(response.checkIns);
+      _hasMore = response.hasMore;
+
+      _items = await _buildItemList(_checkIns, _hasMore);
+
+      setState(new HistoryState.load(_items));
+    } catch(e) {
+      debugPrint("Error loading more history checkins: $e");
+
+      _items.removeLast();
+      _items.add(new HistoryListLoadMore());
+
+      setState(new HistoryState.load(_items));
+    }
+  }
 }
 
 abstract class HistoryListItem {}
@@ -84,4 +138,6 @@ class HistoryListRow extends HistoryListItem {
 }
 
 class HistoryListLoadMore extends HistoryListItem {}
+
+class HistoryListLoading extends HistoryListItem {}
 

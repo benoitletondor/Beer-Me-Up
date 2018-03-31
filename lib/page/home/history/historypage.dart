@@ -32,6 +32,7 @@ class HistoryPage extends StatefulWidget {
     final _model = model ?? new HistoryViewModel(
       dataService ?? UserDataService.instance,
       _intent.retry,
+      _intent.loadMore,
     );
 
     return new HistoryPage._(key: key, intent: _intent, model: _model);
@@ -90,6 +91,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           return _buildListRow(item.checkIn);
         } else if( item is HistoryListLoadMore ) {
           return _buildListLoadMore();
+        } else if( item is HistoryListLoading ) {
+          return _buildListLoadingMore();
         }
 
         return new Container();
@@ -120,8 +123,14 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
   Widget _buildListLoadMore() {
     return new RaisedButton(
-      onPressed: null,
+      onPressed: intent.loadMore,
       child: new Text("Load more"),
+    );
+  }
+
+  Widget _buildListLoadingMore() {
+    return new Center(
+      child: new CircularProgressIndicator(),
     );
   }
 }

@@ -16,6 +16,7 @@ abstract class UserDataService {
   Future<void> initDB(FirebaseUser currentUser);
 
   Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter});
+  Stream<CheckIn> listenForCheckin();
   Future<void> saveBeerCheckIn(Beer beer);
 
   Future<List<Beer>> findBeersMatching(String pattern);
@@ -28,7 +29,7 @@ class CheckinFetchResponse {
   CheckinFetchResponse(this.checkIns, this.hasMore);
 }
 
-const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
+const _NUMBER_OF_RESULTS_FOR_HISTORY = 1;
 const _BEER_VERSION = 1;
 
 class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
@@ -94,12 +95,40 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       return new CheckinFetchResponse(new List(0), false);
     }
 
-    List<CheckIn> checkIns = checkinArray.map((checkinDocument) => new CheckIn(
-      date: checkinDocument["date"],
-      beer: _parseBeerFromValue(checkinDocument["beer"], checkinDocument["beer_version"])
-    )).toList(growable: false);
+    List<CheckIn> checkIns = checkinArray
+      .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
+      .toList(growable: false);
 
     return new CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
+  }
+
+  Stream<CheckIn> listenForCheckin() {
+    final StreamController<CheckIn> _controller = new StreamController();
+
+    final subscription = _userDoc
+      .reference
+      .getCollection("history")
+      .where("date", isGreaterThan: new DateTime.now())
+      .snapshots
+      .listen(
+        (querySnapshot) {
+          querySnapshot.documentChanges
+            .where((documentChange) => documentChange.type == DocumentChangeType.added)
+            .forEach((documentChange) {
+              _controller.add(_parseCheckinFromDocument(documentChange.document));
+            });
+        },
+        onDone: _controller.close,
+        onError: (e) { _controller.close(); },
+        cancelOnError: true,
+      );
+
+    _controller.onCancel = () {
+      subscription.cancel();
+      _controller.close();
+    };
+
+    return _controller.stream;
   }
 
   @override
@@ -145,6 +174,13 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       name: data["name"],
       description: data["description"],
       thumbnailUrl: data["thumbnail_url"],
+    );
+  }
+
+  CheckIn _parseCheckinFromDocument(DocumentSnapshot doc) {
+    return new CheckIn(
+      date: doc["date"],
+      beer: _parseBeerFromValue(doc["beer"], doc["beer_version"])
     );
   }
 
