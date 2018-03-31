@@ -7,7 +7,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthenticationService {
-  static final AuthenticationService instance = new _AuthenticationServiceImpl();
+  static final AuthenticationService instance = new _AuthenticationServiceImpl(FirebaseAuth.instance);
 
   Future<FirebaseUser> signInWithGoogle();
   Future<FirebaseUser> signInWithFacebook();
@@ -25,9 +25,13 @@ const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
 
 class _AuthenticationServiceImpl implements AuthenticationService {
 
+  final FirebaseAuth _firebaseAuth;
+
+  _AuthenticationServiceImpl(this._firebaseAuth);
+
   @override
   Future<FirebaseUser> getCurrentUser() async {
-    return await FirebaseAuth.instance.currentUser();
+    return await _firebaseAuth.currentUser();
   }
 
   @override
@@ -40,7 +44,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
       throw new Exception("Password is empty");
     }
 
-    final user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     if( user == null ) {
       throw new Exception("Unable to sign-in");
     }
@@ -66,7 +70,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final FirebaseUser user = await FirebaseAuth.instance.signInWithGoogle(
+    final FirebaseUser user = await _firebaseAuth.signInWithGoogle(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
@@ -101,7 +105,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     final token = result.accessToken.token;
-    final FirebaseUser user = await FirebaseAuth.instance.signInWithFacebook(
+    final FirebaseUser user = await _firebaseAuth.signInWithFacebook(
       accessToken: token,
     );
 
@@ -123,7 +127,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
       throw new Exception("Password is empty");
     }
 
-    final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     if( user == null ) {
       throw new Exception("Unable to sign-up");
     }
@@ -137,7 +141,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await _firebaseAuth.signOut();
   }
 
   @override

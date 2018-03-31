@@ -11,7 +11,7 @@ import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/brewerydbservice.dart';
 
 abstract class UserDataService {
-  static final UserDataService instance = new _UserDataServiceImpl();
+  static final UserDataService instance = new _UserDataServiceImpl(Firestore.instance, new HttpClient());
 
   Future<void> initDB(FirebaseUser currentUser);
 
@@ -26,7 +26,10 @@ const _BEER_VERSION = 1;
 
 class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   DocumentSnapshot _userDoc;
-  final _httpClient = new HttpClient();
+  final HttpClient _httpClient;
+  final Firestore _firestore;
+
+  _UserDataServiceImpl(this._firestore, this._httpClient);
 
   @override
   Future<void> initDB(FirebaseUser currentUser) async {
@@ -36,7 +39,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
     DocumentSnapshot doc;
     try {
-      doc = await Firestore.instance.collection("users").document(user.uid).get();
+      doc = await _firestore.collection("users").document(user.uid).get();
     } catch (e) { // This should be removed when a fix will be available
       debugPrint("Error in firestore while getting user collection: $e");
       doc = null;
@@ -45,7 +48,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     if( doc == null ) {
       debugPrint("Creating document reference for id ${user.uid}");
 
-      final DocumentReference ref = Firestore.instance.collection("users").document(user.uid);
+      final DocumentReference ref = _firestore.collection("users").document(user.uid);
       await ref.setData({"id" : user.uid});
 
       doc = await ref.get();
@@ -154,8 +157,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       throw new Exception("Bad response: ${response.statusCode}");
     }
 
-    String responseBody = await response.transform(UTF8.decoder).join();
-    Map data = JSON.decode(responseBody);
+    String responseBody = await response.transform(utf8.decoder).join();
+    Map data = json.decode(responseBody);
     int totalResults = data["totalResults"] ?? 0;
     if( totalResults == 0 ) {
       return new List(0);

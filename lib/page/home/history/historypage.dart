@@ -70,12 +70,12 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
   Widget _buildErrorWidget({@required String error}) {
     return new ErrorOccurredWidget(
-        error,
-            () { intent.retry(); }
+      error,
+      intent.retry
     );
   }
 
-  Widget _buildLoadWidget({List<CheckIn> checkIns}) {
+  Widget _buildLoadWidget({@required List<CheckIn> checkIns}) {
     return new Text("CheckIns: ${checkIns.length}");
   }
 }
