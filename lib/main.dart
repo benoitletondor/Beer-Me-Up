@@ -8,9 +8,9 @@ import 'page/onboarding/onboardingpage.dart';
 import 'page/login/loginpage.dart';
 import 'page/checkin/checkinpage.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(new BeerMeUpApp());
 
-class MyApp extends StatelessWidget {
+class BeerMeUpApp extends StatelessWidget {
   static FirebaseAnalytics analytics = new FirebaseAnalytics();
 
   @override

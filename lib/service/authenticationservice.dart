@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:beer_me_up/main.dart';
 
 abstract class AuthenticationService {
-  static final AuthenticationService instance = new _AuthenticationServiceImpl(FirebaseAuth.instance);
+  static final AuthenticationService instance
+    = new _AuthenticationServiceImpl(FirebaseAuth.instance, BeerMeUpApp.analytics);
 
   Future<FirebaseUser> signInWithGoogle();
   Future<FirebaseUser> signInWithFacebook();
@@ -26,8 +29,10 @@ const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
 class _AuthenticationServiceImpl implements AuthenticationService {
 
   final FirebaseAuth _firebaseAuth;
+  final FirebaseAnalytics _analytics;
 
-  _AuthenticationServiceImpl(this._firebaseAuth);
+
+  _AuthenticationServiceImpl(this._firebaseAuth, this._analytics);
 
   @override
   Future<FirebaseUser> getCurrentUser() async {
@@ -52,6 +57,8 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     assert(user.email != null);
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
+
+    _analytics.setUserId(user.uid);
 
     return user;
   }
@@ -84,6 +91,8 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
+    _analytics.setUserId(user.uid);
+
     return user;
   }
 
@@ -114,6 +123,8 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
+    _analytics.setUserId(user.uid);
+
     return user;
   }
 
@@ -135,6 +146,8 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     assert(user.email != null);
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
+
+    _analytics.setUserId(user.uid);
 
     return user;
   }

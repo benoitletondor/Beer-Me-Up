@@ -143,6 +143,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         "date": new DateTime.now(),
         "beer": _createValueForBeer(beer),
         "beer_id": beer.id,
+        "beer_style_id": beer.style?.id,
+        "beer_category_id": beer.category?.id,
         "beer_version": _BEER_VERSION,
       });
 
@@ -156,6 +158,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         {
           "beer": _createValueForBeer(beer),
           "beer_id": beer.id,
+          "beer_style_id": beer.style?.id,
+          "beer_category_id": beer.category?.id,
           "beer_version": _BEER_VERSION,
           "last_checkin": new DateTime.now(),
         },
@@ -170,11 +174,35 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
+    BeerStyle style;
+    BeerCategory category;
+
+    final Map<dynamic, dynamic> styleData = data["style"];
+    if( styleData != null ) {
+      style = new BeerStyle(
+        id: styleData["id"],
+        name: styleData["name"],
+        description: styleData["description"],
+        shortName: styleData["shortName"],
+      );
+
+      final Map<dynamic, dynamic> categoryData = styleData["category"];
+      if( categoryData != null ) {
+        category = new BeerCategory(
+          id: categoryData["id"],
+          name: categoryData["name"],
+        );
+      }
+    }
+
     return new Beer(
       id: data["id"],
       name: data["name"],
       description: data["description"],
+      abv: data["abv"],
       thumbnailUrl: data["thumbnail_url"],
+      style: style,
+      category: category,
     );
   }
 
@@ -186,11 +214,33 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   Map<String, dynamic> _createValueForBeer(Beer beer) {
+    Map<String, dynamic> style;
+    Map<String, dynamic> category;
+
+    if( beer.style != null ) {
+      style = {
+        "id": beer.style.id,
+        "name": beer.style.name,
+        "shortName": beer.style.shortName,
+        "description": beer.style.description,
+      };
+    }
+
+    if( beer.category != null ) {
+      category = {
+        "id": beer.category.id,
+        "name": beer.category.name,
+      };
+    }
+
     return {
       "id": beer.id,
       "name": beer.name,
       "description": beer.description,
+      "abv": beer.abv,
       "thumbnail_url": beer.thumbnailUrl,
+      "style": style,
+      "category": category,
     };
   }
 
@@ -210,12 +260,54 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       return new List(0);
     }
 
-    return (data['data'] as List).map((beerJson) => new Beer(
+    return (data['data'] as List).map((beerJson) {
+      BeerStyle style;
+      BeerCategory category;
+
+      final Map<dynamic, dynamic> styleData = beerJson["style"];
+      if( styleData != null ) {
+        style = new BeerStyle(
+          id: styleData["id"],
+          name: styleData["name"],
+          description: styleData["description"],
+          shortName: styleData["shortName"],
+        );
+
+        final Map<dynamic, dynamic> categoryData = styleData["category"];
+        if( categoryData != null ) {
+          category = new BeerCategory(
+            id: categoryData["id"],
+            name: categoryData["name"],
+          );
+        }
+      }
+
+      double abv;
+      if( beerJson["abv"] != null ) {
+        abv = double.parse(beerJson["abv"] as String);
+      } else if( styleData != null ) {
+        final String abvMin = styleData["abvMin"];
+        final String abvMax = styleData["abvMax"];
+
+        if( abvMax != null && abvMin != null ) {
+          abv = (double.parse(abvMax) + double.parse(abvMin)) / 2.0;
+        } else if( abvMin != null ) {
+          abv = double.parse(abvMin);
+        } else if( abvMax != null ) {
+          abv = double.parse(abvMax);
+        }
+      }
+
+      return new Beer(
         id: beerJson["id"] as String,
         name: beerJson["name"] as String,
         description: beerJson["description"] as String,
-        thumbnailUrl: _extractThumbnailUrl(beerJson))
-    ).toList(growable: false);
+        abv: abv,
+        thumbnailUrl: _extractThumbnailUrl(beerJson),
+        style: style,
+        category: category,
+      );
+    }).toList(growable: false);
   }
 
   String _extractThumbnailUrl(Map beerJson) {
