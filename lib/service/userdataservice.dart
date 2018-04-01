@@ -195,12 +195,22 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       }
     }
 
+    BeerLabel label;
+    final Map<dynamic, dynamic> labelData = data["label"];
+    if( labelData != null ) {
+      label = new BeerLabel(
+        iconUrl: labelData["iconUrl"],
+        mediumUrl: labelData["mediumUrl"],
+        largeUrl: labelData["largeUrl"],
+      );
+    }
+
     return new Beer(
       id: data["id"],
       name: data["name"],
       description: data["description"],
       abv: data["abv"],
-      thumbnailUrl: data["thumbnail_url"],
+      label: label,
       style: style,
       category: category,
     );
@@ -216,6 +226,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   Map<String, dynamic> _createValueForBeer(Beer beer) {
     Map<String, dynamic> style;
     Map<String, dynamic> category;
+    Map<String, dynamic> label;
 
     if( beer.style != null ) {
       style = {
@@ -233,12 +244,20 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       };
     }
 
+    if( beer.label != null ) {
+      label = {
+        "iconUrl": beer.label.iconUrl,
+        "mediumUrl": beer.label.mediumUrl,
+        "largeUrl": beer.label.largeUrl,
+      };
+    }
+
     return {
       "id": beer.id,
       "name": beer.name,
       "description": beer.description,
       "abv": beer.abv,
-      "thumbnail_url": beer.thumbnailUrl,
+      "label": label,
       "style": style,
       "category": category,
     };
@@ -246,11 +265,15 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   @override
   Future<List<Beer>> findBeersMatching(String pattern) async {
+    if( pattern == null || pattern.trim().isEmpty ) {
+      return new List(0);
+    }
+
     var uri = buildBreweryDBServiceURI(path: "search", queryParameters: {'q': pattern, 'type': 'beer'});
     HttpClientRequest request = await _httpClient.getUrl(uri);
     HttpClientResponse response = await request.close();
     if( response.statusCode <200 || response.statusCode>299 ) {
-      throw new Exception("Bad response: ${response.statusCode}");
+      throw new Exception("Bad response: ${response.statusCode} (${response.reasonPhrase})");
     }
 
     String responseBody = await response.transform(utf8.decoder).join();
@@ -298,12 +321,22 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         }
       }
 
+      BeerLabel label;
+      final labelJson = beerJson["labels"];
+      if( labelJson != null && labelJson is Map ) {
+        label = new BeerLabel(
+          iconUrl: labelJson["icon"],
+          mediumUrl: labelJson["medium"],
+          largeUrl: labelJson["large"],
+        );
+      }
+
       return new Beer(
-        id: beerJson["id"] as String,
-        name: beerJson["name"] as String,
-        description: beerJson["description"] as String,
+        id: beerJson["id"],
+        name: beerJson["name"],
+        description: beerJson["description"],
         abv: abv,
-        thumbnailUrl: _extractThumbnailUrl(beerJson),
+        label: label,
         style: style,
         category: category,
       );

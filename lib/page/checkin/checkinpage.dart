@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 
 import 'model.dart';
@@ -170,40 +171,11 @@ class _BeersListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView(
       children: beers
-        .map((Beer beer) => new _BeerTile(beer: beer, onTap: onTap))
+        .map((Beer beer) => new BeerTile(
+          beer: beer,
+          onTap: () { onTap(beer); }
+        ))
         .toList()
     );
   }
 }
-
-class _BeerTile extends StatelessWidget {
-  final Beer beer;
-  final ValueChanged<Beer> onTap;
-
-  _BeerTile({
-    @required this.beer,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return new ListTile(
-      leading: _buildThumbnailImage(),
-      title: new Text(beer.name),
-      onTap: () {
-        if (onTap != null) {
-          onTap(beer);
-        }
-      },
-    );
-  }
-
-  Widget _buildThumbnailImage() {
-    if( beer.thumbnailUrl == null ) {
-      return new Icon(Icons.local_drink);
-    }
-
-    return new Image.network(beer.thumbnailUrl);
-  }
-}
-

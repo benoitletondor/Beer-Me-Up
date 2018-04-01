@@ -4,7 +4,7 @@ class Beer {
   final String id;
   final String name;
   final String description;
-  final String thumbnailUrl;
+  final BeerLabel label;
   final double abv;
   final BeerStyle style;
   final BeerCategory category;
@@ -14,7 +14,7 @@ class Beer {
     @required this.name,
     this.description,
     this.abv,
-    this.thumbnailUrl,
+    this.label,
     this.style,
     this.category,
   });
@@ -41,5 +41,17 @@ class BeerCategory {
   BeerCategory({
     @required this.id,
     @required this.name,
+  });
+}
+
+class BeerLabel {
+  final String iconUrl;
+  final String mediumUrl;
+  final String largeUrl;
+
+  BeerLabel({
+    this.iconUrl,
+    this.mediumUrl,
+    this.largeUrl,
   });
 }

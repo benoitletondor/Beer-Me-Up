@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/model/checkin.dart';
@@ -43,6 +43,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, HistoryIntent, HistoryState> {
+  static final _listSectionDateFormatter = new DateFormat.yMMMMd();
 
   _HistoryPageState({
     @required HistoryIntent intent,
@@ -102,23 +103,15 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
   Widget _buildListSectionWidget(DateTime date) {
     return new Text(
-      new DateFormat.yMMMMd().format(date)
+      _listSectionDateFormatter.format(date)
     );
   }
 
   Widget _buildListRow(CheckIn checkIn) {
-    return new ListTile(
-      leading: _buildThumbnailImage(checkIn.beer),
-      title: new Text(checkIn.beer.name),
+    return new BeerTile(
+      beer: checkIn.beer,
+      associatedCheckin: checkIn,
     );
-  }
-
-  Widget _buildThumbnailImage(Beer beer) {
-    if( beer.thumbnailUrl == null ) {
-      return new Icon(Icons.local_drink);
-    }
-
-    return new Image.network(beer.thumbnailUrl);
   }
 
   Widget _buildListLoadMore() {

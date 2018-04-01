@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
@@ -100,10 +101,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => intent.beerCheckIn(),
+        onPressed: intent.beerCheckIn,
         tooltip: 'Check-in',
-        child: new Icon(Icons.add),
+        child: new Icon(const IconData(0xe901, fontFamily: "beers")),
       ),
+      floatingActionButtonLocation: new _CenterBottomNavBarFloatFabLocation(),
       bottomNavigationBar: new BottomNavigationBar(
         currentIndex: index,
         onTap: (int index) {
@@ -148,5 +150,30 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
     return new AppBar(
       title: new Text('Beer Me Up'),
     );
+  }
+}
+
+class _CenterBottomNavBarFloatFabLocation extends FloatingActionButtonLocation {
+  const _CenterBottomNavBarFloatFabLocation();
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+    // Compute the x-axis offset.
+    final double fabX = (scaffoldGeometry.scaffoldSize.width - scaffoldGeometry.floatingActionButtonSize.width) / 2.0;
+
+    // Compute the y-axis offset.
+    final double contentBottom = scaffoldGeometry.contentBottom;
+    final double bottomSheetHeight = scaffoldGeometry.bottomSheetSize.height;
+    final double fabHeight = scaffoldGeometry.floatingActionButtonSize.height;
+    final double snackBarHeight = scaffoldGeometry.snackBarSize.height;
+    double fabY = contentBottom - fabHeight - kFloatingActionButtonMargin;
+    if (snackBarHeight > 0.0)
+      fabY = math.min(fabY, contentBottom - snackBarHeight - fabHeight - kFloatingActionButtonMargin);
+    if (bottomSheetHeight > 0.0)
+      fabY = math.min(fabY, contentBottom - bottomSheetHeight - fabHeight / 2.0);
+
+    fabY += (scaffoldGeometry.floatingActionButtonSize.height / 1.3);
+
+    return new Offset(fabX, fabY);
   }
 }
