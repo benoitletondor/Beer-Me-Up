@@ -1,6 +1,8 @@
+import 'package:meta/meta.dart';
 import 'package:flutter_stream_friends/flutter_stream_friends.dart';
 
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/checkin.dart';
 
 class CheckInIntent {
   final ValueStreamCallback<String> input;
@@ -12,4 +14,14 @@ class CheckInIntent {
   }) :
     this.input = inputIntent ?? new ValueStreamCallback<String>(),
     this.beerSelected = beerSelectedIntent ?? new ValueStreamCallback<Beer>();
+}
+
+class SelectedQuantityIntentValue {
+  final Beer selectedBeer;
+  final CheckInQuantity quantity;
+
+  SelectedQuantityIntentValue({
+    @required this.selectedBeer,
+    @required this.quantity,
+  });
 }

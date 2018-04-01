@@ -48,6 +48,12 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
   }
 
   _onBeerSelected(Beer selectedBeer) async {
-    pop({SELECTED_BEER_KEY: selectedBeer});
+    final quantityResult = await showSelectQuantityModal(getBuildContext(), selectedBeer);
+    if( quantityResult != null ) {
+      pop({
+        SELECTED_BEER_KEY: quantityResult.selectedBeer,
+        SELECTED_QUANTITY_KEY: quantityResult.quantity,
+      });
+    }
   }
 }
