@@ -104,7 +104,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
           ),
           new _BeersListView(
             beers: previousPrediction,
-            onTap: (beer) => intent.beerSelected(beer),
+            onTap: intent.beerSelected,
           ),
         ],
       )
