@@ -38,7 +38,7 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error while _signInWithGoogle");
+      printException(e, stackTrace, "Error while _signInWithGoogle");
       setState(new LoginState.signInError(e.toString()));
     }
   }
@@ -50,7 +50,7 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error while _signUpWithGoogle");
+      printException(e, stackTrace, "Error while _signUpWithGoogle");
       setState(new LoginState.signUpError(e.toString()));
     }
   }
@@ -62,7 +62,7 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error while _signInWithFacebook");
+      printException(e, stackTrace, "Error while _signInWithFacebook");
       setState(new LoginState.signInError(e.toString()));
     }
   }
@@ -74,7 +74,7 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error while _signUpWithFacebook");
+      printException(e, stackTrace, "Error while _signUpWithFacebook");
       setState(new LoginState.signUpError(e.toString()));
     }
   }

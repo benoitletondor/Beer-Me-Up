@@ -50,7 +50,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     try {
       doc = await _firestore.collection("users").document(user.uid).get();
     } catch (e, stackTrace) { // This should be removed when a fix will be available
-      printException(e, stackTrace, message: "Error in firestore while getting user collection");
+      printException(e, stackTrace, "Error in firestore while getting user collection");
       doc = null;
     }
 

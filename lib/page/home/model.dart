@@ -63,7 +63,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
 
       setState(new HomeState.tabProfile());
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error loading home");
+      printException(e, stackTrace, "Error loading home");
 
       setState(new HomeState.error(e.toString()));
     }
@@ -91,7 +91,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       try {
         await _dataService.saveBeerCheckIn(selectedBeer);
       } catch ( e, stackTrace) {
-        printException(e, stackTrace, message: "Error saving checkin");
+        printException(e, stackTrace, "Error saving checkin");
       }
     } else {
       debugPrint("No beer selected");

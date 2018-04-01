@@ -33,7 +33,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
       // TODO load data
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error loading profile");
+      printException(e, stackTrace, "Error loading profile");
       setState(new ProfileState.error(e.toString()));
     }
   }

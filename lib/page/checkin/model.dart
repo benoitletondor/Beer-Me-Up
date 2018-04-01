@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/common/exceptionprint.dart';
@@ -43,7 +42,7 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
       final matchingBeers = await _dataService.findBeersMatching(userInput);
       setState(new CheckInState.predictions(matchingBeers));
     } catch( e, stackTrace ) {
-      printException(e, stackTrace, message: "Error looking for beers matching $userInput");
+      printException(e, stackTrace, "Error looking for beers matching $userInput");
       setState(new CheckInState.error(e.toString()));
     }
   }

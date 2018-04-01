@@ -57,7 +57,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       _bindToUpdates();
     } catch (e, stackTrace) {
-      printException(e, stackTrace, message: "Error loading history");
+      printException(e, stackTrace, "Error loading history");
       setState(new HistoryState.error(e.toString()));
     }
   }
@@ -113,7 +113,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       setState(new HistoryState.load(_items));
     } catch(e, stackTrace) {
-      printException(e, stackTrace, message: "Error loading more history checkins");
+      printException(e, stackTrace, "Error loading more history checkins");
 
       _items.removeLast();
       _items.add(new HistoryListLoadMore());
