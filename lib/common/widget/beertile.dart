@@ -22,7 +22,20 @@ class BeerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String subtitle;
     if( associatedCheckin != null ) {
-      subtitle = _dateFormatter.format(associatedCheckin.date);
+      String quantity;
+      switch(associatedCheckin.quantity) {
+        case CheckInQuantity.PINT:
+          quantity = "Pint";
+          break;
+        case CheckInQuantity.HALF_PINT:
+          quantity = "Half pint";
+          break;
+        case CheckInQuantity.BOTTLE:
+          quantity = "Bottle";
+          break;
+      }
+
+      subtitle = "$quantity - ${_dateFormatter.format(associatedCheckin.date)}";
     } else if( beer.style?.shortName != null ) {
       subtitle = beer.style.shortName;
     } else if( beer.style?.name != null ) {

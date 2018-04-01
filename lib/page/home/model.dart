@@ -9,6 +9,7 @@ import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/page/onboarding/onboardingpage.dart';
 import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
 
 class HomeViewModel extends BaseViewModel<HomeState> {
@@ -86,10 +87,15 @@ class HomeViewModel extends BaseViewModel<HomeState> {
 
     if( returnValue != null ) {
       final Beer selectedBeer = returnValue[SELECTED_BEER_KEY];
-      debugPrint("Selected beer: ${selectedBeer.name}");
+      final CheckInQuantity selectedQuantity = returnValue[SELECTED_QUANTITY_KEY];
+      debugPrint("Selected beer: ${selectedBeer.name} - ${selectedQuantity.value}L");
 
       try {
-        await _dataService.saveBeerCheckIn(selectedBeer);
+        await _dataService.saveBeerCheckIn(new CheckIn(
+          date: new DateTime.now(),
+          beer: selectedBeer,
+          quantity: selectedQuantity,
+        ));
       } catch ( e, stackTrace) {
         printException(e, stackTrace, "Error saving checkin");
       }

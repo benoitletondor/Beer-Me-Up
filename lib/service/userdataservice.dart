@@ -18,7 +18,7 @@ abstract class UserDataService {
 
   Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter});
   Stream<CheckIn> listenForCheckin();
-  Future<void> saveBeerCheckIn(Beer beer);
+  Future<void> saveBeerCheckIn(CheckIn checkIn);
 
   Future<List<Beer>> findBeersMatching(String pattern);
 }
@@ -133,35 +133,36 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   @override
-  Future<void> saveBeerCheckIn(Beer beer) async {
+  Future<void> saveBeerCheckIn(CheckIn checkIn) async {
     _assertDBInitialized();
 
     await _userDoc
       .reference
       .getCollection("history")
       .add({
-        "date": new DateTime.now(),
-        "beer": _createValueForBeer(beer),
-        "beer_id": beer.id,
-        "beer_style_id": beer.style?.id,
-        "beer_category_id": beer.category?.id,
+        "date": checkIn.date,
+        "beer": _createValueForBeer(checkIn.beer),
+        "beer_id": checkIn.beer.id,
+        "beer_style_id": checkIn.beer.style?.id,
+        "beer_category_id": checkIn.beer.category?.id,
         "beer_version": _BEER_VERSION,
+        "quantity": checkIn.quantity.value,
       });
 
     final beerDocument = _userDoc
       .reference
       .getCollection("beers")
-      .document(beer.id);
+      .document(checkIn.beer.id);
 
     await beerDocument
       .setData(
         {
-          "beer": _createValueForBeer(beer),
-          "beer_id": beer.id,
-          "beer_style_id": beer.style?.id,
-          "beer_category_id": beer.category?.id,
+          "beer": _createValueForBeer(checkIn.beer),
+          "beer_id": checkIn.beer.id,
+          "beer_style_id": checkIn.beer.style?.id,
+          "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
-          "last_checkin": new DateTime.now(),
+          "last_checkin": checkIn.date,
         },
         SetOptions.merge
       );
@@ -169,7 +170,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     await beerDocument
       .getCollection("history")
       .add({
-        "date": new DateTime.now(),
+        "date": checkIn.date,
+        "quantity": checkIn.quantity.value,
       });
   }
 
@@ -219,8 +221,19 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   CheckIn _parseCheckinFromDocument(DocumentSnapshot doc) {
     return new CheckIn(
       date: doc["date"],
-      beer: _parseBeerFromValue(doc["beer"], doc["beer_version"])
+      beer: _parseBeerFromValue(doc["beer"], doc["beer_version"]),
+      quantity: _parseQuantityFromValue(doc["quantity"]),
     );
+  }
+
+  CheckInQuantity _parseQuantityFromValue(double value) {
+    for(CheckInQuantity quantity in CheckInQuantity.values) {
+      if( quantity.value == value ) {
+        return quantity;
+      }
+    }
+
+    throw new Exception("Unknown quantity: $value");
   }
 
   Map<String, dynamic> _createValueForBeer(Beer beer) {
@@ -341,15 +354,6 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         category: category,
       );
     }).toList(growable: false);
-  }
-
-  String _extractThumbnailUrl(Map beerJson) {
-    final labels = beerJson["labels"];
-    if( labels == null || !(labels is Map) ) {
-      return null;
-    }
-
-    return labels["icon"] as String;
   }
 
 }
