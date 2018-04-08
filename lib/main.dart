@@ -7,7 +7,6 @@ import 'page/home/homepage.dart';
 import 'page/onboarding/onboardingpage.dart';
 import 'page/login/loginpage.dart';
 import 'page/checkin/checkinpage.dart';
-import 'page/checkin/quantity/checkinquantitypage.dart';
 
 void main() => runApp(new BeerMeUpApp());
 

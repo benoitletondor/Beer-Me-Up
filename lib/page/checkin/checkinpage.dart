@@ -170,13 +170,16 @@ class _BeersListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(
-      children: beers
-        .map((Beer beer) => new BeerTile(
+    return new ListView.builder(
+      itemCount: beers.length,
+      itemBuilder: (BuildContext context, int index) {
+        final Beer beer = beers[index];
+
+        return new BeerTile(
           beer: beer,
           onTap: () { onTap(beer); }
-        ))
-        .toList()
+        );
+      },
     );
   }
 }
