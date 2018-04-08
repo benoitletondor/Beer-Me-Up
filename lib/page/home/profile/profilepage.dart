@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 
@@ -57,7 +58,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
-          (load) => _buildLoadWidget(beers: load.beers),
+          (load) => _buildLoadWidget(load.favouriteBeer, load.favouriteBeerCategory),
           (error) => _buildErrorWidget(error: error.error),
         );
       },
@@ -75,7 +76,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     );
   }
 
-  Widget _buildLoadWidget({List<Beer> beers}) {
-    return new Text("Beers: $beers");
+  Widget _buildLoadWidget(BeerCheckInsData favouriteBeer, BeerCategory favouriteCategory) {
+    return new Text("Favourite beer: ${favouriteBeer?.beer?.name}, drank ${favouriteBeer?.drankQuantity}l. Favourite category: ${favouriteCategory?.name}");
   }
 }

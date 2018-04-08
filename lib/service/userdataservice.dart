@@ -9,6 +9,7 @@ import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
+import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/service/brewerydbservice.dart';
 
 abstract class UserDataService {
@@ -19,6 +20,8 @@ abstract class UserDataService {
   Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter});
   Stream<CheckIn> listenForCheckin();
   Future<void> saveBeerCheckIn(CheckIn checkIn);
+
+  Future<List<BeerCheckInsData>> fetchBeerData();
 
   Future<List<Beer>> findBeersMatching(String pattern);
 }
@@ -54,7 +57,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       doc = null;
     }
 
-    if( doc == null ) {
+    if( doc == null || !doc.exists ) {
       debugPrint("Creating document reference for id ${user.uid}");
 
       final DocumentReference ref = _firestore.collection("users").document(user.uid);
@@ -154,6 +157,16 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       .getCollection("beers")
       .document(checkIn.beer.id);
 
+    DocumentSnapshot beerDocumentValues;
+    try {
+      beerDocumentValues = await beerDocument.get();
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, "Error getting existing values for beer ${checkIn.beer.name}");
+    }
+
+    final numberOfCheckIns = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["checkin_counter"] : 0;
+    final drankQuantity = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["drank_quantity"] : 0.0;
+
     await beerDocument
       .setData(
         {
@@ -163,6 +176,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
           "last_checkin": checkIn.date,
+          "checkin_counter": numberOfCheckIns + 1,
+          "drank_quantity": drankQuantity + checkIn.quantity.value,
         },
         SetOptions.merge
       );
@@ -187,14 +202,14 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         description: styleData["description"],
         shortName: styleData["shortName"],
       );
+    }
 
-      final Map<dynamic, dynamic> categoryData = styleData["category"];
-      if( categoryData != null ) {
-        category = new BeerCategory(
-          id: categoryData["id"],
-          name: categoryData["name"],
-        );
-      }
+    final Map<dynamic, dynamic> categoryData = data["category"];
+    if( categoryData != null ) {
+      category = new BeerCategory(
+        id: categoryData["id"],
+        name: categoryData["name"],
+      );
     }
 
     BeerLabel label;
@@ -354,6 +369,25 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         category: category,
       );
     }).toList(growable: false);
+  }
+
+  @override
+  Future<List<BeerCheckInsData>> fetchBeerData() async {
+    _assertDBInitialized();
+
+    final beerDocsSnapshot = await _userDoc
+      .reference
+      .getCollection("beers")
+      .getDocuments();
+
+    return beerDocsSnapshot.documents.map((beerSnapshot) =>
+      new BeerCheckInsData(
+        _parseBeerFromValue(beerSnapshot.data["beer"], beerSnapshot.data["beer_version"]),
+        beerSnapshot.data["checkin_counter"],
+        beerSnapshot.data["last_checkin"],
+        beerSnapshot.data["drank_quantity"],
+      )
+    ).toList(growable: false);
   }
 
 }
