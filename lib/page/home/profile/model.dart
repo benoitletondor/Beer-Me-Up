@@ -33,9 +33,9 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     try {
       setState(new ProfileState.loading());
 
-      final _ProfileData data = await loadProfileData();
+      final ProfileData data = await loadProfileData();
 
-      setState(new ProfileState.load(data.favouriteCategory, data.favouriteBeer));
+      setState(new ProfileState.load(data));
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error loading profile");
       setState(new ProfileState.error(e.toString()));
@@ -46,7 +46,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     _loadData();
   }
 
-  Future<_ProfileData> loadProfileData() async {
+  Future<ProfileData> loadProfileData() async {
     final List<BeerCheckInsData> data = await _dataService.fetchBeerData();
 
     final Map<BeerCategory, int> categoriesCounter = new Map();
@@ -72,16 +72,16 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
       }
     }
 
-    return new _ProfileData(
+    return new ProfileData(
       favouriteBeer,
       favouriteCategory
     );
   }
 }
 
-class _ProfileData {
+class ProfileData {
   final BeerCategory favouriteCategory;
   final BeerCheckInsData favouriteBeer;
 
-  _ProfileData(this.favouriteBeer, this.favouriteCategory);
+  ProfileData(this.favouriteBeer, this.favouriteCategory);
 }

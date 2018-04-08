@@ -1,7 +1,6 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
-import 'package:beer_me_up/model/beer.dart';
-import 'package:beer_me_up/model/beercheckinsdata.dart';
+import 'model.dart';
 
 class ProfileState extends Union3Impl<
     ProfileStateLoading,
@@ -22,22 +21,15 @@ class ProfileState extends Union3Impl<
       ProfileStateError> union) : super(union);
 
   factory ProfileState.loading() => new ProfileState._(factory.first(new ProfileStateLoading()));
-  factory ProfileState.load(
-    BeerCategory favouriteBeerCategory,
-    BeerCheckInsData favouriteBeer) => new ProfileState._(factory.second(new ProfileStateLoad(
-      favouriteBeerCategory,
-      favouriteBeer,
-    )
-  ));
+  factory ProfileState.load(ProfileData data) => new ProfileState._(factory.second(new ProfileStateLoad(data)));
   factory ProfileState.error(String error) => new ProfileState._(factory.third(new ProfileStateError(error)));
 }
 
 class ProfileStateLoading {}
 class ProfileStateLoad {
-  final BeerCategory favouriteBeerCategory;
-  final BeerCheckInsData favouriteBeer;
+  final ProfileData profileData;
 
-  ProfileStateLoad(this.favouriteBeerCategory, this.favouriteBeer);
+  ProfileStateLoad(this.profileData);
 }
 class ProfileStateError {
   final String error;
