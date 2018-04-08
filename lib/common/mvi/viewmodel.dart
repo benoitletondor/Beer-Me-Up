@@ -16,7 +16,8 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
   Stream<S> bind(BuildContext context) {
     this._controller = new StreamController();
     this._context = context;
-    _controller.add(initialState());
+    this._currentState = initialState();
+    _controller.add(_currentState);
     return _controller.stream;
   }
 
@@ -64,6 +65,15 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     }
 
     return Navigator.of(context).pushNamed(name);
+  }
+
+  Future<dynamic> push(Route<dynamic> route) {
+    final context = _context;
+    if( context == null ) {
+      return null;
+    }
+
+    return Navigator.of(context).push(route);
   }
 
   bool pop([dynamic result]) {

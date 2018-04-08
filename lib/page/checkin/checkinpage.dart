@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/model/beer.dart';
-import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 
@@ -180,51 +179,4 @@ class _BeersListView extends StatelessWidget {
         .toList()
     );
   }
-}
-
-Future<SelectedQuantityIntentValue> showSelectQuantityModal(BuildContext context, Beer selectedBeer) async {
-  return await showDialog<SelectedQuantityIntentValue>(
-    context: context,
-    builder:(BuildContext context) {
-      return new SimpleDialog(
-        title: const Text('Select quantity'),
-        children: <Widget>[
-          new SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context, new SelectedQuantityIntentValue(
-                selectedBeer: selectedBeer,
-                quantity: CheckInQuantity.PINT)
-              );
-            },
-            child: const Text('Pint'),
-          ),
-          new SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context, new SelectedQuantityIntentValue(
-                selectedBeer: selectedBeer,
-                quantity: CheckInQuantity.HALF_PINT)
-              );
-            },
-            child: const Text('Half pint'),
-          ),
-          new SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context, new SelectedQuantityIntentValue(
-                selectedBeer: selectedBeer,
-                quantity: CheckInQuantity.BOTTLE)
-              );
-            },
-            child: const Text('Bottle'),
-          ),
-          new Divider(),
-          new SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context, null);
-            },
-            child: const Text('Cancel'),
-          ),
-        ],
-      );
-    }
-  );
 }

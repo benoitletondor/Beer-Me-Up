@@ -19,7 +19,7 @@ class CheckInQuantity {
   static const HALF_PINT = const CheckInQuantity._(0.25);
   static const BOTTLE = const CheckInQuantity._(0.33);
 
-  static get values => [PINT, HALF_PINT, BOTTLE];
+  static List<CheckInQuantity> get values => [PINT, HALF_PINT, BOTTLE];
 
   final double value;
 
