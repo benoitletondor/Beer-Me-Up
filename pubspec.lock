@@ -304,14 +304,14 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.2"
+    version: "1.3.4"
   quiver:
     dependency: transitive
     description:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.28.0"
+    version: "0.29.0+1"
   sealed_unions:
     dependency: "direct main"
     description:
@@ -414,7 +414,7 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.32+2"
+    version: "0.12.33"
   typed_data:
     dependency: transitive
     description:
