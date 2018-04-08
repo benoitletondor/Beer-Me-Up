@@ -122,17 +122,17 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore-0.3.2/ios`)
+  - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore-0.4.0/ios`)
   - firebase_analytics (from `Pods/.symlinks/plugins/firebase_analytics-0.3.0/ios`)
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.5.3/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
-  - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login-1.1.0/ios`)
+  - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login-1.1.1/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-3.0.0/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.0/ios`)
 
 EXTERNAL SOURCES:
   cloud_firestore:
-    :path: Pods/.symlinks/plugins/cloud_firestore-0.3.2/ios
+    :path: Pods/.symlinks/plugins/cloud_firestore-0.4.0/ios
   firebase_analytics:
     :path: Pods/.symlinks/plugins/firebase_analytics-0.3.0/ios
   firebase_auth:
@@ -140,7 +140,7 @@ EXTERNAL SOURCES:
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   flutter_facebook_login:
-    :path: Pods/.symlinks/plugins/flutter_facebook_login-1.1.0/ios
+    :path: Pods/.symlinks/plugins/flutter_facebook_login-1.1.1/ios
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in-3.0.0/ios
   shared_preferences:
