@@ -21,28 +21,20 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
           ),
           keyboardType: TextInputType.emailAddress,
         ),
-        new Padding(padding: EdgeInsets.only(top: 16.0)),
+        new Padding(padding: EdgeInsets.only(top: 25.0)),
         new Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             new FlatButton(
               onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: new Text("CANCEL"),
+            ),
+            new FlatButton(
+              onPressed: () {
                 if( emailController.value.text.trim().isEmpty ) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => new AlertDialog(
-                      title: new Text("Empty email"),
-                      content: new Text("Please provide an email"),
-                      actions: <Widget>[
-                        new FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: new Text("OK"),
-                        )
-                      ],
-                    ),
-                  );
+                  _showEmptyEmailDialog(context);
                   return;
                 }
 
@@ -53,6 +45,24 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
             ),
           ],
         ),
+      ],
+    ),
+  );
+}
+
+_showEmptyEmailDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text("Empty email"),
+      content: new Text("Please provide an email"),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: new Text("OK"),
+        )
       ],
     ),
   );
