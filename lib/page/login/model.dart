@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
-import 'state.dart';
+import 'package:beer_me_up/page/login/lostpassword/lostpassworddialog.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 
+import 'state.dart';
 import 'intent.dart';
 
 class LoginViewModel extends BaseViewModel<LoginState> {
@@ -19,13 +21,19 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       Stream<Null> onSignInWithGoogleButtonPressed,
       Stream<Null> onSignUpWithGoogleButtonPressed,
       Stream<Null> onSignInWithFacebookButtonPressed,
-      Stream<Null> onSignUpWithFacebookButtonPressed) {
+      Stream<Null> onSignUpWithFacebookButtonPressed,
+      Stream<BuildContext> onForgotPasswordButtonPressed) {
+
+    onShowSignInButtonPressed.listen(_showSignIn);
+    onShowSignUpButtonPressed.listen(_showSignUp);
 
     onSignInWithGoogleButtonPressed.listen(_signInWithGoogle);
     onSignUpWithGoogleButtonPressed.listen(_signUpWithGoogle);
 
     onSignInWithFacebookButtonPressed.listen(_signInWithFacebook);
     onSignUpWithFacebookButtonPressed.listen(_signUpWithFacebook);
+
+    onForgotPasswordButtonPressed.listen(_showLostPasswordDialog);
   }
 
   @override
@@ -77,5 +85,21 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       printException(e, stackTrace, "Error while _signUpWithFacebook");
       setState(new LoginState.signUpError(e.toString()));
     }
+  }
+
+  _showLostPasswordDialog(BuildContext context) async {
+    final email = await showLostPasswordDialog(getBuildContext());
+    if( email != null ) {
+      await _authService.sendResetPasswordEmail(email);
+      showLostPasswordEmailSentSnackBar(context);
+    }
+  }
+
+  _showSignIn(Null event) async {
+    setState(new LoginState.signIn());
+  }
+
+  _showSignUp(Null event) async {
+    setState(new LoginState.signUp());
   }
 }

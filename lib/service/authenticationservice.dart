@@ -16,6 +16,7 @@ abstract class AuthenticationService {
   Future<FirebaseUser> signInWithFacebook();
   Future<FirebaseUser> signInWithAccount(String email, String password);
   Future<FirebaseUser> signUpWithAccount(String email, String password);
+  Future<void> sendResetPasswordEmail(String email);
 
   Future<FirebaseUser> getCurrentUser();
   Future<void> signOut();
@@ -30,7 +31,6 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseAnalytics _analytics;
-
 
   _AuthenticationServiceImpl(this._firebaseAuth, this._analytics);
 
@@ -167,6 +167,11 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   Future<void> setUserSawOnboarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(_USER_SAW_ONBOARDING_KEY, true);
+  }
+
+  @override
+  Future<void> sendResetPasswordEmail(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
 }

@@ -37,6 +37,7 @@ class LoginPage extends StatefulWidget {
       _intent.signUpWithGoogle,
       _intent.signInWithFacebook,
       _intent.signUpWithFacebook,
+      _intent.forgotPassword,
     );
 
     return new LoginPage._(key: key, intent: _intent, model: _model);
@@ -154,69 +155,76 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
 
     return new Scaffold(
       appBar: _buildAppBar(context),
-      body: new SafeArea(
-        minimum: const EdgeInsets.all(16.0),
-        child: new SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              new Text(
-                "Sign-in with your account",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  icon: const Icon(Icons.email),
-                  hintText: "Email",
-                ),
-                keyboardType: TextInputType.emailAddress,
-                controller: emailController,
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  icon: const Icon(Icons.vpn_key),
-                  hintText: "Password",
-                ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                controller: passController,
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new RaisedButton(
-                onPressed: () => intent.signIn(new LoginFormData(emailController.text, passController.text)),
-                child: new Text("Sign-in"),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new Text(
-                "Or",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new RaisedButton(
-                onPressed: intent.signInWithGoogle,
-                child: new Text("Sign-in with Google"),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 10.0)),
-              new RaisedButton(
-                onPressed: intent.signInWithFacebook,
-                child: new Text("Sign-in with Facebook"),
-              ),
-              new Divider(height: 50.0),
-              new FlatButton(
-                onPressed: intent.showSignUp,
-                child: new Text(
-                  "DON'T HAVE AN ACCOUNT ? SIGN-UP",
+      body: new Builder(builder: (context) =>
+        new SafeArea(
+          minimum: const EdgeInsets.all(16.0),
+          child: new SingleChildScrollView(
+            child: new Column(
+              children: <Widget>[
+                new Text(
+                  "Sign-in with your account",
                   style: new TextStyle(
-                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
                   ),
                 ),
-              ),
-            ],
+                new TextField(
+                  decoration: new InputDecoration(
+                    icon: const Icon(Icons.email),
+                    hintText: "Email",
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailController,
+                ),
+                new TextField(
+                  decoration: new InputDecoration(
+                    icon: const Icon(Icons.vpn_key),
+                    hintText: "Password",
+                  ),
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  controller: passController,
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 20.0)),
+                new RaisedButton(
+                  onPressed: () => intent.signIn(new LoginFormData(emailController.text, passController.text)),
+                  child: new Text("Sign-in"),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 10.0)),
+                new FlatButton(
+                  onPressed: () { intent.forgotPassword(context); },
+                  child: new Text("FORGOT PASSWORD?"),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 20.0)),
+                new Text(
+                  "Or",
+                  style: new TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                  ),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 20.0)),
+                new RaisedButton(
+                  onPressed: intent.signInWithGoogle,
+                  child: new Text("Sign-in with Google"),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 10.0)),
+                new RaisedButton(
+                  onPressed: intent.signInWithFacebook,
+                  child: new Text("Sign-in with Facebook"),
+                ),
+                new Divider(height: 50.0),
+                new FlatButton(
+                  onPressed: intent.showSignUp,
+                  child: new Text(
+                    "DON'T HAVE AN ACCOUNT ? SIGN-UP",
+                    style: new TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:flutter_stream_friends/flutter_stream_friends.dart';
 
 class LoginIntent {
@@ -9,6 +11,7 @@ class LoginIntent {
   final VoidStreamCallback signUpWithGoogle;
   final VoidStreamCallback signInWithFacebook;
   final VoidStreamCallback signUpWithFacebook;
+  final ValueStreamCallback<BuildContext> forgotPassword;
 
   LoginIntent({
     final VoidStreamCallback showSignInIntent,
@@ -19,6 +22,7 @@ class LoginIntent {
     VoidStreamCallback signUpWithGoogleIntent,
     VoidStreamCallback signInWithFacebookIntent,
     VoidStreamCallback signUpWithFacebookIntent,
+    ValueStreamCallback<BuildContext> forgotPasswordIntent,
   }) :
     this.showSignIn = showSignInIntent ?? new VoidStreamCallback(),
     this.showSignUp = showSignUpIntent ?? new VoidStreamCallback(),
@@ -27,7 +31,8 @@ class LoginIntent {
     this.signInWithGoogle = signInWithGoogleIntent ?? new VoidStreamCallback(),
     this.signUpWithGoogle = signUpWithGoogleIntent ?? new VoidStreamCallback(),
     this.signInWithFacebook = signInWithFacebookIntent ?? new VoidStreamCallback(),
-    this.signUpWithFacebook = signUpWithFacebookIntent ?? new VoidStreamCallback();
+    this.signUpWithFacebook = signUpWithFacebookIntent ?? new VoidStreamCallback(),
+    this.forgotPassword = forgotPasswordIntent ?? new ValueStreamCallback<BuildContext>();
 }
 
 class LoginFormData {
