@@ -9,7 +9,7 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
     context: context,
     builder: (context) => new SimpleDialog(
       title: const Text('Retrieve password'),
-      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 22.0),
+      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       children: <Widget>[
         new Text("Enter your login email and we'll send you instructions to reset your password"),
         new Padding(padding: EdgeInsets.only(top: 16.0)),
@@ -29,19 +29,19 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
               onPressed: () {
                 if( emailController.value.text.trim().isEmpty ) {
                   showDialog(
-                      context: context,
-                      builder: (context) => new AlertDialog(
-                        title: new Text("Empty email"),
-                        content: new Text("Please provide an email"),
-                        actions: <Widget>[
-                          new FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: new Text("OK"),
-                          )
-                        ],
-                      )
+                    context: context,
+                    builder: (context) => new AlertDialog(
+                      title: new Text("Empty email"),
+                      content: new Text("Please provide an email"),
+                      actions: <Widget>[
+                        new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: new Text("OK"),
+                        )
+                      ],
+                    ),
                   );
                   return;
                 }
