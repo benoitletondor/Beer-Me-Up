@@ -1,3 +1,4 @@
+import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 
@@ -85,6 +86,12 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             fontWeight: FontWeight.bold,
           ),
         ),
+        new Padding(padding: EdgeInsets.only(top: 20.0)),
+        new Text("Drank ${profileData.weekDrankQuantity.toStringAsFixed(2)}L"),
+        new Padding(padding: EdgeInsets.only(top: 5.0)),
+        new Column(
+          children: _buildWeekBeers(profileData.weekBeers),
+        ),
         new Padding(padding: EdgeInsets.only(top: 30.0)),
         new Text(
           "ALL TIME",
@@ -103,8 +110,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              new BeerTile(beer: profileData.favouriteBeer?.beer),
-              new Text("Drank ${profileData.favouriteBeer?.drankQuantity}L"),
+              new ListTile(
+                leading: BeerTile.buildThumbnailImage(profileData.favouriteBeer?.beer),
+                title: new Text(profileData.favouriteBeer?.beer?.name),
+                subtitle: new Text("Drank ${profileData.favouriteBeer.drankQuantity}"),
+              )
             ],
           ),
         ),
@@ -125,6 +135,26 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         ),
       ],
     );
-    return new Text("Favourite beer: ${profileData.favouriteBeer?.beer?.name}, drank ${profileData.favouriteBeer?.drankQuantity}l. Favourite category: ${profileData.favouriteCategory?.name}");
+  }
+
+  List<Widget> _buildWeekBeers(List<BeerCheckInsData> weekBeers) {
+    return weekBeers
+      .map((checkInData) => _buildWeekBeer(checkInData))
+      .toList(growable: false);
+  }
+
+  Widget _buildWeekBeer(BeerCheckInsData beerCheckIn) {
+    return new ListTile(
+      leading: BeerTile.buildThumbnailImage(beerCheckIn.beer),
+      title: new Text(beerCheckIn.beer.name),
+      subtitle: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text("Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity}L."),
+          new Text("Last time: ${beerCheckIn.lastCheckinTime}"),
+        ],
+      ),
+    );
   }
 }

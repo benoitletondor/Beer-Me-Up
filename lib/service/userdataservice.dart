@@ -22,6 +22,7 @@ abstract class UserDataService {
   Future<void> saveBeerCheckIn(CheckIn checkIn);
 
   Future<List<BeerCheckInsData>> fetchBeerData();
+  Future<List<CheckIn>> fetchThisWeekCheckIns();
 
   Future<List<Beer>> findBeersMatching(String pattern);
 }
@@ -34,6 +35,7 @@ class CheckinFetchResponse {
 }
 
 const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
+const _LIMIT_FOR_WEEKLY_CHECKINS = 100;
 const _BEER_VERSION = 1;
 
 class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
@@ -388,6 +390,36 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         beerSnapshot.data["drank_quantity"],
       )
     ).toList(growable: false);
+  }
+
+  @override
+  Future<List<CheckIn>> fetchThisWeekCheckIns() async {
+    _assertDBInitialized();
+
+    final now = new DateTime.now();
+    final today = new DateTime(
+      now.year,
+      now.month,
+      now.day,
+    );
+
+    final DateTime thisWeekStartDate = today.add(
+      new Duration(
+        days: -(now.weekday - 1)
+      )
+    );
+
+    final QuerySnapshot snapshots = await _userDoc
+      .reference
+      .getCollection("history")
+      .where("date", isGreaterThanOrEqualTo: thisWeekStartDate)
+      .orderBy("date", descending: true)
+      .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
+      .getDocuments();
+
+    return snapshots.documents
+      .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
+      .toList(growable: false);
   }
 
 }

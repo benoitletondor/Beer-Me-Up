@@ -43,14 +43,14 @@ class BeerTile extends StatelessWidget {
     }
 
     return new ListTile(
-      leading: _buildThumbnailImage(),
+      leading: buildThumbnailImage(beer),
       title: new Text(beer.name),
       subtitle: subtitle != null ? new Text(subtitle) : null,
       onTap: onTap,
     );
   }
 
-  Widget _buildThumbnailImage() {
+  static Widget buildThumbnailImage(Beer beer) {
     if( beer.label?.iconUrl == null ) {
       return new Icon(const IconData(0xe900, fontFamily: "beers"));
     }
