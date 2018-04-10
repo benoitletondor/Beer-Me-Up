@@ -77,12 +77,14 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
   Widget _buildScreen(Beer selectedBeer, CheckInQuantity selectedQuantity, bool error) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Confirm checkin: ${selectedBeer.name}'),
+        title: new Text('Confirm checkin'),
       ),
       body: new Center(
         child: new Column(
           children: <Widget>[
+            new Padding(padding: EdgeInsets.only(top: 20.0)),
             new BeerTile(beer: selectedBeer),
+            new Padding(padding: EdgeInsets.only(top: 20.0)),
             new Center(
               child: new Row(
                 mainAxisSize: MainAxisSize.min,
@@ -102,7 +104,13 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
             new Padding(padding: new EdgeInsets.only(top: 20.0)),
             new RaisedButton(
               onPressed: intent.checkInConfirmed,
-              child: new Text("Confirm"),
+              color: Theme.of(context).accentColor,
+              child: new Text(
+                "Confirm \"${selectedBeer.name}\" checkin",
+                style: new TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             )
           ],
         ),
@@ -121,18 +129,22 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
   }
 
   Widget _buildQuantityTile(CheckInQuantity quantity, bool isSelected) {
-    return new GestureDetector(
-      onTap: () { intent.quantitySelected(quantity); },
-      child: new Container(
-        child: new Column(
-          children: <Widget>[
-            new Icon(const IconData(0xe901, fontFamily: "beers")),
-            new Text(_getTextForQuantity(quantity)),
-          ],
-        ),
-        decoration: new BoxDecoration(
-          border: new Border.all(width: 2.0, color: isSelected ? Colors.lightGreen[700] : Colors.grey[600]),
-          borderRadius: new BorderRadius.all(const Radius.circular(4.0)),
+    return new Container(
+      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+      child: new GestureDetector(
+        onTap: () { intent.quantitySelected(quantity); },
+        child: new Container(
+          padding: EdgeInsets.all(5.0),
+          child: new Column(
+            children: <Widget>[
+              new Icon(const IconData(0xe901, fontFamily: "beers")),
+              new Text(_getTextForQuantity(quantity)),
+            ],
+          ),
+          decoration: new BoxDecoration(
+            border: new Border.all(width: 2.0, color: isSelected ? Colors.lightGreen[700] : Colors.grey[600]),
+            borderRadius: new BorderRadius.all(const Radius.circular(4.0)),
+          ),
         ),
       ),
     );
