@@ -13,6 +13,8 @@ import 'state.dart';
 class ProfileViewModel extends BaseViewModel<ProfileState> {
   final UserDataService _dataService;
 
+  StreamSubscription<CheckIn> _checkInSubscription;
+
   ProfileViewModel(
       this._dataService,
       Stream<Null> onErrorRetryButtonPressed,) {
@@ -30,6 +32,14 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     return super.bind(context);
   }
 
+  @override
+  unbind() {
+    _checkInSubscription?.cancel();
+    _checkInSubscription = null;
+
+    super.unbind();
+  }
+
   _loadData() async {
     try {
       setState(new ProfileState.loading());
@@ -37,6 +47,8 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
       final ProfileData data = await loadProfileData();
 
       setState(new ProfileState.load(data));
+
+      _bindToUpdates();
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error loading profile");
       setState(new ProfileState.error(e.toString()));
@@ -48,10 +60,17 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   }
 
   Future<ProfileData> loadProfileData() async {
-    final List<BeerCheckInsData> data = await _dataService.fetchBeerData();
+    final List<BeerCheckInsData> data = await _dataService.fetchBeerCheckInsData();
     final List<CheckIn> checkIns = await _dataService.fetchThisWeekCheckIns();
 
     return ProfileData.fromData(data, checkIns);
+  }
+
+  void _bindToUpdates() {
+    _checkInSubscription?.cancel();
+    _checkInSubscription = _dataService.listenForCheckIn().listen((checkIn) {
+      _loadData();
+    });
   }
 }
 
@@ -88,13 +107,13 @@ class ProfileData {
       }
     }
 
-    final Map<Beer, BeerCheckInsData> weekBeersMap = new Map();
+    final Map<String, BeerCheckInsData> weekBeersMap = new Map();
     double weekDrankQuantity = 0.0;
 
     for(CheckIn checkin in checkIns) {
-      BeerCheckInsData data = weekBeersMap[checkin.beer];
+      BeerCheckInsData data = weekBeersMap[checkin.beer.id];
 
-      weekBeersMap[checkin.beer] = new BeerCheckInsData(
+      weekBeersMap[checkin.beer.id] = new BeerCheckInsData(
         checkin.beer,
         (data == null ? 0 : data.numberOfCheckIns) + 1,
         data == null ? checkin.date : (data.lastCheckinTime.isBefore(checkin.date) ? checkin.date : data.lastCheckinTime),

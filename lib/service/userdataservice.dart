@@ -17,11 +17,11 @@ abstract class UserDataService {
 
   Future<void> initDB(FirebaseUser currentUser);
 
-  Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter});
-  Stream<CheckIn> listenForCheckin();
+  Future<CheckinFetchResponse> fetchCheckInHistory({CheckIn startAfter});
+  Stream<CheckIn> listenForCheckIn();
   Future<void> saveBeerCheckIn(CheckIn checkIn);
 
-  Future<List<BeerCheckInsData>> fetchBeerData();
+  Future<List<BeerCheckInsData>> fetchBeerCheckInsData();
   Future<List<CheckIn>> fetchThisWeekCheckIns();
 
   Future<List<Beer>> findBeersMatching(String pattern);
@@ -81,7 +81,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   @override
-  Future<CheckinFetchResponse> fetchCheckinHistory({CheckIn startAfter}) async {
+  Future<CheckinFetchResponse> fetchCheckInHistory({CheckIn startAfter}) async {
     _assertDBInitialized();
 
     var query = _userDoc
@@ -108,7 +108,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     return new CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
   }
 
-  Stream<CheckIn> listenForCheckin() {
+  Stream<CheckIn> listenForCheckIn() {
     final StreamController<CheckIn> _controller = new StreamController();
 
     final subscription = _userDoc
@@ -140,19 +140,6 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   @override
   Future<void> saveBeerCheckIn(CheckIn checkIn) async {
     _assertDBInitialized();
-
-    await _userDoc
-      .reference
-      .getCollection("history")
-      .add({
-        "date": checkIn.date,
-        "beer": _createValueForBeer(checkIn.beer),
-        "beer_id": checkIn.beer.id,
-        "beer_style_id": checkIn.beer.style?.id,
-        "beer_category_id": checkIn.beer.category?.id,
-        "beer_version": _BEER_VERSION,
-        "quantity": checkIn.quantity.value,
-      });
 
     final beerDocument = _userDoc
       .reference
@@ -190,6 +177,19 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         "date": checkIn.date,
         "quantity": checkIn.quantity.value,
       });
+
+    await _userDoc
+        .reference
+        .getCollection("history")
+        .add({
+          "date": checkIn.date,
+          "beer": _createValueForBeer(checkIn.beer),
+          "beer_id": checkIn.beer.id,
+          "beer_style_id": checkIn.beer.style?.id,
+          "beer_category_id": checkIn.beer.category?.id,
+          "beer_version": _BEER_VERSION,
+          "quantity": checkIn.quantity.value,
+        });
   }
 
   Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
@@ -374,7 +374,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   @override
-  Future<List<BeerCheckInsData>> fetchBeerData() async {
+  Future<List<BeerCheckInsData>> fetchBeerCheckInsData() async {
     _assertDBInitialized();
 
     final beerDocsSnapshot = await _userDoc

@@ -1,6 +1,7 @@
 import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
@@ -41,6 +42,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, ProfileIntent, ProfileState> {
+  static final _beerCheckinDateFormatter = new DateFormat.MMMEd().add_Hm();
 
   _ProfilePageState({
     @required ProfileIntent intent,
@@ -113,7 +115,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               new ListTile(
                 leading: BeerTile.buildThumbnailImage(profileData.favouriteBeer?.beer),
                 title: new Text(profileData.favouriteBeer?.beer?.name),
-                subtitle: new Text("Drank ${profileData.favouriteBeer.drankQuantity}"),
+                subtitle: new Text("Drank ${profileData.favouriteBeer.numberOfCheckIns} times, ${profileData.favouriteBeer.drankQuantity.toStringAsFixed(2)}L"),
               )
             ],
           ),
@@ -151,8 +153,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text("Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity}L."),
-          new Text("Last time: ${beerCheckIn.lastCheckinTime}"),
+          new Text("Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L."),
+          new Text("Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}"),
         ],
       ),
     );

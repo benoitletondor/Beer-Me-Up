@@ -47,7 +47,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
     try {
       setState(new HistoryState.loading());
 
-      final CheckinFetchResponse response = await _dataService.fetchCheckinHistory();
+      final CheckinFetchResponse response = await _dataService.fetchCheckInHistory();
       _checkIns.addAll(response.checkIns);
       _hasMore = response.hasMore;
 
@@ -88,7 +88,8 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   }
 
   void _bindToUpdates() {
-    _checkInSubscription = _dataService.listenForCheckin().listen(_onNewCheckin);
+    _checkInSubscription?.cancel();
+    _checkInSubscription = _dataService.listenForCheckIn().listen(_onNewCheckin);
   }
 
   _onNewCheckin(CheckIn checkIn) async {
@@ -105,7 +106,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
     setState(new HistoryState.load(_items));
 
     try {
-      final CheckinFetchResponse response = await _dataService.fetchCheckinHistory(startAfter: _checkIns.last);
+      final CheckinFetchResponse response = await _dataService.fetchCheckInHistory(startAfter: _checkIns.last);
       _checkIns.addAll(response.checkIns);
       _hasMore = response.hasMore;
 
