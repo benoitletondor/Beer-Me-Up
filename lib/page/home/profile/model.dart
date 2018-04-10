@@ -49,13 +49,24 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   Future<ProfileData> loadProfileData() async {
     final List<BeerCheckInsData> data = await _dataService.fetchBeerData();
 
+    return ProfileData.fromData(data);
+  }
+}
+
+class ProfileData {
+  final BeerCategory favouriteCategory;
+  final BeerCheckInsData favouriteBeer;
+
+  ProfileData(this.favouriteBeer, this.favouriteCategory);
+
+  factory ProfileData.fromData(List<BeerCheckInsData> checkInsData) {
     final Map<BeerCategory, int> categoriesCounter = new Map();
 
     BeerCheckInsData favouriteBeer;
     BeerCategory favouriteCategory;
     int favouriteCategoryCounter = 0;
 
-    for(BeerCheckInsData checkinData in data) {
+    for(BeerCheckInsData checkinData in checkInsData) {
       if( favouriteBeer == null || checkinData.drankQuantity > favouriteBeer.drankQuantity ) {
         favouriteBeer = checkinData;
       }
@@ -73,15 +84,8 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     }
 
     return new ProfileData(
-      favouriteBeer,
-      favouriteCategory
+        favouriteBeer,
+        favouriteCategory
     );
   }
-}
-
-class ProfileData {
-  final BeerCategory favouriteCategory;
-  final BeerCheckInsData favouriteBeer;
-
-  ProfileData(this.favouriteBeer, this.favouriteCategory);
 }
