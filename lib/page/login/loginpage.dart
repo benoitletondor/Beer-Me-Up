@@ -31,13 +31,17 @@ class LoginPage extends StatefulWidget {
       userService ?? AuthenticationService.instance,
       _intent.showSignIn,
       _intent.showSignUp,
-      _intent.signIn,
       _intent.signUp,
+      _intent.signIn,
       _intent.signInWithGoogle,
       _intent.signUpWithGoogle,
       _intent.signInWithFacebook,
       _intent.signUpWithFacebook,
       _intent.forgotPassword,
+      _intent.signUpEmailInputChanged,
+      _intent.signUpPasswordInputChanged,
+      _intent.signInEmailInputChanged,
+      _intent.signInPasswordInputChanged,
     );
 
     return new LoginPage._(key: key, intent: _intent, model: _model);
@@ -48,6 +52,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, LoginState> {
+
+  final signUpEmailController = new TextEditingController();
+  final signUpPassController = new TextEditingController();
+  final signInEmailController = new TextEditingController();
+  final signInPassController = new TextEditingController();
 
   _LoginPageState({
     @required LoginIntent intent,
@@ -75,9 +84,6 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   }
 
   Widget _buildSignUpScreen(BuildContext context, {String error}) {
-    final emailController = new TextEditingController();
-    final passController = new TextEditingController();
-
     return new Scaffold(
       appBar: _buildAppBar(context),
       body: new SafeArea(
@@ -92,13 +98,29 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   fontSize: 18.0,
                 ),
               ),
+              new Offstage(
+                offstage: error == null,
+                child: new Column(
+                  children: <Widget>[
+                    new Padding(padding: EdgeInsets.only(top: 15.0)),
+                    new Text(
+                      error ?? "",
+                      style: new TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 15.0)),
+                  ],
+                ),
+              ),
               new TextField(
                 decoration: new InputDecoration(
                   icon: const Icon(Icons.email),
                   hintText: "Email",
                 ),
                 keyboardType: TextInputType.emailAddress,
-                controller: emailController,
+                controller: signUpEmailController,
+                onChanged: (val) { intent.signUpEmailInputChanged(); },
               ),
               new TextField(
                 decoration: new InputDecoration(
@@ -107,11 +129,12 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 ),
                 keyboardType: TextInputType.text,
                 obscureText: true,
-                controller: passController,
+                controller: signUpPassController,
+                onChanged: (val) { intent.signUpPasswordInputChanged(); },
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
               new RaisedButton(
-                onPressed: () => intent.signUp(new LoginFormData(emailController.text, passController.text)),
+                onPressed: () => intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)),
                 child: new Text("Sign-up"),
               ),
               new Padding(padding: const EdgeInsets.only(top: 20.0)),
@@ -150,9 +173,6 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   }
 
   Widget _buildLoginScreen(BuildContext context, {String error}) {
-    final emailController = new TextEditingController();
-    final passController = new TextEditingController();
-
     return new Scaffold(
       appBar: _buildAppBar(context),
       body: new Builder(builder: (context) =>
@@ -168,13 +188,29 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     fontSize: 18.0,
                   ),
                 ),
+                new Offstage(
+                  offstage: error == null,
+                  child: new Column(
+                    children: <Widget>[
+                      new Padding(padding: EdgeInsets.only(top: 15.0)),
+                      new Text(
+                        error ?? "",
+                        style: new TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                      new Padding(padding: EdgeInsets.only(top: 15.0)),
+                    ],
+                  ),
+                ),
                 new TextField(
                   decoration: new InputDecoration(
                     icon: const Icon(Icons.email),
                     hintText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  controller: emailController,
+                  controller: signInEmailController,
+                  onChanged: (val) { intent.signInEmailInputChanged(); },
                 ),
                 new TextField(
                   decoration: new InputDecoration(
@@ -183,11 +219,12 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   ),
                   keyboardType: TextInputType.text,
                   obscureText: true,
-                  controller: passController,
+                  controller: signInPassController,
+                  onChanged: (val) { intent.signInPasswordInputChanged(); },
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 20.0)),
                 new RaisedButton(
-                  onPressed: () => intent.signIn(new LoginFormData(emailController.text, passController.text)),
+                  onPressed: () => intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)),
                   child: new Text("Sign-in"),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 10.0)),

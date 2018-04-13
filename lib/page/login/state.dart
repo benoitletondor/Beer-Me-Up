@@ -33,8 +33,27 @@ class LoginState extends Union5Impl<
   factory LoginState.signInError(String error) => new LoginState._(factory.fifth(new LoginStateSignInError(error)));
 }
 
-class LoginStateSignUp {}
-class LoginStateSignIn {}
+class LoginStateSignUp {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is LoginStateSignUp &&
+            runtimeType == other.runtimeType;
+  }
+
+  @override
+  int get hashCode => 0;
+}
+class LoginStateSignIn {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is LoginStateSignIn &&
+              runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 1;
+}
 class LoginStateAuthenticating {}
 class LoginStateSignUpError {
   final String error;

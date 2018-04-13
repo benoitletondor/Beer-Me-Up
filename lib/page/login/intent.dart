@@ -12,6 +12,10 @@ class LoginIntent {
   final VoidStreamCallback signInWithFacebook;
   final VoidStreamCallback signUpWithFacebook;
   final ValueStreamCallback<BuildContext> forgotPassword;
+  final VoidStreamCallback signUpEmailInputChanged;
+  final VoidStreamCallback signUpPasswordInputChanged;
+  final VoidStreamCallback signInEmailInputChanged;
+  final VoidStreamCallback signInPasswordInputChanged;
 
   LoginIntent({
     final VoidStreamCallback showSignInIntent,
@@ -23,6 +27,10 @@ class LoginIntent {
     VoidStreamCallback signInWithFacebookIntent,
     VoidStreamCallback signUpWithFacebookIntent,
     ValueStreamCallback<BuildContext> forgotPasswordIntent,
+    VoidStreamCallback signUpEmailInputChangedIntent,
+    VoidStreamCallback signUpPasswordInputChangedIntent,
+    VoidStreamCallback signInEmailInputChangedIntent,
+    VoidStreamCallback signInPasswordInputChangedIntent,
   }) :
     this.showSignIn = showSignInIntent ?? new VoidStreamCallback(),
     this.showSignUp = showSignUpIntent ?? new VoidStreamCallback(),
@@ -32,7 +40,11 @@ class LoginIntent {
     this.signUpWithGoogle = signUpWithGoogleIntent ?? new VoidStreamCallback(),
     this.signInWithFacebook = signInWithFacebookIntent ?? new VoidStreamCallback(),
     this.signUpWithFacebook = signUpWithFacebookIntent ?? new VoidStreamCallback(),
-    this.forgotPassword = forgotPasswordIntent ?? new ValueStreamCallback<BuildContext>();
+    this.forgotPassword = forgotPasswordIntent ?? new ValueStreamCallback<BuildContext>(),
+    this.signUpEmailInputChanged = signUpEmailInputChangedIntent ?? new VoidStreamCallback(),
+    this.signUpPasswordInputChanged = signUpPasswordInputChangedIntent ?? new VoidStreamCallback(),
+    this.signInEmailInputChanged = signInEmailInputChangedIntent ?? new VoidStreamCallback(),
+    this.signInPasswordInputChanged = signInPasswordInputChangedIntent ?? new VoidStreamCallback();
 }
 
 class LoginFormData {

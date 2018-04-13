@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_auth/firebase_auth.dart';
@@ -49,18 +50,26 @@ class _AuthenticationServiceImpl implements AuthenticationService {
       throw new Exception("Password is empty");
     }
 
-    final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-    if( user == null ) {
-      throw new Exception("Unable to sign-in");
+    try {
+      final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      if( user == null ) {
+        throw new Exception("Unable to sign-in");
+      }
+
+      assert(user.email != null);
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      _analytics.setUserId(user.uid);
+
+      return user;
+    } on PlatformException catch (e) {
+      if (e.details != null && e.details is String) {
+        throw Exception(e.details);
+      }
+
+      throw e;
     }
-
-    assert(user.email != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    _analytics.setUserId(user.uid);
-
-    return user;
   }
 
   @override
@@ -138,18 +147,27 @@ class _AuthenticationServiceImpl implements AuthenticationService {
       throw new Exception("Password is empty");
     }
 
-    final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    if( user == null ) {
-      throw new Exception("Unable to sign-up");
+    try {
+      final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+
+      if( user == null ) {
+        throw new Exception("Unable to sign-up");
+      }
+
+      assert(user.email != null);
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      _analytics.setUserId(user.uid);
+
+      return user;
+    } on PlatformException catch (e) {
+      if( e.details != null && e.details is String ) {
+        throw Exception(e.details);
+      }
+
+      throw e;
     }
-
-    assert(user.email != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    _analytics.setUserId(user.uid);
-
-    return user;
   }
 
   @override
