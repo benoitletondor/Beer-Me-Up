@@ -22,12 +22,14 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       Stream<Null> onProfileTabButtonPressed,
       Stream<Null> onHistoryTabButtonPressed,
       Stream<Null> onErrorRetryButtonPressed,
-      Stream<Null> onBeerCheckInButtonPressed,) {
+      Stream<Null> onBeerCheckInButtonPressed,
+      Stream<Null> onAccountButtonPressed,) {
 
     onProfileTabButtonPressed.listen(_showProfileTab);
     onHistoryTabButtonPressed.listen(_showHistoryTab);
     onErrorRetryButtonPressed.listen(_retryLoading);
     onBeerCheckInButtonPressed.listen(_beerCheckIn);
+    onAccountButtonPressed.listen(_showAccountPage);
   }
 
   @override
@@ -102,5 +104,9 @@ class HomeViewModel extends BaseViewModel<HomeState> {
     } else {
       debugPrint("No beer selected");
     }
+  }
+
+  _showAccountPage(Null event) async {
+    // TODO
   }
 }

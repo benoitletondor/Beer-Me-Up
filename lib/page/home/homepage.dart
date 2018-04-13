@@ -38,6 +38,7 @@ class HomePage extends StatefulWidget {
       _intent.showHistory,
       _intent.retry,
       _intent.beerCheckIn,
+      _intent.showAccountPage,
     );
 
     return new HomePage._(key: key, intent: _intent, model: _model);
@@ -79,7 +80,7 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
 
   Widget _buildContentWidget(int index) {
     return new Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(true),
       body: new Center(
         child: new Stack(
           children: <Widget>[
@@ -131,14 +132,14 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
 
   Widget _buildLoadingWidget() {
     return new Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(false),
       body: new LoadingWidget(),
     );
   }
 
   Widget _buildErrorWidget({@required String error}) {
     return new Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(false),
       body: new ErrorOccurredWidget(
         error,
         () => intent.retry(),
@@ -146,9 +147,19 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(bool authenticated) {
+    final List<Widget> actions = new List();
+    if( authenticated ) {
+      actions.add(new IconButton( // action button
+        icon: new Icon(Icons.person),
+        onPressed: intent.showAccountPage,
+        tooltip: "Account",
+      ));
+    }
+
     return new AppBar(
       title: new Text('Beer Me Up'),
+      actions: actions,
     );
   }
 }
