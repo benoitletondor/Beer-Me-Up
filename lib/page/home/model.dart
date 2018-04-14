@@ -11,6 +11,7 @@ import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
+import 'package:beer_me_up/page/account/accountpage.dart';
 
 class HomeViewModel extends BaseViewModel<HomeState> {
   final AuthenticationService _authService;
@@ -107,6 +108,6 @@ class HomeViewModel extends BaseViewModel<HomeState> {
   }
 
   _showAccountPage(Null event) async {
-    // TODO
+    pushNamed(ACCOUNT_PAGE_ROUTE);
   }
 }

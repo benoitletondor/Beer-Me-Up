@@ -18,7 +18,7 @@ class OnboardingViewModel extends BaseViewModel<OnboardingState> {
   OnboardingState initialState() => new OnboardingState.onboarding();
 
   _finish(Null event) async {
-    _authService.setUserSawOnboarding();
+    await _authService.setUserSawOnboarding();
     pushReplacementNamed("/");
   }
 }

@@ -73,7 +73,7 @@ class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel
           children: <Widget>[
             new RaisedButton(
               child: const Text('Continue'),
-              onPressed: () => intent.finish(),
+              onPressed: intent.finish,
             ),
           ],
         ),

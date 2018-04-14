@@ -150,11 +150,22 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
   AppBar _buildAppBar(bool authenticated) {
     final List<Widget> actions = new List();
     if( authenticated ) {
-      actions.add(new IconButton( // action button
-        icon: new Icon(Icons.person),
-        onPressed: intent.showAccountPage,
-        tooltip: "Account",
-      ));
+      actions.add(new PopupMenuButton<String>( // overflow menu
+        icon: new Icon(Icons.more_vert),
+        onSelected: (menu) {
+          switch (menu) {
+            case "account" :
+              intent.showAccountPage();
+              break;
+          }
+        },
+        itemBuilder: (BuildContext context) {
+          return [new PopupMenuItem<String>(
+            value: "account",
+            child: new Text("Account"),
+          )];
+        })
+      );
     }
 
     return new AppBar(

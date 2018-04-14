@@ -58,6 +58,26 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     return true;
   }
 
+  bool pushReplacement<T extends Object, TO extends Object>(Route<T> newRoute) {
+    final context = _context;
+    if( context == null ) {
+      return false;
+    }
+
+    Navigator.of(context).pushReplacement(newRoute);
+    return true;
+  }
+  
+  bool pushNamedAndRemoveUntil(String name, RoutePredicate predicate) {
+    final context = _context;
+    if( context == null ) {
+      return false;
+    }
+
+    Navigator.of(context).pushNamedAndRemoveUntil(name, predicate);
+    return true;
+  }
+
   Future<dynamic> pushNamed(String name) {
     final context = _context;
     if( context == null ) {
@@ -83,6 +103,16 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     }
 
     Navigator.of(context).pop(result);
+    return true;
+  }
+
+  bool popUntil(RoutePredicate predicate) {
+    final context = _context;
+    if( context == null ) {
+      return false;
+    }
+
+    Navigator.of(context).popUntil(predicate);
     return true;
   }
 
