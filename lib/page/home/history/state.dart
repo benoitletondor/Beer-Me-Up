@@ -1,5 +1,7 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
+import 'package:beer_me_up/common/mvi/state.dart';
+
 import 'model.dart';
 
 class HistoryState extends Union3Impl<
@@ -25,14 +27,40 @@ class HistoryState extends Union3Impl<
   factory HistoryState.error(String error) => new HistoryState._(factory.third(new HistoryStateError(error)));
 }
 
-class HistoryStateLoading {}
-class HistoryStateLoad {
+class HistoryStateLoading extends State {}
+
+class HistoryStateLoad extends State {
   final List<HistoryListItem> items;
 
   HistoryStateLoad(this.items);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is HistoryStateLoad &&
+        runtimeType == other.runtimeType &&
+        items == other.items;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      items.hashCode;
 }
-class HistoryStateError {
+
+class HistoryStateError extends State {
   final String error;
 
   HistoryStateError(this.error);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is HistoryStateError &&
+        runtimeType == other.runtimeType &&
+        error == other.error;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      error.hashCode;
 }

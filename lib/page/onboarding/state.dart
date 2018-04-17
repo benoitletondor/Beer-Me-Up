@@ -1,5 +1,7 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
+import 'package:beer_me_up/common/mvi/state.dart';
+
 class OnboardingState extends Union1Impl<OnboardingStateOnboarding> {
 
   static final Singlet<OnboardingStateOnboarding> factory
@@ -10,4 +12,13 @@ class OnboardingState extends Union1Impl<OnboardingStateOnboarding> {
   factory OnboardingState.onboarding() => new OnboardingState._(factory.first(new OnboardingStateOnboarding()));
 }
 
-class OnboardingStateOnboarding {}
+class OnboardingStateOnboarding extends State {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is OnboardingStateOnboarding &&
+              runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 1;
+}

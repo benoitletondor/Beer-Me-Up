@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
+import 'package:beer_me_up/common/widget/loadingwidget.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -55,22 +56,31 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
         }
 
         return snapshot.data.join(
-          (account) => _buildAccountScreen(),
-          () => new Container(),
+          (loading) => _buildLoadingScreen(),
+          (account) => _buildAccountScreen(account.email, account.name),
         );
       },
     );
   }
 
-  Widget _buildAccountScreen() {
+  Widget _buildAccountScreen(String email, String name) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Account"),
-      ),
+      appBar: _buildAppBar(),
       body: new Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Offstage(
+              offstage: name == null,
+              child: new Column(
+                children: <Widget>[
+                  new Text(name ?? ""),
+                  new Padding(padding: new EdgeInsets.only(top: 15.0)),
+                ],
+              ),
+            ),
+            new Text(email),
+            new Padding(padding: new EdgeInsets.only(top: 15.0)),
             new RaisedButton(
               child: const Text('Logout'),
               onPressed: intent.logout,
@@ -78,6 +88,19 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return new Scaffold(
+      appBar: _buildAppBar(),
+      body: new LoadingWidget(),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return new AppBar(
+      title: new Text("Account"),
     );
   }
 

@@ -37,6 +37,7 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     }
 
     if( newState == _currentState ) {
+      debugPrint("Not changing the state, old state == $newState");
       return true;
     }
 

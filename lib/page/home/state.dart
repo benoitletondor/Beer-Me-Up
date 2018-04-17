@@ -1,5 +1,7 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
+import 'package:beer_me_up/common/mvi/state.dart';
+
 class HomeState extends Union5Impl<
     HomeStateAuthenticating,
     HomeStateLoading,
@@ -33,12 +35,25 @@ class HomeState extends Union5Impl<
   factory HomeState.error(String error) => new HomeState._(factory.fifth(new HomeStateError(error)));
 }
 
-class HomeStateAuthenticating {}
-class HomeStateLoading {}
-class HomeStateTabProfile {}
-class HomeStateTabHistory {}
-class HomeStateError {
+class HomeStateAuthenticating extends State {}
+class HomeStateLoading extends State {}
+class HomeStateTabProfile extends State {}
+class HomeStateTabHistory extends State {}
+
+class HomeStateError extends State {
   final String error;
 
   HomeStateError(this.error);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is HomeStateError &&
+        runtimeType == other.runtimeType &&
+        error == other.error;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      error.hashCode;
 }

@@ -12,6 +12,21 @@ class CheckIn {
     @required this.beer,
     @required this.quantity,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CheckIn &&
+              runtimeType == other.runtimeType &&
+              date == other.date &&
+              beer == other.beer &&
+              quantity == other.quantity;
+
+  @override
+  int get hashCode =>
+      date.hashCode ^
+      beer.hashCode ^
+      quantity.hashCode;
 }
 
 class CheckInQuantity {

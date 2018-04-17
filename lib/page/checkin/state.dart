@@ -1,5 +1,7 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
+import 'package:beer_me_up/common/mvi/state.dart';
+
 import 'package:beer_me_up/model/beer.dart';
 
 class CheckInState extends Union4Impl<
@@ -32,21 +34,60 @@ class CheckInState extends Union4Impl<
   factory CheckInState.error(String error) => new CheckInState._(factory.fourth(new CheckInStateError(error)));
 }
 
-class CheckInStateInputEmpty {}
-class CheckInStateSearching {
+class CheckInStateInputEmpty extends State {}
+
+class CheckInStateSearching extends State {
   final List<Beer> previousPredictions;
 
   CheckInStateSearching(this.previousPredictions);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CheckInStateSearching &&
+          runtimeType == other.runtimeType &&
+          previousPredictions == other.previousPredictions;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      previousPredictions.hashCode;
 }
-class CheckInStatePredictionsAvailable {
+
+class CheckInStatePredictionsAvailable extends State {
   final List<Beer> predictions;
 
   CheckInStatePredictionsAvailable(this.predictions);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is CheckInStatePredictionsAvailable &&
+        runtimeType == other.runtimeType &&
+        predictions == other.predictions;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      predictions.hashCode;
 }
-class CheckInStateError {
+
+class CheckInStateError extends State {
   final String error;
 
   CheckInStateError(this.error);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is CheckInStateError &&
+        runtimeType == other.runtimeType &&
+        error == other.error;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      error.hashCode;
 }
 
 class AutoCompleteResponse {

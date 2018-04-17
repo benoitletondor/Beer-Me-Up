@@ -1,5 +1,7 @@
 import 'package:sealed_unions/sealed_unions.dart';
 
+import 'package:beer_me_up/common/mvi/state.dart';
+
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beer.dart';
 
@@ -28,19 +30,59 @@ class CheckInQuantityState extends Union3Impl<
   factory CheckInQuantityState.error(Beer selectedBeer) => new CheckInQuantityState._(factory.third(new CheckInQuantityQuantityNotSelectedError(selectedBeer)));
 }
 
-class CheckInQuantityStateBase {
+class CheckInQuantityStateBase extends State {
   final Beer selectedBeer;
 
   CheckInQuantityStateBase(this.selectedBeer);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is CheckInQuantityStateBase &&
+        runtimeType == other.runtimeType &&
+        selectedBeer == other.selectedBeer;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      selectedBeer.hashCode;
 }
-class CheckInQuantityQuantitySelected {
+
+class CheckInQuantityQuantitySelected extends State {
   final Beer selectedBeer;
   final CheckInQuantity quantity;
 
   CheckInQuantityQuantitySelected(this.selectedBeer, this.quantity);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is CheckInQuantityQuantitySelected &&
+        runtimeType == other.runtimeType &&
+        selectedBeer == other.selectedBeer &&
+        quantity == other.quantity;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      selectedBeer.hashCode ^
+      quantity.hashCode;
 }
-class CheckInQuantityQuantityNotSelectedError {
+
+class CheckInQuantityQuantityNotSelectedError extends State {
   final Beer selectedBeer;
 
   CheckInQuantityQuantityNotSelectedError(this.selectedBeer);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+        other is CheckInQuantityQuantityNotSelectedError &&
+        runtimeType == other.runtimeType &&
+        selectedBeer == other.selectedBeer;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      selectedBeer.hashCode;
 }

@@ -17,8 +17,24 @@ class AccountViewModel extends BaseViewModel<AccountState> {
     onLogoutButtonPressed.listen(_logout);
   }
 
+
   @override
-  AccountState initialState() => new AccountState.account();
+  Stream<AccountState> bind(BuildContext context) {
+    _loadData();
+
+    return super.bind(context);
+  }
+
+  @override
+  AccountState initialState() => new AccountState.loading();
+
+  _loadData() async {
+    setState(new AccountState.loading());
+
+    final user = await _authService.getCurrentUser();
+
+    setState(new AccountState.account(user.email, user.displayName));
+  }
 
   _logout(Null event) async {
     await _authService.signOut();
