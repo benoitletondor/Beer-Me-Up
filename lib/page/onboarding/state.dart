@@ -12,13 +12,4 @@ class OnboardingState extends Union1Impl<OnboardingStateOnboarding> {
   factory OnboardingState.onboarding() => new OnboardingState._(factory.first(new OnboardingStateOnboarding()));
 }
 
-class OnboardingStateOnboarding extends State {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is OnboardingStateOnboarding &&
-              runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => 1;
-}
+class OnboardingStateOnboarding extends State {}
