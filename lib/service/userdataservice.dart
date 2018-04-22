@@ -63,13 +63,24 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       debugPrint("Creating document reference for id ${user.uid}");
 
       final DocumentReference ref = _firestore.collection("users").document(user.uid);
-      await ref.setData({"id" : user.uid});
+      await ref.setData({
+        "id" : user.uid,
+        "mail" : user.email,
+        "created_at": new DateTime.now(),
+      });
 
       doc = await ref.get();
       if( doc == null ) {
         throw new Exception("Unable to create user document");
       }
     }
+
+    await doc.reference.setData(
+      {
+        "last_saw": new DateTime.now(),
+      },
+      SetOptions.merge
+    );
 
     return doc;
   }
