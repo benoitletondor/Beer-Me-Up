@@ -11,18 +11,18 @@ dependencies:
 
   http: 0.11.3+16
 
-  shared_preferences: 0.4.0
+  shared_preferences: 0.4.1
 
   sealed_unions: 2.0.0
   flutter_stream_friends: 0.8.0
 
-  intl: 0.15.4
+  intl: 0.15.6
 
-  google_sign_in: 3.0.0
+  google_sign_in: 3.0.2
   flutter_facebook_login: 1.1.1
-  firebase_auth: 0.5.3
-  cloud_firestore: 0.4.0
-  firebase_analytics: 0.3.0
+  firebase_auth: 0.5.5
+  cloud_firestore: 0.6.3
+  firebase_analytics: 0.3.3
 
 dev_dependencies:
   flutter_test:

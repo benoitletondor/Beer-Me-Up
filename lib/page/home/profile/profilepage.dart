@@ -113,9 +113,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                 ),
               ),
               new ListTile(
-                leading: BeerTile.buildThumbnailImage(profileData.favouriteBeer?.beer),
-                title: new Text(profileData.favouriteBeer?.beer?.name),
-                subtitle: new Text("Drank ${profileData.favouriteBeer.numberOfCheckIns} times, ${profileData.favouriteBeer.drankQuantity.toStringAsFixed(2)}L"),
+                leading: profileData.favouriteBeer != null ? BeerTile.buildThumbnailImage(profileData.favouriteBeer?.beer) : new Container(),
+                title: new Text(profileData.favouriteBeer?.beer?.name ?? ""),
+                subtitle: new Text("Drank ${profileData.favouriteBeer?.numberOfCheckIns ?? 0} times, ${profileData.favouriteBeer?.drankQuantity?.toStringAsFixed(2) ?? 0}L"),
               )
             ],
           ),
@@ -131,7 +131,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              new Text(profileData.favouriteCategory?.name),
+              new Text(profileData.favouriteCategory?.name ?? ""),
             ],
           ),
         ),

@@ -86,7 +86,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     var query = _userDoc
       .reference
-      .getCollection("history")
+      .collection("history")
       .orderBy("date", descending: true)
       .limit(_NUMBER_OF_RESULTS_FOR_HISTORY);
 
@@ -113,7 +113,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final subscription = _userDoc
       .reference
-      .getCollection("history")
+      .collection("history")
       .where("date", isGreaterThan: new DateTime.now())
       .snapshots
       .listen(
@@ -143,7 +143,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final beerDocument = _userDoc
       .reference
-      .getCollection("beers")
+      .collection("beers")
       .document(checkIn.beer.id);
 
     DocumentSnapshot beerDocumentValues;
@@ -172,7 +172,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       );
 
     await beerDocument
-      .getCollection("history")
+      .collection("history")
       .add({
         "date": checkIn.date,
         "quantity": checkIn.quantity.value,
@@ -180,7 +180,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     await _userDoc
         .reference
-        .getCollection("history")
+        .collection("history")
         .add({
           "date": checkIn.date,
           "beer": _createValueForBeer(checkIn.beer),
@@ -379,7 +379,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final beerDocsSnapshot = await _userDoc
       .reference
-      .getCollection("beers")
+      .collection("beers")
       .getDocuments();
 
     return beerDocsSnapshot.documents.map((beerSnapshot) =>
@@ -411,7 +411,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final QuerySnapshot snapshots = await _userDoc
       .reference
-      .getCollection("history")
+      .collection("history")
       .where("date", isGreaterThanOrEqualTo: thisWeekStartDate)
       .orderBy("date", descending: true)
       .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
