@@ -1,12 +1,14 @@
 import 'package:meta/meta.dart';
 import 'dart:math';
 
+import 'package:flutter_stream_friends/flutter_stream_friends.dart';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 
 import 'package:beer_me_up/page/onboarding/first/onboardingfirstpage.dart';
+import 'package:beer_me_up/page/onboarding/first/intent.dart';
 import 'package:beer_me_up/page/onboarding/second/onboardingsecondpage.dart';
 import 'package:beer_me_up/page/onboarding/second/intent.dart';
 
@@ -61,24 +63,31 @@ class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel
         }
 
         return snapshot.data.join(
-          (onboarding) => _buildOnboardingScreen(),
+          (onboarding) => _buildOnboardingScreen(context),
           () => new Container(),
         );
       },
     );
   }
 
-  Widget _buildOnboardingScreen() {
+  Widget _buildOnboardingScreen(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Welcome"),
-      ),
+      backgroundColor: Theme.of(context).primaryColor,
       body: new Stack(
         children: <Widget>[
           new PageView(
             controller: _controller,
             children: <Widget>[
-              new OnboardingFirstPage(),
+              new OnboardingFirstPage(
+                intent: new OnboardingFirstPageIntent(
+                  nextIntent: () {
+                    _controller.nextPage(
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.decelerate,
+                    );
+                  },
+                ),
+              ),
               new OnboardingSecondPage(
                 intent: new OnboardingSecondPageIntent(
                   finishIntent: intent.finish,
@@ -92,7 +101,7 @@ class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel
             right: 0.0,
             child: new Center(
               child: new _DotsIndicator(
-                color: Colors.black,
+                color: Colors.white,
                 controller: _controller,
                 itemCount: 2,
                 onPageSelected: (int page) {

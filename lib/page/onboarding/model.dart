@@ -9,7 +9,7 @@ class OnboardingViewModel extends BaseViewModel<OnboardingState> {
 
   OnboardingViewModel(
       this._authService,
-      Stream<Null> onFinishButtonPressed) {
+      Stream<Null> onFinishButtonPressed,) {
 
     onFinishButtonPressed.listen(_finish);
   }

@@ -19,7 +19,8 @@ class BeerMeUpApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Beer Me Up',
       theme: new ThemeData(
-        primarySwatch: Colors.red,
+        primaryColor: Colors.blueAccent[400],
+        accentColor: Colors.amber[500],
       ),
       home: new HomePage(),
       routes: <String, WidgetBuilder> {
