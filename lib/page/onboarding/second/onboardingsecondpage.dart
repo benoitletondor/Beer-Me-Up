@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
+import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -56,16 +57,126 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
   }
 
   Widget _buildOnboardingScreen() {
-    return new Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Text("Onboarding second page"),
-        new Padding(padding: new EdgeInsets.only(top: 15.0)),
-        new RaisedButton(
-          onPressed: intent.finish,
-          child: new Text("Start"),
+    return new SafeArea(
+      child: new Container(
+        padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 50.0),
+        child: new Column(
+          children: <Widget>[
+            new ConstrainedBox(
+              constraints: new BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+              child: new Image.asset("images/large_logo.png"),
+            ),
+            new Padding(padding: EdgeInsets.only(top: 16.0)),
+            new Expanded(
+              child: new SingleChildScrollView(
+                child: new Column(
+                  children: <Widget>[
+                    new Text(
+                      "How does it work?",
+                      style: new TextStyle(
+                        fontFamily: 'Google Sans',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 25.0)),
+                    new RichText(
+                      text: new TextSpan(
+                        text: "1. ",
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: "Create an account",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          new TextSpan(
+                            text: ", to save and retreive your beer check-ins at any time",
+                          )
+                        ],
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 10.0)),
+                    new RichText(
+                      text: new TextSpan(
+                        text: "2. Every time you drink a beer, just ",
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: "check-in it",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          new TextSpan(
+                            text: " into the app",
+                          )
+                        ],
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 10.0)),
+                    new RichText(
+                      text: new TextSpan(
+                        text: "3. Get a full ",
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: "history",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          new TextSpan(
+                            text: ", with ",
+                          ),
+                          new TextSpan(
+                            text: "stats",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          new TextSpan(
+                            text: ", about your all the beers you drank",
+                          )
+                        ],
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(top: 25.0)),
+                    new Text(
+                      "And that's it! That easy!",
+                      style: new TextStyle(
+                        fontFamily: 'Google Sans',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            new Padding(padding: EdgeInsets.only(top: 16.0)),
+            new Center(
+              child: new MaterialRaisedButton.accent(
+                context,
+                intent.finish,
+                "Let's go"
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

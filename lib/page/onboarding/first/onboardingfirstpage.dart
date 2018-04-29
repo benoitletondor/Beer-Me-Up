@@ -63,8 +63,9 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Image.asset(
-              "images/round_logo.png",
+            new ConstrainedBox(
+              constraints: new BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2),
+              child: new Image.asset("images/round_logo.png"),
             ),
             new Container(
               child: new Row(

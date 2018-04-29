@@ -44,6 +44,7 @@ flutter:
   assets:
     - images/round_logo.png
     - images/thinking_face.png
+    - images/large_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
