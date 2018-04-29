@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
+import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -87,85 +88,147 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
     return new Scaffold(
       appBar: _buildAppBar(context),
       body: new SafeArea(
-        minimum: const EdgeInsets.all(16.0),
         child: new SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              new Text(
-                "Create your account",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-              new Offstage(
-                offstage: error == null,
-                child: new Column(
-                  children: <Widget>[
-                    new Padding(padding: EdgeInsets.only(top: 15.0)),
-                    new Text(
-                      error ?? "",
-                      style: new TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                    new Padding(padding: EdgeInsets.only(top: 15.0)),
-                  ],
-                ),
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  icon: const Icon(Icons.email),
-                  hintText: "Email",
-                ),
-                keyboardType: TextInputType.emailAddress,
-                controller: signUpEmailController,
-                onChanged: (val) { intent.signUpEmailInputChanged(); },
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  icon: const Icon(Icons.vpn_key),
-                  hintText: "Password",
-                ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                controller: signUpPassController,
-                onChanged: (val) { intent.signUpPasswordInputChanged(); },
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new RaisedButton(
-                onPressed: () => intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)),
-                child: new Text("Sign-up"),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new Text(
-                "Or",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 20.0)),
-              new RaisedButton(
-                onPressed: intent.signUpWithGoogle,
-                child: new Text("Sign-in with Google"),
-              ),
-              new Padding(padding: const EdgeInsets.only(top: 10.0)),
-              new RaisedButton(
-                onPressed: intent.signUpWithFacebook,
-                child: new Text("Sign-in with Facebook"),
-              ),
-              new Divider(height: 50.0),
-              new FlatButton(
-                onPressed: intent.showSignIn,
-                child: new Text(
-                  "ALREADY HAVE AN ACCOUNT ? SIGN-IN",
+          child: new Container(
+            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "Create your account",
                   style: new TextStyle(
-                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18.0,
+                    fontFamily: "Google Sans",
+                    color: Colors.blueGrey[900],
                   ),
                 ),
-              ),
-            ],
+                new Offstage(
+                  offstage: error == null,
+                  child: new Column(
+                    children: <Widget>[
+                      new Padding(padding: EdgeInsets.only(top: 16.0)),
+                      new Text(
+                        error ?? "",
+                        style: new TextStyle(
+                          color: Colors.red[600],
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                new Padding(padding: EdgeInsets.only(top: 16.0)),
+                new TextField(
+                  decoration: new InputDecoration(
+                    hintText: "Email",
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  controller: signUpEmailController,
+                  onChanged: (val) { intent.signUpEmailInputChanged(); },
+                ),
+                new Padding(padding: EdgeInsets.only(top: 16.0)),
+                new TextField(
+                  decoration: new InputDecoration(
+                    hintText: "Password",
+                  ),
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  controller: signUpPassController,
+                  onChanged: (val) { intent.signUpPasswordInputChanged(); },
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)),
+                    "Sign-up"),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new Container(
+                        height: 2.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black38,
+                        ),
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 16.0)),
+                    new Text(
+                      "OR",
+                      style: new TextStyle(
+                        fontSize: 18.0,
+                        fontFamily: "Google Sans",
+                        color: Colors.black38,
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 16.0)),
+                    new Expanded(
+                      child: new Container(
+                        height: 2.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black38,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signUpWithGoogle,
+                    "Sign-in with Google"),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 16.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signUpWithFacebook,
+                    "Sign-in with Facebook"
+                  ),
+                ),
+                new Padding(padding: EdgeInsets.only(top: 30.0)),
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Icon(
+                      Icons.lock,
+                      color: Colors.blueGrey[900],
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 10.0)),
+                    new Expanded(
+                      child: new Text(
+                        "Like privacy? We feel you. We don’t use or sell your data. It’s your personal beer logging, not ours ;)",
+                        style: new TextStyle(
+                          color: Colors.blueGrey[900],
+                          fontSize: 14.0,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                new Padding(padding: EdgeInsets.only(top: 20.0)),
+                new Center(
+                  child: new FlatButton(
+                    onPressed: intent.showSignIn,
+                    child: new Text(
+                      "Already have an account? Sign-in",
+                      style: new TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        fontFamily: "Google Sans",
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -175,46 +238,50 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   Widget _buildLoginScreen(BuildContext context, {String error}) {
     return new Scaffold(
       appBar: _buildAppBar(context),
-      body: new Builder(builder: (context) =>
-        new SafeArea(
-          minimum: const EdgeInsets.all(16.0),
-          child: new SingleChildScrollView(
+      body: new SafeArea(
+        child: new SingleChildScrollView(
+          child: new Container(
+            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
             child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text(
                   "Sign-in with your account",
                   style: new TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     fontSize: 18.0,
+                    fontFamily: "Google Sans",
+                    color: Colors.blueGrey[900],
                   ),
                 ),
                 new Offstage(
                   offstage: error == null,
                   child: new Column(
                     children: <Widget>[
-                      new Padding(padding: EdgeInsets.only(top: 15.0)),
+                      new Padding(padding: EdgeInsets.only(top: 16.0)),
                       new Text(
                         error ?? "",
                         style: new TextStyle(
-                          color: Colors.red,
+                          color: Colors.red[600],
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      new Padding(padding: EdgeInsets.only(top: 15.0)),
                     ],
                   ),
                 ),
+                new Padding(padding: EdgeInsets.only(top: 16.0)),
                 new TextField(
                   decoration: new InputDecoration(
-                    icon: const Icon(Icons.email),
                     hintText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: signInEmailController,
                   onChanged: (val) { intent.signInEmailInputChanged(); },
                 ),
+                new Padding(padding: EdgeInsets.only(top: 16.0)),
                 new TextField(
                   decoration: new InputDecoration(
-                    icon: const Icon(Icons.vpn_key),
                     hintText: "Password",
                   ),
                   keyboardType: TextInputType.text,
@@ -222,44 +289,76 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   controller: signInPassController,
                   onChanged: (val) { intent.signInPasswordInputChanged(); },
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 20.0)),
-                new RaisedButton(
-                  onPressed: () => intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)),
-                  child: new Text("Sign-in"),
-                ),
-                new Padding(padding: const EdgeInsets.only(top: 10.0)),
-                new FlatButton(
-                  onPressed: () { intent.forgotPassword(context); },
-                  child: new Text("FORGOT PASSWORD?"),
-                ),
-                new Padding(padding: const EdgeInsets.only(top: 20.0)),
-                new Text(
-                  "Or",
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)),
+                    "Sign-in"
                   ),
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 20.0)),
-                new RaisedButton(
-                  onPressed: intent.signInWithGoogle,
-                  child: new Text("Sign-in with Google"),
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new Container(
+                        height: 2.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black38,
+                        ),
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 16.0)),
+                    new Text(
+                      "OR",
+                      style: new TextStyle(
+                        fontSize: 18.0,
+                        fontFamily: "Google Sans",
+                        color: Colors.black38,
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 16.0)),
+                    new Expanded(
+                      child: new Container(
+                        height: 2.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black38,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 10.0)),
-                new RaisedButton(
-                  onPressed: intent.signInWithFacebook,
-                  child: new Text("Sign-in with Facebook"),
+                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signInWithGoogle,
+                    "Sign-in with Google"
+                  ),
                 ),
-                new Divider(height: 50.0),
-                new FlatButton(
-                  onPressed: intent.showSignUp,
-                  child: new Text(
-                    "DON'T HAVE AN ACCOUNT ? SIGN-UP",
-                    style: new TextStyle(
-                      color: Colors.red,
+                new Padding(padding: const EdgeInsets.only(top: 16.0)),
+                new Center(
+                  child: new MaterialRaisedButton.primary(
+                    context,
+                    () => intent.signInWithFacebook,
+                    "Sign-in with Facebook"
+                  ),
+                ),
+                new Padding(padding: EdgeInsets.only(top: 30.0)),
+                new Center(
+                  child: new FlatButton(
+                    onPressed: intent.showSignUp,
+                    child: new Text(
+                      "Don't have an account yet? Sign-up",
+                      style: new TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        fontFamily: "Google Sans",
+                      ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -277,7 +376,12 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
 
   AppBar _buildAppBar(BuildContext context) {
     return new AppBar(
-      title: new Text('Beer Me Up - Sign in'),
+      title: new Text(
+        'Beer Me Up',
+        style: new TextStyle(
+          fontFamily: "Google Sans",
+        ),
+      ),
     );
   }
 }
