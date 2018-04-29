@@ -169,9 +169,9 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
             new Padding(padding: EdgeInsets.only(top: 16.0)),
             new Center(
               child: new MaterialRaisedButton.accent(
-                context,
-                intent.finish,
-                "Let's go"
+                context: context,
+                onPressed: intent.finish,
+                text: "Let's go"
               ),
             ),
           ],

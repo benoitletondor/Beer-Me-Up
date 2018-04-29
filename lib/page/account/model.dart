@@ -38,6 +38,7 @@ class AccountViewModel extends BaseViewModel<AccountState> {
 
   _logout(Null event) async {
     await _authService.signOut();
+    await _authService.resetUserSawOnboarding(); // FIXME remove that later
     popUntil(ModalRoute.withName('/'));
     pushReplacement(
       new MaterialPageRoute(

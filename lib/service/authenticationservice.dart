@@ -24,6 +24,7 @@ abstract class AuthenticationService {
 
   Future<bool> hasUserSeenOnboarding();
   Future<void> setUserSawOnboarding();
+  Future<void> resetUserSawOnboarding();
 }
 
 const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
@@ -185,6 +186,12 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   Future<void> setUserSawOnboarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(_USER_SAW_ONBOARDING_KEY, true);
+  }
+
+  @override
+  Future<void> resetUserSawOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(_USER_SAW_ONBOARDING_KEY);
   }
 
   @override

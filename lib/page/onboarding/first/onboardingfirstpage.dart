@@ -105,9 +105,9 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
             ),
             new Center(
               child: new MaterialRaisedButton.accent(
-                context,
-                intent.next,
-                "Yeah! Totally!"
+                context: context,
+                onPressed: intent.next,
+                text: "Yeah! Totally!"
               ),
             ),
           ],

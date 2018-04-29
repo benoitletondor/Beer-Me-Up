@@ -6,6 +6,7 @@ import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
+import 'package:beer_me_up/common/widget/materialflatbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -141,9 +142,10 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)),
-                    "Sign-up"),
+                    context: context,
+                    onPressed: () { intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)); },
+                    text: "Sign-up"
+                  ),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
                 new Row(
@@ -179,16 +181,16 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signUpWithGoogle,
-                    "Sign-in with Google"),
+                    context: context,
+                    onPressed: intent.signUpWithGoogle,
+                    text: "Sign-in with Google"),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 16.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signUpWithFacebook,
-                    "Sign-in with Facebook"
+                    context: context,
+                    onPressed: intent.signUpWithFacebook,
+                    text: "Sign-in with Facebook"
                   ),
                 ),
                 new Padding(padding: EdgeInsets.only(top: 30.0)),
@@ -214,17 +216,10 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 ),
                 new Padding(padding: EdgeInsets.only(top: 20.0)),
                 new Center(
-                  child: new FlatButton(
+                  child: new MaterialFlatButton.primary(
+                    context: context,
                     onPressed: intent.showSignIn,
-                    child: new Text(
-                      "Already have an account? Sign-in",
-                      style: new TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                        fontFamily: "Google Sans",
-                      ),
-                    ),
+                    text: "Already have an account? Sign-in",
                   ),
                 )
               ],
@@ -292,9 +287,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)),
-                    "Sign-in"
+                    context: context,
+                    onPressed: () { intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)); },
+                    text: "Sign-in"
                   ),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
@@ -331,32 +326,25 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 new Padding(padding: const EdgeInsets.only(top: 25.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signInWithGoogle,
-                    "Sign-in with Google"
+                    context: context,
+                    onPressed: intent.signInWithGoogle,
+                    text: "Sign-in with Google"
                   ),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 16.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
-                    context,
-                    () => intent.signInWithFacebook,
-                    "Sign-in with Facebook"
+                    context: context,
+                    onPressed: intent.signInWithFacebook,
+                    text: "Sign-in with Facebook"
                   ),
                 ),
                 new Padding(padding: EdgeInsets.only(top: 30.0)),
                 new Center(
-                  child: new FlatButton(
+                  child: new MaterialFlatButton.primary(
+                    context: context,
                     onPressed: intent.showSignUp,
-                    child: new Text(
-                      "Don't have an account yet? Sign-up",
-                      style: new TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                        fontFamily: "Google Sans",
-                      ),
-                    ),
+                    text: "Don't have an account yet? Sign-up",
                   ),
                 )
               ],
