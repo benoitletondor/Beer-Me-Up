@@ -80,41 +80,98 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   Widget _buildLoadWidget(ProfileData profileData) {
     return new ListView(
-      padding: EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0, bottom: 20.0),
       children: <Widget>[
-        new Text(
-          "THIS WEEK",
-          style: new TextStyle(
-            fontWeight: FontWeight.bold,
+        new Container(
+          child: new Center(
+            child: new Text(
+              "ÒööTHISöWEEKöööÑ",
+              style: new TextStyle(
+                fontFamily: "York White Letter",
+                color: Colors.white,
+                fontSize: 35.0,
+              ),
+              maxLines: 1,
+            ),
           ),
+          decoration: new BoxDecoration(color: Theme.of(context).accentColor),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 2.0),
         ),
         new Padding(padding: EdgeInsets.only(top: 20.0)),
-        new Text("Drank ${profileData.weekDrankQuantity.toStringAsFixed(2)}L"),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text(
+              "You drank: ",
+              style: new TextStyle(
+                fontFamily: "Google Sans",
+                fontSize: 18.0,
+                color: Colors.blueGrey[900],
+              ),
+            ),
+            new Text(
+              "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
+              style: new TextStyle(
+                fontFamily: "Google Sans",
+                fontSize: 18.0,
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        new Padding(padding: EdgeInsets.only(top: 20.0)),
+        new Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: new Text(
+            "Top 5",
+            style: new TextStyle(
+              fontFamily: "Google Sans",
+              fontSize: 18.0,
+              color: Colors.blueGrey[900],
+            ),
+          ),
+        ),
         new Padding(padding: EdgeInsets.only(top: 5.0)),
         new Column(
           children: _buildWeekBeers(profileData.weekBeers),
         ),
         new Padding(padding: EdgeInsets.only(top: 30.0)),
-        new Text(
-          "ALL TIME",
-          style: new TextStyle(
-            fontWeight: FontWeight.bold,
+        new Container(
+          child: new Center(
+            child: new Text(
+              "ÒööALLöTIMEöööÑ",
+              style: new TextStyle(
+                fontFamily: "York White Letter",
+                color: Colors.white,
+                fontSize: 35.0,
+              ),
+              maxLines: 1,
+            ),
           ),
+          decoration: new BoxDecoration(color: Theme.of(context).accentColor),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 2.0),
         ),
         new Padding(padding: EdgeInsets.only(top: 20.0)),
         new Offstage(
           offstage: profileData.favouriteBeer == null,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Text(
-                "Favourite beer",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
+              new Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Text(
+                  "Your favourite beer",
+                  style: new TextStyle(
+                    fontFamily: "Google Sans",
+                    fontSize: 18.0,
+                    color: Colors.blueGrey[900],
+                  ),
                 ),
               ),
               new BeerTile(
                 beer: profileData.favouriteBeer?.beer,
                 title: profileData.favouriteBeer?.beer?.name,
+                subtitle: "Drank ${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
               )
             ],
           ),
@@ -122,15 +179,31 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         new Offstage(
           offstage: profileData.favouriteCategory == null,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Padding(padding: EdgeInsets.only(top: 20.0)),
-              new Text(
-                "Favourite category",
-                style: new TextStyle(
-                  fontWeight: FontWeight.bold,
+              new Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Text(
+                  "Your favourite category",
+                  style: new TextStyle(
+                    fontFamily: "Google Sans",
+                    fontSize: 18.0,
+                    color: Colors.blueGrey[900],
+                  ),
                 ),
               ),
-              new Text(profileData.favouriteCategory?.name ?? ""),
+              new Padding(padding: EdgeInsets.only(top: 10.0)),
+              new Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Text(
+                  profileData.favouriteCategory?.name ?? "",
+                  style: new TextStyle(
+                    color: Colors.blueGrey[900],
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
