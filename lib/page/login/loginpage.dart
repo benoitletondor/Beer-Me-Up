@@ -364,12 +364,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
 
   AppBar _buildAppBar(BuildContext context) {
     return new AppBar(
-      title: new Text(
-        'Beer Me Up',
-        style: new TextStyle(
-          fontFamily: "Google Sans",
-        ),
-      ),
+      title: new Image.asset("images/toolbar_icon.png"),
+      centerTitle: true,
     );
   }
 }

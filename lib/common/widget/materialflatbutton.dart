@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter/services.dart';
+
+import 'package:beer_me_up/common/hapticfeedback.dart';
 
 class MaterialFlatButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -38,7 +39,7 @@ class MaterialFlatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(
-      onTapDown: (details) { HapticFeedback.lightImpact(); },
+      onTapDown: (details) { performSelectionHaptic(context); },
       child: new FlatButton(
         onPressed: onPressed,
         textColor: textColor,

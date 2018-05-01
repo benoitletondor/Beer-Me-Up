@@ -100,7 +100,13 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
 
   Widget _buildAppBar() {
     return new AppBar(
-      title: new Text("Account"),
+      title: new Text(
+        "Account",
+        style: new TextStyle(
+          fontFamily: "Google Sans",
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 

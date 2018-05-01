@@ -169,7 +169,8 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
     }
 
     return new AppBar(
-      title: new Text('Beer Me Up'),
+      title: new Image.asset("images/toolbar_icon.png"),
+      centerTitle: true,
       actions: actions,
     );
   }
