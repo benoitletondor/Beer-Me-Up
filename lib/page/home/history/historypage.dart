@@ -8,6 +8,7 @@ import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
+import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -44,6 +45,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, HistoryIntent, HistoryState> {
   static final _listSectionDateFormatter = new DateFormat.yMMMMd();
+  static final _listRowCheckInDateFormatter = new DateFormat().add_Hm();
 
   _HistoryPageState({
     @required HistoryIntent intent,
@@ -69,7 +71,10 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   }
 
   Widget _buildLoadingWidget() {
-    return new LoadingWidget();
+    return new Container(
+      padding: EdgeInsets.only(top: 10.0, bottom: 25.0),
+      child: new LoadingWidget(),
+    );
   }
 
   Widget _buildErrorWidget({@required String error}) {
@@ -82,16 +87,16 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   Widget _buildLoadWidget({@required List<HistoryListItem> items}) {
     return new ListView.builder(
       itemCount: items.length,
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       itemBuilder: (BuildContext context, int index) {
         final item = items[index];
 
         if( item is HistoryListSection ) {
-          return _buildListSectionWidget(item.date);
+          return _buildListSectionWidget(item.date, index);
         } else if( item is HistoryListRow ) {
           return _buildListRow(item.checkIn);
         } else if( item is HistoryListLoadMore ) {
-          return _buildListLoadMore();
+          return _buildListLoadMore(context);
         } else if( item is HistoryListLoading ) {
           return _buildListLoadingMore();
         }
@@ -101,23 +106,38 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
     );
   }
 
-  Widget _buildListSectionWidget(DateTime date) {
-    return new Text(
-      _listSectionDateFormatter.format(date)
+  Widget _buildListSectionWidget(DateTime date, int index) {
+    return new Container(
+      padding: new EdgeInsets.only(top: index == 0 ? 0.0 : 30.0, left: 16.0, right: 16.0),
+      child: new Text(
+        _listSectionDateFormatter.format(date),
+        style: new TextStyle(
+          fontFamily: "Google Sans",
+          color: Colors.blueGrey[900],
+          fontSize: 18.0,
+        ),
+      ),
     );
   }
 
   Widget _buildListRow(CheckIn checkIn) {
     return new BeerTile(
       beer: checkIn.beer,
-      associatedCheckin: checkIn,
+      title: checkIn.beer.name,
+      subtitle: "${_listRowCheckInDateFormatter.format(checkIn.date)} - ${checkIn.quantity.toString()}",
     );
   }
 
-  Widget _buildListLoadMore() {
-    return new RaisedButton(
-      onPressed: intent.loadMore,
-      child: new Text("Load more"),
+  Widget _buildListLoadMore(BuildContext context) {
+    return new Container(
+      padding: EdgeInsets.only(top: 10.0, bottom: 25.0),
+      child: new Center(
+        child: new MaterialRaisedButton.primary(
+          context: context,
+          text: "Load more",
+          onPressed: intent.loadMore,
+        ),
+      ),
     );
   }
 

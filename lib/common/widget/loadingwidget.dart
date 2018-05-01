@@ -8,7 +8,9 @@ class LoadingWidget extends StatelessWidget {
     return new Center(
       child: new Container(
         padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-        child: new LinearProgressIndicator(),
+        child: new LinearProgressIndicator(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }

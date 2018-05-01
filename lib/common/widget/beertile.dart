@@ -1,60 +1,116 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:beer_me_up/model/beer.dart';
-import 'package:beer_me_up/model/checkin.dart';
 
 class BeerTile extends StatelessWidget {
-  static final _dateFormatter = new DateFormat.Hm();
-
   final Beer beer;
-  final CheckIn associatedCheckin;
+  final String title;
+  final String subtitle;
+  final String thirdTitle;
   final GestureTapCallback onTap;
 
   BeerTile({
     @required this.beer,
+    @required this.title,
+    this.subtitle,
+    this.thirdTitle,
     this.onTap,
-    this.associatedCheckin,
   });
 
   @override
   Widget build(BuildContext context) {
-    String subtitle;
-    if( associatedCheckin != null ) {
-      String quantity;
-      switch(associatedCheckin.quantity) {
-        case CheckInQuantity.PINT:
-          quantity = "Pint";
-          break;
-        case CheckInQuantity.HALF_PINT:
-          quantity = "Half pint";
-          break;
-        case CheckInQuantity.BOTTLE:
-          quantity = "Bottle";
-          break;
-      }
-
-      subtitle = "$quantity - ${_dateFormatter.format(associatedCheckin.date)}";
-    } else if( beer.style?.shortName != null ) {
-      subtitle = beer.style.shortName;
-    } else if( beer.style?.name != null ) {
-      subtitle = beer.style.name;
+    if( beer == null || title == null ) {
+      return new Container();
     }
 
-    return new ListTile(
-      leading: buildThumbnailImage(beer),
-      title: new Text(beer.name),
-      subtitle: subtitle != null ? new Text(subtitle) : null,
-      onTap: onTap,
+    final List<Widget> children = new List();
+    children.add(new Text(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: new TextStyle(
+        color: Colors.blueGrey[900],
+        fontWeight: FontWeight.w500,
+        fontSize: 16.0,
+      ),
+    ));
+
+    if( subtitle != null ) {
+      children.add(new Text(
+        subtitle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: new TextStyle(
+          color: Colors.blueGrey[900],
+          fontSize: 15.0,
+        ),
+      ));
+    }
+
+    if( thirdTitle != null ) {
+      children.add(new Padding(padding: EdgeInsets.only(top: 5.0)));
+      children.add(new Text(
+        thirdTitle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: new TextStyle(
+          color: Colors.blueGrey[500],
+          fontSize: 14.0,
+        ),
+      ));
+    }
+
+    return new InkWell(
+      onTap: onTap != null ? onTap : null,
+      child: new Semantics(
+        enabled: onTap != null,
+        child: new Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+          child: new Row(
+            children: <Widget>[
+              _buildThumbnailImage(beer),
+              new Padding(padding: EdgeInsets.only(right: 16.0)),
+              new Expanded(
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: children,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  static Widget buildThumbnailImage(Beer beer) {
-    if( beer.label?.iconUrl == null ) {
-      return new Icon(const IconData(0xe900, fontFamily: "beers"));
+  Widget _buildThumbnailImage(Beer beer) {
+    Widget image;
+    if (beer.label?.iconUrl == null) {
+      image = new Icon(const IconData(0xe900, fontFamily: "beers"));
+    } else {
+      image = new Image.network(
+        beer.label.iconUrl,
+      );
     }
 
-    return new Image.network(beer.label.iconUrl);
+    return new Stack(
+      children: <Widget>[
+        new Image.asset(
+          "images/beer_icon_background.png",
+          width: 55.0,
+        ),
+        new Container(
+          padding: new EdgeInsets.only(left: 16.0, top: 7.0),
+          child: new ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 25.0, maxHeight: 35.0),
+            child: new Center(
+              child: image,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

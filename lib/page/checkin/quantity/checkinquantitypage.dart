@@ -83,7 +83,7 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
         child: new Column(
           children: <Widget>[
             new Padding(padding: EdgeInsets.only(top: 20.0)),
-            new BeerTile(beer: selectedBeer),
+            new BeerTile(beer: selectedBeer, title: selectedBeer.name),
             new Padding(padding: EdgeInsets.only(top: 20.0)),
             new Center(
               child: new Row(

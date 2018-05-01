@@ -39,4 +39,17 @@ class CheckInQuantity {
   final double value;
 
   const CheckInQuantity._(this.value);
+
+  String toString() {
+    switch(this) {
+      case PINT:
+        return "Pint";
+      case HALF_PINT:
+        return "Half-pint";
+      case BOTTLE:
+        return "Bottle";
+    }
+
+    return null;
+  }
 }

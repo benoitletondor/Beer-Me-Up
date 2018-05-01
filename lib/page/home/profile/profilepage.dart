@@ -112,10 +112,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              new ListTile(
-                leading: profileData.favouriteBeer != null ? BeerTile.buildThumbnailImage(profileData.favouriteBeer?.beer) : new Container(),
-                title: new Text(profileData.favouriteBeer?.beer?.name ?? ""),
-                subtitle: new Text("Drank ${profileData.favouriteBeer?.numberOfCheckIns ?? 0} times, ${profileData.favouriteBeer?.drankQuantity?.toStringAsFixed(2) ?? 0}L"),
+              new BeerTile(
+                beer: profileData.favouriteBeer?.beer,
+                title: profileData.favouriteBeer?.beer?.name,
               )
             ],
           ),
@@ -146,17 +145,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   }
 
   Widget _buildWeekBeer(BeerCheckInsData beerCheckIn) {
-    return new ListTile(
-      leading: BeerTile.buildThumbnailImage(beerCheckIn.beer),
-      title: new Text(beerCheckIn.beer.name),
-      subtitle: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text("Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L."),
-          new Text("Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}"),
-        ],
-      ),
+    return new BeerTile(
+      beer: beerCheckIn.beer,
+      title: beerCheckIn.beer.name,
+      subtitle: "Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L.",
+      thirdTitle: "Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
     );
   }
 }

@@ -103,29 +103,49 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: intent.beerCheckIn,
-        tooltip: 'Check-in',
-        child: new Icon(const IconData(0xe901, fontFamily: "beers")),
+        tooltip: "Check-in",
+        child: new Icon(
+          const IconData(0xe901, fontFamily: "beers"),
+          color: Theme.of(context).primaryColor
+        ),
+        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: new _CenterBottomNavBarFloatFabLocation(),
-      bottomNavigationBar: new BottomNavigationBar(
-        currentIndex: index,
-        onTap: (int index) {
-          if( index == _TAB_PROFILE_INDEX ) {
-            return intent.showProfile();
-          } else {
-            return intent.showHistory();
-          }
-        },
-        items: <BottomNavigationBarItem>[
-          new BottomNavigationBarItem(
-            icon: new Icon(Icons.person),
-            title: new Text("Profile"),
-          ),
-          new BottomNavigationBarItem(
-            icon: new Icon(Icons.history),
-            title: new Text("History"),
-          ),
-        ],
+      bottomNavigationBar: new Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Theme.of(context).primaryColor,
+        ),
+        child: new BottomNavigationBar(
+          currentIndex: index,
+          fixedColor: Colors.white,
+          onTap: (int index) {
+            if( index == _TAB_PROFILE_INDEX ) {
+              return intent.showProfile();
+            } else {
+              return intent.showHistory();
+            }
+          },
+          items: <BottomNavigationBarItem>[
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.person),
+              title: new Text(
+                "Profile",
+                style: new TextStyle(
+                  fontFamily: "Google Sans",
+                ),
+              ),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.history),
+              title: new Text(
+                "History",
+                style: new TextStyle(
+                  fontFamily: "Google Sans",
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +182,12 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
         itemBuilder: (BuildContext context) {
           return [new PopupMenuItem<String>(
             value: "account",
-            child: new Text("Account"),
+            child: new Text(
+              "Account",
+              style: new TextStyle(
+                fontFamily: "Google Sans",
+              ),
+            ),
           )];
         })
       );

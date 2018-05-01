@@ -177,6 +177,7 @@ class _BeersListView extends StatelessWidget {
 
         return new BeerTile(
           beer: beer,
+          title: beer.name,
           onTap: () { onTap(beer); }
         );
       },
