@@ -142,9 +142,7 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      alignment: Alignment.topLeft,
-      margin: new EdgeInsets.only(top: 4.0),
+    return new Center(
       child: new TextField(
         autofocus: true,
         style: new TextStyle(color: Colors.white70, fontSize: 16.0),
@@ -178,6 +176,7 @@ class _BeersListView extends StatelessWidget {
         return new BeerTile(
           beer: beer,
           title: beer.name,
+          subtitle: beer.style?.shortName,
           onTap: () { onTap(beer); }
         );
       },

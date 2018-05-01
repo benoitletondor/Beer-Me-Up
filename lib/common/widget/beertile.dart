@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/common/hapticfeedback.dart';
 
 class BeerTile extends StatelessWidget {
   final Beer beer;
@@ -62,7 +63,10 @@ class BeerTile extends StatelessWidget {
     }
 
     return new InkWell(
-      onTap: onTap != null ? onTap : null,
+      onTap: onTap != null ? () {
+        performSelectionHaptic(context);
+        onTap();
+      } : null,
       child: new Semantics(
         enabled: onTap != null,
         child: new Container(
