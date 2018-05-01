@@ -9,6 +9,7 @@ import 'package:beer_me_up/page/home/profile/profilepage.dart';
 import 'package:beer_me_up/page/home/history/historypage.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
+import 'package:beer_me_up/common/hapticfeedback.dart';
 
 import 'state.dart';
 import 'model.dart';
@@ -102,7 +103,10 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: intent.beerCheckIn,
+        onPressed: () {
+          performSelectionHaptic(context);
+          intent.beerCheckIn();
+        },
         tooltip: "Check-in",
         child: new Icon(
           const IconData(0xe901, fontFamily: "beers"),
@@ -119,6 +123,8 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           currentIndex: index,
           fixedColor: Colors.white,
           onTap: (int index) {
+            performSelectionHaptic(context);
+
             if( index == _TAB_PROFILE_INDEX ) {
               return intent.showProfile();
             } else {
@@ -173,6 +179,8 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
       actions.add(new PopupMenuButton<String>( // overflow menu
         icon: new Icon(Icons.more_vert),
         onSelected: (menu) {
+          performSelectionHaptic(context);
+
           switch (menu) {
             case "account" :
               intent.showAccountPage();
