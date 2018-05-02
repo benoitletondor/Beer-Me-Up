@@ -53,6 +53,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, HomeState> {
 
   static const _TAB_PROFILE_INDEX = 0;
+  static const _TAB_FAKE_INDEX = 1;
   static const _TAB_HISTORY_INDEX = 2;
 
   _HomePageState({
@@ -128,9 +129,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
             performSelectionHaptic(context);
 
             if( index == _TAB_PROFILE_INDEX ) {
-              return intent.showProfile();
+              intent.showProfile();
+            } if( index == _TAB_FAKE_INDEX ) {
+              intent.beerCheckIn();
             } else {
-              return intent.showHistory();
+              intent.showHistory();
             }
           },
           items: <BottomNavigationBarItem>[

@@ -145,11 +145,12 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
     return new Center(
       child: new TextField(
         autofocus: true,
-        style: new TextStyle(color: Colors.white70, fontSize: 16.0),
+        maxLines: 1,
+        style: new TextStyle(color: Colors.white, fontSize: 16.0),
         decoration: new InputDecoration(
           hintText: "Type a beer name",
-          hintStyle: new TextStyle(color: Colors.white30, fontSize: 16.0),
-          border: null
+          hintStyle: new TextStyle(color: const Color(0x99FFFFFF), fontSize: 16.0),
+          border: InputBorder.none,
         ),
         onChanged: (input) => onInputChanged(input),
       ),
