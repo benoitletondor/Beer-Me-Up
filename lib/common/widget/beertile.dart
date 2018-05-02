@@ -101,18 +101,18 @@ class BeerTile extends StatelessWidget {
 
     return new Stack(
       children: <Widget>[
-        new Image.asset(
-          "images/beer_icon_background.png",
-          width: 55.0,
-        ),
         new Container(
-          padding: new EdgeInsets.only(left: 16.0, top: 7.0),
+          padding: new EdgeInsets.only(left: 12.0, top: 7.0),
           child: new ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 25.0, maxHeight: 35.0),
+            constraints: const BoxConstraints(maxWidth: 33.0, maxHeight: 35.0),
             child: new Center(
               child: image,
             ),
           ),
+        ),
+        new Image.asset(
+          "images/beer_icon_background.png",
+          width: 55.0,
         ),
       ],
     );
