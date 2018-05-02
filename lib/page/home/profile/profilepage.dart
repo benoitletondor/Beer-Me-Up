@@ -80,7 +80,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   Widget _buildLoadWidget(ProfileData profileData) {
     return new ListView(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
       children: <Widget>[
         new Container(
           child: new Text(
@@ -128,7 +128,6 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             ),
           ),
         ),
-        new Padding(padding: EdgeInsets.only(top: 5.0)),
         new Column(
           children: _buildWeekBeers(profileData.weekBeers),
         ),

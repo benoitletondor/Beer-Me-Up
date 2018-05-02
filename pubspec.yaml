@@ -47,6 +47,7 @@ flutter:
     - images/large_logo.png
     - images/toolbar_icon.png
     - images/beer_icon_background.png
+    - images/fab_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

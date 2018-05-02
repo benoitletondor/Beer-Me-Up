@@ -10,6 +10,7 @@ import 'package:beer_me_up/page/home/history/historypage.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/hapticfeedback.dart';
+import 'package:beer_me_up/common/widget/materialextendedfab.dart';
 
 import 'state.dart';
 import 'model.dart';
@@ -52,7 +53,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, HomeState> {
 
   static const _TAB_PROFILE_INDEX = 0;
-  static const _TAB_HISTORY_INDEX = 1;
+  static const _TAB_HISTORY_INDEX = 2;
 
   _HomePageState({
     @required HomeIntent intent,
@@ -102,17 +103,17 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () {
-          performSelectionHaptic(context);
-          intent.beerCheckIn();
-        },
-        tooltip: "Check-in",
-        child: new Icon(
-          const IconData(0xe901, fontFamily: "beers"),
-          color: Theme.of(context).primaryColor
+      floatingActionButton: new FittedBox(
+        child: new MaterialExtendedFAB(
+          icon: new Image.asset(
+            "images/fab_icon.png",
+            width: 20.0,
+          ),
+          text: "Check-in",
+          color: Theme.of(context).accentColor,
+          textColor: Colors.white,
+          onPressed: intent.beerCheckIn,
         ),
-        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: new _CenterBottomNavBarFloatFabLocation(),
       bottomNavigationBar: new Theme(
@@ -120,6 +121,7 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           canvasColor: Theme.of(context).primaryColor,
         ),
         child: new BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: index,
           fixedColor: Colors.white,
           onTap: (int index) {
@@ -140,6 +142,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
                   fontFamily: "Google Sans",
                 ),
               ),
+            ),
+            new BottomNavigationBarItem( // Fake item
+              icon: new Container(),
+              title: new Container(),
+              backgroundColor: Theme.of(context).primaryColor,
             ),
             new BottomNavigationBarItem(
               icon: new Icon(Icons.history),

@@ -87,7 +87,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   Widget _buildLoadWidget({@required List<HistoryListItem> items}) {
     return new ListView.builder(
       itemCount: items.length,
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
       itemBuilder: (BuildContext context, int index) {
         final item = items[index];
 
