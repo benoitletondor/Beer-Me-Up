@@ -80,44 +80,41 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   Widget _buildLoadWidget(ProfileData profileData) {
     return new ListView(
+      padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
       children: <Widget>[
         new Container(
-          child: new Center(
-            child: new Text(
-              "ÒööTHISöWEEKöööÑ",
-              style: new TextStyle(
-                fontFamily: "York White Letter",
-                color: Colors.white,
-                fontSize: 35.0,
-              ),
-              maxLines: 1,
+          child: new Text(
+            "This week",
+            style: new TextStyle(
+              fontFamily: "Google Sans",
+              color: Colors.blueGrey[900],
+              fontSize: 24.0,
             ),
           ),
-          decoration: new BoxDecoration(color: Theme.of(context).accentColor),
-          padding: const EdgeInsets.only(top: 10.0, bottom: 2.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
         ),
-        new Padding(padding: EdgeInsets.only(top: 20.0)),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              "You drank: ",
-              style: new TextStyle(
-                fontFamily: "Google Sans",
-                fontSize: 18.0,
-                color: Colors.blueGrey[900],
+        new Padding(padding: EdgeInsets.only(top: 16.0)),
+        new Container(
+          child: new Row(
+            children: <Widget>[
+              new Text(
+                "You drank: ",
+                style: new TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.blueGrey[900],
+                ),
               ),
-            ),
-            new Text(
-              "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
-              style: new TextStyle(
-                fontFamily: "Google Sans",
-                fontSize: 18.0,
-                color: Colors.blueGrey[900],
-                fontWeight: FontWeight.w500,
+              new Text(
+                "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
+                style: new TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.blueGrey[900],
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
         ),
         new Padding(padding: EdgeInsets.only(top: 20.0)),
         new Container(
@@ -137,19 +134,15 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         ),
         new Padding(padding: EdgeInsets.only(top: 30.0)),
         new Container(
-          child: new Center(
-            child: new Text(
-              "ÒööALLöTIMEöööÑ",
-              style: new TextStyle(
-                fontFamily: "York White Letter",
-                color: Colors.white,
-                fontSize: 35.0,
-              ),
-              maxLines: 1,
+          child: new Text(
+            "All time",
+            style: new TextStyle(
+              fontFamily: "Google Sans",
+              color: Colors.blueGrey[900],
+              fontSize: 24.0,
             ),
           ),
-          decoration: new BoxDecoration(color: Theme.of(context).accentColor),
-          padding: const EdgeInsets.only(top: 10.0, bottom: 2.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
         ),
         new Padding(padding: EdgeInsets.only(top: 20.0)),
         new Offstage(

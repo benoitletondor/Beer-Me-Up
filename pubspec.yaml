@@ -70,9 +70,6 @@ flutter:
            weight: 500
          - asset: fonts/GoogleSans-Bold.ttf
            weight: 700
-     - family: York White Letter
-       fonts:
-         - asset: fonts/yorkwhiteletter.ttf
   #
   # For details regarding fonts from package dependencies, 
   # see https://flutter.io/custom-fonts/#from-packages
