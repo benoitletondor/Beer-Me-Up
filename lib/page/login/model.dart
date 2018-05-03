@@ -100,10 +100,15 @@ class LoginViewModel extends BaseViewModel<LoginState> {
   }
 
   _showLostPasswordDialog(BuildContext context) async {
-    final email = await showLostPasswordDialog(getBuildContext());
+    final email = await showLostPasswordDialog(context);
     if( email != null ) {
-      await _authService.sendResetPasswordEmail(email);
-      showLostPasswordEmailSentSnackBar(context);
+      try {
+        await _authService.sendResetPasswordEmail(email);
+        showLostPasswordEmailSentSnackBar(context);
+      } catch (e, stacktrace) {
+        printException(e, stacktrace, "Error sending email into _showLostPasswordDialog");
+        showLostPasswordEmailErrorSendingSnackBar(context, e.toString());
+      }
     }
   }
 
