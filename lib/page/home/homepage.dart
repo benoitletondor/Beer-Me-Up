@@ -130,7 +130,7 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
 
             if( index == _TAB_PROFILE_INDEX ) {
               intent.showProfile();
-            } if( index == _TAB_FAKE_INDEX ) {
+            } else if( index == _TAB_FAKE_INDEX ) {
               intent.beerCheckIn();
             } else {
               intent.showHistory();

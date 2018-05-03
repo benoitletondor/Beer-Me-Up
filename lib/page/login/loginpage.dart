@@ -183,14 +183,17 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: new MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithGoogle,
-                    text: "Sign-in with Google"),
+                    text: "Sign-in with Google",
+                    leading: Image.asset("images/google.png"),
+                  ),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 16.0)),
                 new Center(
                   child: new MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithFacebook,
-                    text: "Sign-in with Facebook"
+                    text: "Sign-in with Facebook",
+                    leading: Image.asset("images/facebook.png"),
                   ),
                 ),
                 new Padding(padding: EdgeInsets.only(top: 30.0)),
@@ -292,7 +295,15 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     text: "Sign-in"
                   ),
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 25.0)),
+                new Padding(padding: const EdgeInsets.only(top: 16.0)),
+                new Center(
+                  child: new MaterialFlatButton.primary(
+                    context: context,
+                    onPressed: () { intent.forgotPassword(context); },
+                    text: "Forgot password?"
+                  ),
+                ),
+                new Padding(padding: const EdgeInsets.only(top: 20.0)),
                 new Row(
                   children: <Widget>[
                     new Expanded(
@@ -328,7 +339,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: new MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signInWithGoogle,
-                    text: "Sign-in with Google"
+                    text: "Sign-in with Google",
+                    leading: Image.asset("images/google.png"),
                   ),
                 ),
                 new Padding(padding: const EdgeInsets.only(top: 16.0)),
@@ -336,7 +348,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: new MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signInWithFacebook,
-                    text: "Sign-in with Facebook"
+                    text: "Sign-in with Facebook",
+                    leading: Image.asset("images/facebook.png"),
                   ),
                 ),
                 new Padding(padding: EdgeInsets.only(top: 30.0)),
