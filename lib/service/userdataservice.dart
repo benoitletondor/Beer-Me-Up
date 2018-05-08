@@ -79,7 +79,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       {
         "last_saw": DateTime.now(),
       },
-      SetOptions.merge
+      merge: true,
     );
 
     return doc;
@@ -126,7 +126,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       .reference
       .collection("history")
       .where("date", isGreaterThan: DateTime.now())
-      .snapshots
+      .snapshots()
       .listen(
         (querySnapshot) {
           querySnapshot.documentChanges
@@ -179,7 +179,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "checkin_counter": numberOfCheckIns + 1,
           "drank_quantity": drankQuantity + checkIn.quantity.value,
         },
-        SetOptions.merge
+        merge: true,
       );
 
     await beerDocument

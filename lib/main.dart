@@ -21,7 +21,6 @@ class BeerMeUpApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueAccent[400],
         accentColor: Colors.amber[500],
-
       ),
       home: HomePage(),
       routes: <String, WidgetBuilder> {
