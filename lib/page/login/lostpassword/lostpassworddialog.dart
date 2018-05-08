@@ -10,10 +10,9 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
   return showDialog<String>(
     context: context,
     builder: (context) => SimpleDialog(
-      title: Text(
+      title: const Text(
         'Retrieve password',
         style: TextStyle(
-          color: Colors.blueGrey[900],
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
@@ -24,10 +23,9 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: <Widget>[
-              Text(
+              const Text(
                 "Enter your login email and we'll send you instructions to reset your password",
                 style: TextStyle(
-                  color: Colors.blueGrey[900],
                   fontSize: 15.0,
                 ),
               ),
@@ -78,18 +76,16 @@ _showEmptyEmailDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(
+      title: const Text(
         "Empty email",
         style: TextStyle(
-          color: Colors.blueGrey[900],
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
       ),
-      content: Text(
+      content: const Text(
         "Please provide an email",
         style: TextStyle(
-          color: Colors.blueGrey[900],
           fontSize: 15.0,
         ),
       ),

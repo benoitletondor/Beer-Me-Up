@@ -83,11 +83,10 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
       children: <Widget>[
         Container(
-          child: Text(
+          child: const Text(
             "This week",
             style: TextStyle(
               fontFamily: "Google Sans",
-              color: Colors.blueGrey[900],
               fontSize: 24.0,
             ),
           ),
@@ -97,18 +96,16 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         Container(
           child: Row(
             children: <Widget>[
-              Text(
+              const Text(
                 "You drank: ",
                 style: TextStyle(
                   fontSize: 16.0,
-                  color: Colors.blueGrey[900],
                 ),
               ),
               Text(
                 "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16.0,
-                  color: Colors.blueGrey[900],
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -119,12 +116,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         const Padding(padding: EdgeInsets.only(top: 20.0)),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
+          child: const Text(
             "Top 5",
             style: TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,
-              color: Colors.blueGrey[900],
             ),
           ),
         ),
@@ -133,11 +129,10 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         ),
         const Padding(padding: EdgeInsets.only(top: 30.0)),
         Container(
-          child: Text(
+          child: const Text(
             "All time",
             style: TextStyle(
               fontFamily: "Google Sans",
-              color: Colors.blueGrey[900],
               fontSize: 24.0,
             ),
           ),
@@ -151,12 +146,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
+                child: const Text(
                   "Your favourite beer",
                   style: TextStyle(
                     fontFamily: "Google Sans",
                     fontSize: 18.0,
-                    color: Colors.blueGrey[900],
                   ),
                 ),
               ),
@@ -176,12 +170,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               const Padding(padding: EdgeInsets.only(top: 20.0)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
+                child: const Text(
                   "Your favourite category",
                   style: TextStyle(
                     fontFamily: "Google Sans",
                     fontSize: 18.0,
-                    color: Colors.blueGrey[900],
                   ),
                 ),
               ),
@@ -190,8 +183,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   profileData.favouriteCategory?.name ?? "",
-                  style: TextStyle(
-                    color: Colors.blueGrey[900],
+                  style: const TextStyle(
                     fontSize: 15.0,
                   ),
                 ),

@@ -111,9 +111,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
       padding: EdgeInsets.only(top: index == 0 ? 0.0 : 30.0, left: 16.0, right: 16.0),
       child: Text(
         _listSectionDateFormatter.format(date),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: "Google Sans",
-          color: Colors.blueGrey[900],
           fontSize: 18.0,
         ),
       ),

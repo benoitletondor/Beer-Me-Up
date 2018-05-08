@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -21,6 +22,10 @@ class BeerMeUpApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueAccent[400],
         accentColor: Colors.amber[500],
+        textTheme: Typography(platform: defaultTargetPlatform).black.apply(
+          bodyColor: Colors.blueGrey[900],
+          displayColor: Colors.blueGrey[900],
+        ),
       ),
       home: HomePage(),
       routes: <String, WidgetBuilder> {

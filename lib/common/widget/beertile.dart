@@ -30,8 +30,7 @@ class BeerTile extends StatelessWidget {
       title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        color: Colors.blueGrey[900],
+      style: const TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 16.0,
       ),
@@ -42,8 +41,7 @@ class BeerTile extends StatelessWidget {
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: Colors.blueGrey[900],
+        style: const TextStyle(
           fontSize: 15.0,
         ),
       ));

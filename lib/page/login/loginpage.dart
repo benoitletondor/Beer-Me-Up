@@ -95,13 +95,12 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   "Create your account",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18.0,
                     fontFamily: "Google Sans",
-                    color: Colors.blueGrey[900],
                   ),
                 ),
                 Offstage(
@@ -154,17 +153,16 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: Container(
                         height: 2.0,
                         decoration: BoxDecoration(
-                          color: Colors.black38,
+                          color: Colors.blueGrey[900],
                         ),
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 16.0)),
-                    Text(
+                    const Text(
                       "OR",
                       style: TextStyle(
                         fontSize: 18.0,
                         fontFamily: "Google Sans",
-                        color: Colors.black38,
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 16.0)),
@@ -172,7 +170,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: Container(
                         height: 2.0,
                         decoration: BoxDecoration(
-                          color: Colors.black38,
+                          color: Colors.blueGrey[900],
                         ),
                       ),
                     ),
@@ -205,11 +203,10 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       color: Colors.blueGrey[900],
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10.0)),
-                    Expanded(
+                    const Expanded(
                       child: Text(
                         "Like privacy? We feel you. We don’t use or sell your data. It’s your personal beer logging, not ours ;)",
                         style: TextStyle(
-                          color: Colors.blueGrey[900],
                           fontSize: 14.0,
                           letterSpacing: -0.5,
                         ),
@@ -245,13 +242,12 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "Sign-in with your account",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18.0,
                         fontFamily: "Google Sans",
-                        color: Colors.blueGrey[900],
                       ),
                     ),
                     Offstage(
@@ -312,17 +308,16 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                           child: Container(
                             height: 2.0,
                             decoration: BoxDecoration(
-                              color: Colors.black38,
+                              color: Colors.blueGrey[900],
                             ),
                           ),
                         ),
                         const Padding(padding: EdgeInsets.only(left: 16.0)),
-                        Text(
+                        const Text(
                           "OR",
                           style: TextStyle(
                             fontSize: 18.0,
                             fontFamily: "Google Sans",
-                            color: Colors.black38,
                           ),
                         ),
                         const Padding(padding: EdgeInsets.only(left: 16.0)),
@@ -330,7 +325,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                           child: Container(
                             height: 2.0,
                             decoration: BoxDecoration(
-                              color: Colors.black38,
+                              color: Colors.blueGrey[900],
                             ),
                           ),
                         ),
