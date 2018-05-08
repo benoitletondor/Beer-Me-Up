@@ -22,11 +22,11 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
   }
 
   @override
-  CheckInState initialState() => new CheckInState.empty();
+  CheckInState initialState() => CheckInState.empty();
 
   _onUserInput(String userInput) async {
     if( userInput == null || userInput.trim().isEmpty ) {
-      setState(new CheckInState.empty());
+      setState(CheckInState.empty());
     }
 
     final CheckInState state = getState();
@@ -35,23 +35,23 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
     if( state != null && state.currentStatePredictions != null ) {
       currentPredictions = state.currentStatePredictions;
     } else {
-      currentPredictions = new List<Beer>(0);
+      currentPredictions = List<Beer>(0);
     }
 
-    setState(new CheckInState.searching(currentPredictions));
+    setState(CheckInState.searching(currentPredictions));
 
     try {
       final matchingBeers = await _dataService.findBeersMatching(userInput);
-      setState(new CheckInState.predictions(matchingBeers));
+      setState(CheckInState.predictions(matchingBeers));
     } catch( e, stackTrace ) {
       printException(e, stackTrace, "Error looking for beers matching $userInput");
-      setState(new CheckInState.error(e.toString()));
+      setState(CheckInState.error(e.toString()));
     }
   }
 
   _onBeerSelected(Beer selectedBeer) async {
-    final quantityResult = await push(new MaterialPageRoute(
-      builder: (BuildContext context) => new CheckInQuantityPage(selectedBeer: selectedBeer)
+    final quantityResult = await push(MaterialPageRoute(
+      builder: (BuildContext context) => CheckInQuantityPage(selectedBeer: selectedBeer)
     ));
 
     if( quantityResult != null && quantityResult[SELECTED_CHECKIN_QUANTITY_KEY] != null ) {

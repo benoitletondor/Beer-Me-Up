@@ -48,33 +48,33 @@ class MaterialRaisedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTapDown: (details) { performSelectionHaptic(context); },
-      child: new RaisedButton(
+      child: RaisedButton(
         onPressed: onPressed,
         color: color,
         textColor: textColor,
         elevation: 1.0,
-        padding: new EdgeInsets.only(left: leading == null ? 24.0 : 18.0, right: 24.0, top: 10.0, bottom: 10.0),
+        padding: EdgeInsets.only(left: leading == null ? 24.0 : 18.0, right: 24.0, top: 10.0, bottom: 10.0),
         shape: const RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(const Radius.circular(4.0)),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
-        child: new FittedBox(
-          child: new Row(
+        child: FittedBox(
+          child: Row(
             children: <Widget>[
-              new Offstage(
+              Offstage(
                 offstage: leading == null,
-                child: new Row(
+                child: Row(
                   children: <Widget>[
-                    leading ?? new Container(),
-                    new Padding(padding: EdgeInsets.only(left: 10.0)),
+                    leading ?? Container(),
+                    const Padding(padding: EdgeInsets.only(left: 10.0)),
                   ],
                 ),
               ),
-              new Text(
+              Text(
                 text,
                 textAlign: TextAlign.center,
-                style: new TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Google Sans',
                   fontWeight: FontWeight.w500,
                   fontSize: 16.0,

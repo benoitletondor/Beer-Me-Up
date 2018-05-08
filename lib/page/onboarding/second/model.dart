@@ -3,5 +3,5 @@ import 'state.dart';
 
 class OnboardingSecondPageViewModel extends BaseViewModel<OnboardingSecondPageState> {
   @override
-  OnboardingSecondPageState initialState() => new OnboardingSecondPageState.onboarding();
+  OnboardingSecondPageState initialState() => OnboardingSecondPageState.onboarding();
 }

@@ -34,7 +34,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
   }
 
   @override
-  HomeState initialState() => new HomeState.authenticating();
+  HomeState initialState() => HomeState.authenticating();
 
   @override
   Stream<HomeState> bind(BuildContext context) {
@@ -45,7 +45,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
 
   _loadData() async {
     try {
-      setState(new HomeState.authenticating());
+      setState(HomeState.authenticating());
 
       bool sawOnboarding = await _authService.hasUserSeenOnboarding();
       if( sawOnboarding == null || !sawOnboarding ) {
@@ -61,24 +61,24 @@ class HomeViewModel extends BaseViewModel<HomeState> {
 
       debugPrint("User logged in $currentUser");
 
-      setState(new HomeState.loading());
+      setState(HomeState.loading());
 
       await _dataService.initDB(currentUser);
 
-      setState(new HomeState.tabProfile());
+      setState(HomeState.tabProfile());
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error loading home");
 
-      setState(new HomeState.error(e.toString()));
+      setState(HomeState.error(e.toString()));
     }
   }
 
   _showProfileTab(Null event) {
-    setState(new HomeState.tabProfile());
+    setState(HomeState.tabProfile());
   }
 
   _showHistoryTab(Null event) {
-    setState(new HomeState.tabHistory());
+    setState(HomeState.tabHistory());
   }
 
   _retryLoading(Null event) {
@@ -94,8 +94,8 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       debugPrint("Selected beer: ${selectedBeer.name} - ${selectedQuantity.value}L");
 
       try {
-        await _dataService.saveBeerCheckIn(new CheckIn(
-          date: new DateTime.now(),
+        await _dataService.saveBeerCheckIn(CheckIn(
+          date: DateTime.now(),
           beer: selectedBeer,
           quantity: selectedQuantity,
         ));

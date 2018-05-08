@@ -22,9 +22,9 @@ class ProfileState extends Union3Impl<
       ProfileStateLoad,
       ProfileStateError> union) : super(union);
 
-  factory ProfileState.loading() => new ProfileState._(factory.first(new ProfileStateLoading()));
-  factory ProfileState.load(ProfileData data) => new ProfileState._(factory.second(new ProfileStateLoad(data)));
-  factory ProfileState.error(String error) => new ProfileState._(factory.third(new ProfileStateError(error)));
+  factory ProfileState.loading() => ProfileState._(factory.first(ProfileStateLoading()));
+  factory ProfileState.load(ProfileData data) => ProfileState._(factory.second(ProfileStateLoad(data)));
+  factory ProfileState.error(String error) => ProfileState._(factory.third(ProfileStateError(error)));
 }
 
 class ProfileStateLoading extends State {}

@@ -32,19 +32,19 @@ class LoginIntent {
     VoidStreamCallback signInEmailInputChangedIntent,
     VoidStreamCallback signInPasswordInputChangedIntent,
   }) :
-    this.showSignIn = showSignInIntent ?? new VoidStreamCallback(),
-    this.showSignUp = showSignUpIntent ?? new VoidStreamCallback(),
-    this.signUp = signUpIntent ?? new ValueStreamCallback<LoginFormData>(),
-    this.signIn = signInIntent ?? new ValueStreamCallback<LoginFormData>(),
-    this.signInWithGoogle = signInWithGoogleIntent ?? new VoidStreamCallback(),
-    this.signUpWithGoogle = signUpWithGoogleIntent ?? new VoidStreamCallback(),
-    this.signInWithFacebook = signInWithFacebookIntent ?? new VoidStreamCallback(),
-    this.signUpWithFacebook = signUpWithFacebookIntent ?? new VoidStreamCallback(),
-    this.forgotPassword = forgotPasswordIntent ?? new ValueStreamCallback<BuildContext>(),
-    this.signUpEmailInputChanged = signUpEmailInputChangedIntent ?? new VoidStreamCallback(),
-    this.signUpPasswordInputChanged = signUpPasswordInputChangedIntent ?? new VoidStreamCallback(),
-    this.signInEmailInputChanged = signInEmailInputChangedIntent ?? new VoidStreamCallback(),
-    this.signInPasswordInputChanged = signInPasswordInputChangedIntent ?? new VoidStreamCallback();
+    this.showSignIn = showSignInIntent ?? VoidStreamCallback(),
+    this.showSignUp = showSignUpIntent ?? VoidStreamCallback(),
+    this.signUp = signUpIntent ?? ValueStreamCallback<LoginFormData>(),
+    this.signIn = signInIntent ?? ValueStreamCallback<LoginFormData>(),
+    this.signInWithGoogle = signInWithGoogleIntent ?? VoidStreamCallback(),
+    this.signUpWithGoogle = signUpWithGoogleIntent ?? VoidStreamCallback(),
+    this.signInWithFacebook = signInWithFacebookIntent ?? VoidStreamCallback(),
+    this.signUpWithFacebook = signUpWithFacebookIntent ?? VoidStreamCallback(),
+    this.forgotPassword = forgotPasswordIntent ?? ValueStreamCallback<BuildContext>(),
+    this.signUpEmailInputChanged = signUpEmailInputChangedIntent ?? VoidStreamCallback(),
+    this.signUpPasswordInputChanged = signUpPasswordInputChangedIntent ?? VoidStreamCallback(),
+    this.signInEmailInputChanged = signInEmailInputChangedIntent ?? VoidStreamCallback(),
+    this.signInPasswordInputChanged = signInPasswordInputChangedIntent ?? VoidStreamCallback();
 }
 
 class LoginFormData {

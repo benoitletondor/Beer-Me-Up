@@ -3,5 +3,5 @@ import 'state.dart';
 
 class OnboardingFirstPageViewModel extends BaseViewModel<OnboardingFirstPageState> {
   @override
-  OnboardingFirstPageState initialState() => new OnboardingFirstPageState.onboarding();
+  OnboardingFirstPageState initialState() => OnboardingFirstPageState.onboarding();
 }

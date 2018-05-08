@@ -8,9 +8,9 @@ abstract class BreweryDBService {
     @required String path,
     Map<String, String> queryParameters,
   }) {
-    final Map<String, String> queryParams = queryParameters ?? new Map();
+    final Map<String, String> queryParams = queryParameters ?? Map();
     queryParams.addAll({"key": BREWERY_DB_API_KEY});
     
-    return new Uri.https(_BREWERY_DB_API_ENDPOINT, "/v2/$path", queryParams);
+    return Uri.https(_BREWERY_DB_API_ENDPOINT, "/v2/$path", queryParams);
   }
 }

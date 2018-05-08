@@ -28,11 +28,11 @@ class LoginState extends Union5Impl<
       LoginStateSignUpError,
       LoginStateSignInError> union) : super(union);
 
-  factory LoginState.signUp() => new LoginState._(factory.first(new LoginStateSignUp()));
-  factory LoginState.signIn() => new LoginState._(factory.second(new LoginStateSignIn()));
-  factory LoginState.authenticating() => new LoginState._(factory.third(new LoginStateAuthenticating()));
-  factory LoginState.signUpError(String error) => new LoginState._(factory.fourth(new LoginStateSignUpError(error)));
-  factory LoginState.signInError(String error) => new LoginState._(factory.fifth(new LoginStateSignInError(error)));
+  factory LoginState.signUp() => LoginState._(factory.first(LoginStateSignUp()));
+  factory LoginState.signIn() => LoginState._(factory.second(LoginStateSignIn()));
+  factory LoginState.authenticating() => LoginState._(factory.third(LoginStateAuthenticating()));
+  factory LoginState.signUpError(String error) => LoginState._(factory.fourth(LoginStateSignUpError(error)));
+  factory LoginState.signInError(String error) => LoginState._(factory.fifth(LoginStateSignInError(error)));
 }
 
 class LoginStateSignUp extends State {}

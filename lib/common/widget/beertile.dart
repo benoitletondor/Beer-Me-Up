@@ -22,15 +22,15 @@ class BeerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if( beer == null || title == null ) {
-      return new Container();
+      return Container();
     }
 
-    final List<Widget> children = new List();
-    children.add(new Text(
+    final List<Widget> children = List();
+    children.add(Text(
       title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: new TextStyle(
+      style: TextStyle(
         color: Colors.blueGrey[900],
         fontWeight: FontWeight.w500,
         fontSize: 16.0,
@@ -38,11 +38,11 @@ class BeerTile extends StatelessWidget {
     ));
 
     if( subtitle != null ) {
-      children.add(new Text(
+      children.add(Text(
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: new TextStyle(
+        style: TextStyle(
           color: Colors.blueGrey[900],
           fontSize: 15.0,
         ),
@@ -50,33 +50,33 @@ class BeerTile extends StatelessWidget {
     }
 
     if( thirdTitle != null ) {
-      children.add(new Padding(padding: EdgeInsets.only(top: 5.0)));
-      children.add(new Text(
+      children.add(Padding(padding: EdgeInsets.only(top: 5.0)));
+      children.add(Text(
         thirdTitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: new TextStyle(
+        style: TextStyle(
           color: Colors.blueGrey[500],
           fontSize: 14.0,
         ),
       ));
     }
 
-    return new InkWell(
+    return InkWell(
       onTap: onTap != null ? () {
         performSelectionHaptic(context);
         onTap();
       } : null,
-      child: new Semantics(
+      child: Semantics(
         enabled: onTap != null,
-        child: new Container(
+        child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-          child: new Row(
+          child: Row(
             children: <Widget>[
               _buildThumbnailImage(beer),
-              new Padding(padding: EdgeInsets.only(right: 16.0)),
-              new Expanded(
-                child: new Column(
+              const Padding(padding: EdgeInsets.only(right: 16.0)),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: children,
@@ -92,25 +92,25 @@ class BeerTile extends StatelessWidget {
   Widget _buildThumbnailImage(Beer beer) {
     Widget image;
     if (beer.label?.iconUrl == null) {
-      image = new Icon(const IconData(0xe900, fontFamily: "beers"));
+      image = const Icon(IconData(0xe900, fontFamily: "beers"));
     } else {
-      image = new Image.network(
+      image = Image.network(
         beer.label.iconUrl,
       );
     }
 
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Container(
-          padding: new EdgeInsets.only(left: 12.0, top: 7.0),
-          child: new ConstrainedBox(
+        Container(
+          padding: const EdgeInsets.only(left: 12.0, top: 7.0),
+          child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 33.0, maxHeight: 35.0),
-            child: new Center(
+            child: Center(
               child: image,
             ),
           ),
         ),
-        new Image.asset(
+        Image.asset(
           "images/beer_icon_background.png",
           width: 55.0,
         ),

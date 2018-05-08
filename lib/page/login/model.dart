@@ -49,53 +49,53 @@ class LoginViewModel extends BaseViewModel<LoginState> {
   }
 
   @override
-  LoginState initialState() => new LoginState.signUp();
+  LoginState initialState() => LoginState.signUp();
 
   _signInWithGoogle(Null event) async {
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signInWithGoogle");
-      setState(new LoginState.signInError(e.toString()));
+      setState(LoginState.signInError(e.toString()));
     }
   }
 
   _signUpWithGoogle(Null event) async {
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signInWithGoogle();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signUpWithGoogle");
-      setState(new LoginState.signUpError(e.toString()));
+      setState(LoginState.signUpError(e.toString()));
     }
   }
 
   _signInWithFacebook(Null event) async {
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signInWithFacebook");
-      setState(new LoginState.signInError(e.toString()));
+      setState(LoginState.signInError(e.toString()));
     }
   }
 
   _signUpWithFacebook(Null event) async {
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signInWithFacebook();
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signUpWithFacebook");
-      setState(new LoginState.signUpError(e.toString()));
+      setState(LoginState.signUpError(e.toString()));
     }
   }
 
@@ -113,25 +113,25 @@ class LoginViewModel extends BaseViewModel<LoginState> {
   }
 
   _showSignIn(Null event) async {
-    setState(new LoginState.signIn());
+    setState(LoginState.signIn());
   }
 
   _showSignUp(Null event) async {
-    setState(new LoginState.signUp());
+    setState(LoginState.signUp());
   }
 
   _signUp(LoginFormData formData) async {
     if( formData.email.trim().isEmpty ) {
-      setState(new LoginState.signUpError("Please provide an email"));
+      setState(LoginState.signUpError("Please provide an email"));
       return;
     }
 
     if( formData.password.trim().isEmpty ) {
-      setState(new LoginState.signUpError("Please provide a password"));
+      setState(LoginState.signUpError("Please provide a password"));
       return;
     }
 
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signUpWithAccount(formData.email, formData.password);
@@ -139,22 +139,22 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     }
     catch(e, stackTrace) {
       printException(e, stackTrace, "Error while creating an account");
-      setState(new LoginState.signUpError(e.toString()));
+      setState(LoginState.signUpError(e.toString()));
     }
   }
 
   _signIn(LoginFormData formData) async {
     if( formData.email.trim().isEmpty ) {
-      setState(new LoginState.signInError("Please provide an email"));
+      setState(LoginState.signInError("Please provide an email"));
       return;
     }
 
     if( formData.password.trim().isEmpty ) {
-      setState(new LoginState.signInError("Please provide a password"));
+      setState(LoginState.signInError("Please provide a password"));
       return;
     }
 
-    setState(new LoginState.authenticating());
+    setState(LoginState.authenticating());
 
     try {
       await _authService.signInWithAccount(formData.email, formData.password);
@@ -162,15 +162,15 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     }
     catch(e, stackTrace) {
       printException(e, stackTrace, "Error while logging-in with an account");
-      setState(new LoginState.signInError(e.toString()));
+      setState(LoginState.signInError(e.toString()));
     }
   }
 
   _hideSignInError(Null event) async {
-    setState(new LoginState.signIn());
+    setState(LoginState.signIn());
   }
 
   _hideSignUpError(Null event) async {
-    setState(new LoginState.signUp());
+    setState(LoginState.signUp());
   }
 }

@@ -9,8 +9,8 @@ class AccountState extends Union2Impl<AccountStateLoading, AccountStateAccount> 
 
   AccountState._(Union2<AccountStateLoading, AccountStateAccount> union) : super(union);
 
-  factory AccountState.loading() => new AccountState._(factory.first(new AccountStateLoading()));
-  factory AccountState.account(String email, String name) => new AccountState._(factory.second(new AccountStateAccount(email, name)));
+  factory AccountState.loading() => AccountState._(factory.first(AccountStateLoading()));
+  factory AccountState.account(String email, String name) => AccountState._(factory.second(AccountStateAccount(email, name)));
 }
 
 class AccountStateLoading extends State {}

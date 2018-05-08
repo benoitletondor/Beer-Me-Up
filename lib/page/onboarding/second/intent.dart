@@ -6,5 +6,5 @@ class OnboardingSecondPageIntent {
   OnboardingSecondPageIntent({
     final VoidStreamCallback finishIntent,
   }) :
-    this.finish = finishIntent ?? new VoidStreamCallback();
+    this.finish = finishIntent ?? VoidStreamCallback();
 }

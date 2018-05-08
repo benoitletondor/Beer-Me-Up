@@ -5,10 +5,10 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new Container(
+    return Center(
+      child: Container(
         padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-        child: new LinearProgressIndicator(
+        child: LinearProgressIndicator(
           backgroundColor: Theme.of(context).primaryColor,
         ),
       ),

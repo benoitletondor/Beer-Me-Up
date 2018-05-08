@@ -14,7 +14,7 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
 
   @override
   Stream<S> bind(BuildContext context) {
-    this._controller = new StreamController();
+    this._controller = StreamController();
     this._context = context;
     this._currentState = initialState();
     _controller.add(_currentState);

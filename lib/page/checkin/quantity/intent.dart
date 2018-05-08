@@ -10,6 +10,6 @@ class CheckInQuantityIntent {
     final ValueStreamCallback<CheckInQuantity> quantitySelectedIntent,
     final VoidStreamCallback checkInConfirmedIntent,
   }) :
-    this.quantitySelected = quantitySelectedIntent ?? new ValueStreamCallback<CheckInQuantity>(),
-    this.checkInConfirmed = checkInConfirmedIntent ?? new VoidStreamCallback();
+    this.quantitySelected = quantitySelectedIntent ?? ValueStreamCallback<CheckInQuantity>(),
+    this.checkInConfirmed = checkInConfirmedIntent ?? VoidStreamCallback();
 }

@@ -10,8 +10,8 @@ import 'state.dart';
 
 class HistoryViewModel extends BaseViewModel<HistoryState> {
   final UserDataService _dataService;
-  final List<CheckIn> _checkIns = new List();
-  List<HistoryListItem> _items = new List();
+  final List<CheckIn> _checkIns = List();
+  List<HistoryListItem> _items = List();
   bool _hasMore = true;
   StreamSubscription<CheckIn> _checkInSubscription;
 
@@ -25,7 +25,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   }
 
   @override
-  HistoryState initialState() => new HistoryState.loading();
+  HistoryState initialState() => HistoryState.loading();
 
   @override
   Stream<HistoryState> bind(BuildContext context) {
@@ -33,7 +33,6 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
     return super.bind(context);
   }
-
 
   @override
   unbind() {
@@ -45,7 +44,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
   _loadData() async {
     try {
-      setState(new HistoryState.loading());
+      setState(HistoryState.loading());
 
       final CheckinFetchResponse response = await _dataService.fetchCheckInHistory();
       _checkIns.addAll(response.checkIns);
@@ -53,12 +52,12 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       _items = await _buildItemList(_checkIns, _hasMore);
 
-      setState(new HistoryState.load(_items));
+      setState(HistoryState.load(_items));
 
       _bindToUpdates();
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error loading history");
-      setState(new HistoryState.error(e.toString()));
+      setState(HistoryState.error(e.toString()));
     }
   }
 
@@ -67,21 +66,21 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   }
 
   Future<List<HistoryListItem>> _buildItemList(List<CheckIn> checkIns, bool hasMore) async {
-    final items = new List<HistoryListItem>();
+    final items = List<HistoryListItem>();
     DateTime lastCheckInDate;
 
     for(var checkIn in checkIns) {
-      final date = new DateTime(checkIn.date.year, checkIn.date.month, checkIn.date.day);
+      final date = DateTime(checkIn.date.year, checkIn.date.month, checkIn.date.day);
       if( lastCheckInDate != date ) {
         lastCheckInDate = date;
-        items.add(new HistoryListSection(date));
+        items.add(HistoryListSection(date));
       }
 
-      items.add(new HistoryListRow(checkIn));
+      items.add(HistoryListRow(checkIn));
     }
 
     if( hasMore ) {
-      items.add(new HistoryListLoadMore());
+      items.add(HistoryListLoadMore());
     }
 
     return items;
@@ -96,14 +95,14 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
     _checkIns.insert(0, checkIn);
     _items = await _buildItemList(_checkIns, _hasMore);
 
-    setState(new HistoryState.load(_items));
+    setState(HistoryState.load(_items));
   }
 
   void _loadMore(Null event) async {
     _items.removeLast();
-    _items.add(new HistoryListLoading());
+    _items.add(HistoryListLoading());
 
-    setState(new HistoryState.load(_items));
+    setState(HistoryState.load(_items));
 
     try {
       final CheckinFetchResponse response = await _dataService.fetchCheckInHistory(startAfter: _checkIns.last);
@@ -112,14 +111,14 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       _items = await _buildItemList(_checkIns, _hasMore);
 
-      setState(new HistoryState.load(_items));
+      setState(HistoryState.load(_items));
     } catch(e, stackTrace) {
       printException(e, stackTrace, "Error loading more history checkins");
 
       _items.removeLast();
-      _items.add(new HistoryListLoadMore());
+      _items.add(HistoryListLoadMore());
 
-      setState(new HistoryState.load(_items));
+      setState(HistoryState.load(_items));
     }
   }
 }

@@ -13,7 +13,7 @@ import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/service/brewerydbservice.dart';
 
 abstract class UserDataService {
-  static final UserDataService instance = new _UserDataServiceImpl(Firestore.instance, new HttpClient());
+  static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient());
 
   Future<void> initDB(FirebaseUser currentUser);
 
@@ -66,18 +66,18 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       await ref.setData({
         "id" : user.uid,
         "mail" : user.email,
-        "created_at": new DateTime.now(),
+        "created_at": DateTime.now(),
       });
 
       doc = await ref.get();
       if( doc == null ) {
-        throw new Exception("Unable to create user document");
+        throw Exception("Unable to create user document");
       }
     }
 
     await doc.reference.setData(
       {
-        "last_saw": new DateTime.now(),
+        "last_saw": DateTime.now(),
       },
       SetOptions.merge
     );
@@ -87,7 +87,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   _assertDBInitialized() {
     if( _userDoc == null ) {
-      throw new Exception("DB is not initialized");
+      throw Exception("DB is not initialized");
     }
   }
 
@@ -109,23 +109,23 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final checkinArray = checkinCollection.documents;
     if( checkinArray.isEmpty ) {
-      return new CheckinFetchResponse(new List(0), false);
+      return CheckinFetchResponse(List(0), false);
     }
 
     List<CheckIn> checkIns = checkinArray
       .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
       .toList(growable: false);
 
-    return new CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
+    return CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
   }
 
   Stream<CheckIn> listenForCheckIn() {
-    final StreamController<CheckIn> _controller = new StreamController();
+    final StreamController<CheckIn> _controller = StreamController();
 
     final subscription = _userDoc
       .reference
       .collection("history")
-      .where("date", isGreaterThan: new DateTime.now())
+      .where("date", isGreaterThan: DateTime.now())
       .snapshots
       .listen(
         (querySnapshot) {
@@ -209,7 +209,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final Map<dynamic, dynamic> styleData = data["style"];
     if( styleData != null ) {
-      style = new BeerStyle(
+      style = BeerStyle(
         id: styleData["id"],
         name: styleData["name"],
         description: styleData["description"],
@@ -219,7 +219,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final Map<dynamic, dynamic> categoryData = data["category"];
     if( categoryData != null ) {
-      category = new BeerCategory(
+      category = BeerCategory(
         id: categoryData["id"],
         name: categoryData["name"],
       );
@@ -228,14 +228,14 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     BeerLabel label;
     final Map<dynamic, dynamic> labelData = data["label"];
     if( labelData != null ) {
-      label = new BeerLabel(
+      label = BeerLabel(
         iconUrl: labelData["iconUrl"],
         mediumUrl: labelData["mediumUrl"],
         largeUrl: labelData["largeUrl"],
       );
     }
 
-    return new Beer(
+    return Beer(
       id: data["id"],
       name: data["name"],
       description: data["description"],
@@ -247,7 +247,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   CheckIn _parseCheckinFromDocument(DocumentSnapshot doc) {
-    return new CheckIn(
+    return CheckIn(
       date: doc["date"],
       beer: _parseBeerFromValue(doc["beer"], doc["beer_version"]),
       quantity: _parseQuantityFromValue(doc["quantity"]),
@@ -261,7 +261,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       }
     }
 
-    throw new Exception("Unknown quantity: $value");
+    throw Exception("Unknown quantity: $value");
   }
 
   Map<String, dynamic> _createValueForBeer(Beer beer) {
@@ -307,21 +307,21 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   @override
   Future<List<Beer>> findBeersMatching(String pattern) async {
     if( pattern == null || pattern.trim().isEmpty ) {
-      return new List(0);
+      return List(0);
     }
 
     var uri = buildBreweryDBServiceURI(path: "search", queryParameters: {'q': pattern, 'type': 'beer'});
     HttpClientRequest request = await _httpClient.getUrl(uri);
     HttpClientResponse response = await request.close();
     if( response.statusCode <200 || response.statusCode>299 ) {
-      throw new Exception("Bad response: ${response.statusCode} (${response.reasonPhrase})");
+      throw Exception("Bad response: ${response.statusCode} (${response.reasonPhrase})");
     }
 
     String responseBody = await response.transform(utf8.decoder).join();
     Map data = json.decode(responseBody);
     int totalResults = data["totalResults"] ?? 0;
     if( totalResults == 0 ) {
-      return new List(0);
+      return List(0);
     }
 
     return (data['data'] as List).map((beerJson) {
@@ -330,7 +330,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
       final Map<dynamic, dynamic> styleData = beerJson["style"];
       if( styleData != null ) {
-        style = new BeerStyle(
+        style = BeerStyle(
           id: styleData["id"],
           name: styleData["name"],
           description: styleData["description"],
@@ -339,7 +339,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
         final Map<dynamic, dynamic> categoryData = styleData["category"];
         if( categoryData != null ) {
-          category = new BeerCategory(
+          category = BeerCategory(
             id: categoryData["id"],
             name: categoryData["name"],
           );
@@ -365,14 +365,14 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       BeerLabel label;
       final labelJson = beerJson["labels"];
       if( labelJson != null && labelJson is Map ) {
-        label = new BeerLabel(
+        label = BeerLabel(
           iconUrl: labelJson["icon"],
           mediumUrl: labelJson["medium"],
           largeUrl: labelJson["large"],
         );
       }
 
-      return new Beer(
+      return Beer(
         id: beerJson["id"],
         name: beerJson["name"],
         description: beerJson["description"],
@@ -394,7 +394,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       .getDocuments();
 
     return beerDocsSnapshot.documents.map((beerSnapshot) =>
-      new BeerCheckInsData(
+      BeerCheckInsData(
         _parseBeerFromValue(beerSnapshot.data["beer"], beerSnapshot.data["beer_version"]),
         beerSnapshot.data["checkin_counter"],
         beerSnapshot.data["last_checkin"],
@@ -407,15 +407,15 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   Future<List<CheckIn>> fetchThisWeekCheckIns() async {
     _assertDBInitialized();
 
-    final now = new DateTime.now();
-    final today = new DateTime(
+    final now = DateTime.now();
+    final today = DateTime(
       now.year,
       now.month,
       now.day,
     );
 
     final DateTime thisWeekStartDate = today.add(
-      new Duration(
+      Duration(
         days: -(now.weekday - 1)
       )
     );

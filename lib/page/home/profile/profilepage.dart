@@ -28,21 +28,21 @@ class ProfilePage extends StatefulWidget {
     ProfileViewModel model,
     UserDataService dataService}) {
 
-    final _intent = intent ?? new ProfileIntent();
-    final _model = model ?? new ProfileViewModel(
+    final _intent = intent ?? ProfileIntent();
+    final _model = model ?? ProfileViewModel(
       dataService ?? UserDataService.instance,
       _intent.retry,
     );
 
-    return new ProfilePage._(key: key, intent: _intent, model: _model);
+    return ProfilePage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  _ProfilePageState createState() => new _ProfilePageState(intent: intent, model: model);
+  _ProfilePageState createState() => _ProfilePageState(intent: intent, model: model);
 }
 
 class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, ProfileIntent, ProfileState> {
-  static final _beerCheckinDateFormatter = new DateFormat.MMMEd().add_Hm();
+  static final _beerCheckinDateFormatter = DateFormat.MMMEd().add_Hm();
 
   _ProfilePageState({
     @required ProfileIntent intent,
@@ -51,11 +51,11 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<ProfileState> snapshot) {
         if( !snapshot.hasData ) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -68,45 +68,45 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   }
 
   Widget _buildLoadingWidget() {
-    return new LoadingWidget();
+    return LoadingWidget();
   }
 
   Widget _buildErrorWidget({@required String error}) {
-    return new ErrorOccurredWidget(
+    return ErrorOccurredWidget(
       error,
       () { intent.retry(); }
     );
   }
 
   Widget _buildLoadWidget(ProfileData profileData) {
-    return new ListView(
+    return ListView(
       padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
       children: <Widget>[
-        new Container(
-          child: new Text(
+        Container(
+          child: Text(
             "This week",
-            style: new TextStyle(
+            style: TextStyle(
               fontFamily: "Google Sans",
               color: Colors.blueGrey[900],
               fontSize: 24.0,
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
         ),
-        new Padding(padding: EdgeInsets.only(top: 16.0)),
-        new Container(
-          child: new Row(
+        Padding(padding: const EdgeInsets.only(top: 16.0)),
+        Container(
+          child: Row(
             children: <Widget>[
-              new Text(
+              Text(
                 "You drank: ",
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: 16.0,
                   color: Colors.blueGrey[900],
                 ),
               ),
-              new Text(
+              Text(
                 "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: 16.0,
                   color: Colors.blueGrey[900],
                   fontWeight: FontWeight.w500,
@@ -114,53 +114,53 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               ),
             ],
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
         ),
-        new Padding(padding: EdgeInsets.only(top: 20.0)),
-        new Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: new Text(
+        const Padding(padding: EdgeInsets.only(top: 20.0)),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
             "Top 5",
-            style: new TextStyle(
+            style: TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,
               color: Colors.blueGrey[900],
             ),
           ),
         ),
-        new Column(
+        Column(
           children: _buildWeekBeers(profileData.weekBeers),
         ),
-        new Padding(padding: EdgeInsets.only(top: 30.0)),
-        new Container(
-          child: new Text(
+        const Padding(padding: EdgeInsets.only(top: 30.0)),
+        Container(
+          child: Text(
             "All time",
-            style: new TextStyle(
+            style: TextStyle(
               fontFamily: "Google Sans",
               color: Colors.blueGrey[900],
               fontSize: 24.0,
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
         ),
-        new Padding(padding: EdgeInsets.only(top: 20.0)),
-        new Offstage(
+        const Padding(padding: EdgeInsets.only(top: 20.0)),
+        Offstage(
           offstage: profileData.favouriteBeer == null,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: new Text(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
                   "Your favourite beer",
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontFamily: "Google Sans",
                     fontSize: 18.0,
                     color: Colors.blueGrey[900],
                   ),
                 ),
               ),
-              new BeerTile(
+              BeerTile(
                 beer: profileData.favouriteBeer?.beer,
                 title: profileData.favouriteBeer?.beer?.name,
                 subtitle: "Drank ${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
@@ -168,29 +168,29 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             ],
           ),
         ),
-        new Offstage(
+        Offstage(
           offstage: profileData.favouriteCategory == null,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Padding(padding: EdgeInsets.only(top: 20.0)),
-              new Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: new Text(
+              const Padding(padding: EdgeInsets.only(top: 20.0)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
                   "Your favourite category",
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontFamily: "Google Sans",
                     fontSize: 18.0,
                     color: Colors.blueGrey[900],
                   ),
                 ),
               ),
-              new Padding(padding: EdgeInsets.only(top: 10.0)),
-              new Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: new Text(
+              const Padding(padding: EdgeInsets.only(top: 10.0)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
                   profileData.favouriteCategory?.name ?? "",
-                  style: new TextStyle(
+                  style: TextStyle(
                     color: Colors.blueGrey[900],
                     fontSize: 15.0,
                   ),
@@ -210,7 +210,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   }
 
   Widget _buildWeekBeer(BeerCheckInsData beerCheckIn) {
-    return new BeerTile(
+    return BeerTile(
       beer: beerCheckIn.beer,
       title: beerCheckIn.beer.name,
       subtitle: "Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L.",

@@ -6,5 +6,5 @@ class AccountIntent {
   AccountIntent({
     final VoidStreamCallback logoutIntent,
   }) :
-    this.logout = logoutIntent ?? new VoidStreamCallback();
+    this.logout = logoutIntent ?? VoidStreamCallback();
 }

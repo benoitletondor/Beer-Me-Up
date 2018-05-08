@@ -6,5 +6,5 @@ class ProfileIntent {
   ProfileIntent({
     final VoidStreamCallback retryIntent,
   }) :
-    this.retry = retryIntent ?? new VoidStreamCallback();
+    this.retry = retryIntent ?? VoidStreamCallback();
 }

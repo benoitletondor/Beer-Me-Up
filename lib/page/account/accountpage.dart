@@ -26,17 +26,17 @@ class AccountPage extends StatefulWidget {
     AccountViewModel model,
     AuthenticationService userService}) {
 
-    final _intent = intent ?? new AccountIntent();
-    final _model = model ?? new AccountViewModel(
+    final _intent = intent ?? AccountIntent();
+    final _model = model ?? AccountViewModel(
       userService ?? AuthenticationService.instance,
       _intent.logout,
     );
 
-    return new AccountPage._(key: key, intent: _intent, model: _model);
+    return AccountPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<StatefulWidget> createState() => new _AccountPageState(intent: intent, model: model);
+  State<StatefulWidget> createState() => _AccountPageState(intent: intent, model: model);
 }
 
 class _AccountPageState extends ViewState<AccountPage, AccountViewModel, AccountIntent, AccountState> {
@@ -48,11 +48,11 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<AccountState> snapshot) {
         if (!snapshot.hasData) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -64,25 +64,25 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
   }
 
   Widget _buildAccountScreen(String email, String name) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new Center(
-        child: new Column(
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Offstage(
+            Offstage(
               offstage: name == null,
-              child: new Column(
+              child: Column(
                 children: <Widget>[
-                  new Text(name ?? ""),
-                  new Padding(padding: new EdgeInsets.only(top: 15.0)),
+                  Text(name ?? ""),
+                  Padding(padding: EdgeInsets.only(top: 15.0)),
                 ],
               ),
             ),
-            new Text(email),
-            new Padding(padding: new EdgeInsets.only(top: 15.0)),
-            new RaisedButton(
-              child: const Text('Logout'),
+            Text(email),
+            Padding(padding: EdgeInsets.only(top: 15.0)),
+            RaisedButton(
+              child: Text('Logout'),
               onPressed: intent.logout,
             ),
           ],
@@ -92,17 +92,17 @@ class _AccountPageState extends ViewState<AccountPage, AccountViewModel, Account
   }
 
   Widget _buildLoadingScreen() {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new LoadingWidget(),
+      body: LoadingWidget(),
     );
   }
 
   Widget _buildAppBar() {
-    return new AppBar(
-      title: new Text(
+    return AppBar(
+      title: Text(
         "Account",
-        style: new TextStyle(
+        style: TextStyle(
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),

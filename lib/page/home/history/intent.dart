@@ -8,6 +8,6 @@ class HistoryIntent {
     final VoidStreamCallback retryIntent,
     final VoidStreamCallback loadMoreIntent,
   }) :
-    this.retry = retryIntent ?? new VoidStreamCallback(),
-    this.loadMore = loadMoreIntent ?? new VoidStreamCallback();
+    this.retry = retryIntent ?? VoidStreamCallback(),
+    this.loadMore = loadMoreIntent ?? VoidStreamCallback();
 }

@@ -11,7 +11,7 @@ import 'package:beer_me_up/main.dart';
 
 abstract class AuthenticationService {
   static final AuthenticationService instance
-    = new _AuthenticationServiceImpl(FirebaseAuth.instance, BeerMeUpApp.analytics);
+    = _AuthenticationServiceImpl(FirebaseAuth.instance, BeerMeUpApp.analytics);
 
   Future<FirebaseUser> signInWithGoogle();
   Future<FirebaseUser> signInWithFacebook();
@@ -44,17 +44,17 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<FirebaseUser> signInWithAccount(String email, String password) async {
     if( email == null || email.isEmpty ) {
-      throw new Exception("Email is empty");
+      throw Exception("Email is empty");
     }
 
     if( password == null || password.isEmpty ){
-      throw new Exception("Password is empty");
+      throw Exception("Password is empty");
     }
 
     try {
       final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       if( user == null ) {
-        throw new Exception("Unable to sign-in");
+        throw Exception("Unable to sign-in");
       }
 
       assert(user.email != null);
@@ -75,7 +75,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   Future<FirebaseUser> signInWithGoogle() async {
-    final GoogleSignIn _googleSignIn = new GoogleSignIn();
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     GoogleSignInAccount googleUser = await _googleSignIn.signInSilently();
     if( googleUser == null ) {
@@ -83,7 +83,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     if( googleUser == null ) {
-      throw new Exception("User cancelled");
+      throw Exception("User cancelled");
     }
 
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -93,7 +93,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     );
 
     if( user == null ) {
-      throw new Exception("Unable to sign-in with Google");
+      throw Exception("Unable to sign-in with Google");
     }
 
     assert(user.email != null);
@@ -108,19 +108,19 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   Future<FirebaseUser> signInWithFacebook() async {
-    final facebookLogin = new FacebookLogin();
+    final facebookLogin = FacebookLogin();
     FacebookLoginResult result = await facebookLogin.logInWithReadPermissions(['email']);
 
     // ignore: missing_enum_constant_in_switch
     switch (result.status) {
       case FacebookLoginStatus.cancelledByUser:
-        throw new Exception("User cancelled");
+        throw Exception("User cancelled");
       case FacebookLoginStatus.error:
-        throw new Exception("Error occurred: ${result.errorMessage}");
+        throw Exception("Error occurred: ${result.errorMessage}");
     }
 
     if( result.status != FacebookLoginStatus.loggedIn ) {
-      throw new Exception("Unknown status: ${result.status}");
+      throw Exception("Unknown status: ${result.status}");
     }
 
     final token = result.accessToken.token;
@@ -141,18 +141,18 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<FirebaseUser> signUpWithAccount(String email, String password) async {
     if( email == null || email.isEmpty ) {
-      throw new Exception("Email is empty");
+      throw Exception("Email is empty");
     }
 
     if( password == null || password.isEmpty ){
-      throw new Exception("Password is empty");
+      throw Exception("Password is empty");
     }
 
     try {
       final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
       if( user == null ) {
-        throw new Exception("Unable to sign-up");
+        throw Exception("Unable to sign-up");
       }
 
       assert(user.email != null);

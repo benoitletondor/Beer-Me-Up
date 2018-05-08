@@ -28,11 +28,11 @@ class HomeState extends Union5Impl<
       HomeStateTabHistory,
       HomeStateError> union) : super(union);
 
-  factory HomeState.authenticating() => new HomeState._(factory.first(new HomeStateAuthenticating()));
-  factory HomeState.loading() => new HomeState._(factory.second(new HomeStateLoading()));
-  factory HomeState.tabProfile() => new HomeState._(factory.third(new HomeStateTabProfile()));
-  factory HomeState.tabHistory() => new HomeState._(factory.fourth(new HomeStateTabHistory()));
-  factory HomeState.error(String error) => new HomeState._(factory.fifth(new HomeStateError(error)));
+  factory HomeState.authenticating() => HomeState._(factory.first(HomeStateAuthenticating()));
+  factory HomeState.loading() => HomeState._(factory.second(HomeStateLoading()));
+  factory HomeState.tabProfile() => HomeState._(factory.third(HomeStateTabProfile()));
+  factory HomeState.tabHistory() => HomeState._(factory.fourth(HomeStateTabHistory()));
+  factory HomeState.error(String error) => HomeState._(factory.fifth(HomeStateError(error)));
 }
 
 class HomeStateAuthenticating extends State {}

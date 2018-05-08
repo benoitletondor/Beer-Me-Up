@@ -29,18 +29,18 @@ class CheckInQuantityPage extends StatefulWidget {
     CheckInQuantityIntent intent,
     CheckInQuantityViewModel model}) {
 
-    final _intent = intent ?? new CheckInQuantityIntent();
-    final _model = model ?? new CheckInQuantityViewModel(
+    final _intent = intent ?? CheckInQuantityIntent();
+    final _model = model ?? CheckInQuantityViewModel(
       selectedBeer,
       _intent.quantitySelected,
       _intent.checkInConfirmed,
     );
 
-    return new CheckInQuantityPage._(key: key, intent: _intent, model: _model);
+    return CheckInQuantityPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<CheckInQuantityPage> createState() => new _CheckInQuantityPageState(intent: intent, model: model);
+  State<CheckInQuantityPage> createState() => _CheckInQuantityPageState(intent: intent, model: model);
 }
 
 class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQuantityViewModel, CheckInQuantityIntent, CheckInQuantityState> {
@@ -52,11 +52,11 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<CheckInQuantityState> snapshot) {
         if (!snapshot.hasData) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -75,39 +75,39 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
   Widget _buildErrorScreen(Beer selectedBeer) => _buildScreen(selectedBeer, null, true);
 
   Widget _buildScreen(Beer selectedBeer, CheckInQuantity selectedQuantity, bool error) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Confirm checkin'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Confirm checkin'),
       ),
-      body: new Center(
-        child: new Column(
+      body: Center(
+        child: Column(
           children: <Widget>[
-            new Padding(padding: EdgeInsets.only(top: 20.0)),
-            new BeerTile(beer: selectedBeer, title: selectedBeer.name),
-            new Padding(padding: EdgeInsets.only(top: 20.0)),
-            new Center(
-              child: new Row(
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            BeerTile(beer: selectedBeer, title: selectedBeer.name),
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            Center(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: _buildQuantityTiles(selectedQuantity),
               ),
             ),
-            new Padding(padding: new EdgeInsets.only(top: 20.0)),
-            new Offstage(
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            Offstage(
               offstage: !error,
-              child: new Text(
+              child: Text(
                 "Please select a quantity to confirm checkin",
-                style: new TextStyle(
+                style: TextStyle(
                   color: Colors.red,
                 ),
               ),
             ),
-            new Padding(padding: new EdgeInsets.only(top: 20.0)),
-            new RaisedButton(
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            RaisedButton(
               onPressed: intent.checkInConfirmed,
               color: Theme.of(context).accentColor,
-              child: new Text(
+              child: Text(
                 "Confirm \"${selectedBeer.name}\" checkin",
-                style: new TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                 ),
               ),
@@ -119,7 +119,7 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
   }
 
   List<Widget> _buildQuantityTiles(CheckInQuantity selectedQuantity) {
-    final List<Widget> tiles = new List();
+    final List<Widget> tiles = List();
 
     for(CheckInQuantity quantity in CheckInQuantity.values) {
       tiles.add(_buildQuantityTile(quantity, selectedQuantity == quantity));
@@ -129,21 +129,21 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
   }
 
   Widget _buildQuantityTile(CheckInQuantity quantity, bool isSelected) {
-    return new Container(
+    return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0),
-      child: new GestureDetector(
+      child: GestureDetector(
         onTap: () { intent.quantitySelected(quantity); },
-        child: new Container(
+        child: Container(
           padding: EdgeInsets.all(5.0),
-          child: new Column(
+          child: Column(
             children: <Widget>[
-              new Icon(const IconData(0xe901, fontFamily: "beers")),
-              new Text(_getTextForQuantity(quantity)),
+              Icon(IconData(0xe901, fontFamily: "beers")),
+              Text(_getTextForQuantity(quantity)),
             ],
           ),
-          decoration: new BoxDecoration(
-            border: new Border.all(width: 2.0, color: isSelected ? Colors.lightGreen[700] : Colors.grey[600]),
-            borderRadius: new BorderRadius.all(const Radius.circular(4.0)),
+          decoration: BoxDecoration(
+            border: Border.all(width: 2.0, color: isSelected ? Colors.lightGreen[700] : Colors.grey[600]),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
         ),
       ),

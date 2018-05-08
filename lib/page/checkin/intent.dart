@@ -12,8 +12,8 @@ class CheckInIntent {
     final ValueStreamCallback<String> inputIntent,
     final ValueStreamCallback<Beer> beerSelectedIntent,
   }) :
-    this.input = inputIntent ?? new ValueStreamCallback<String>(),
-    this.beerSelected = beerSelectedIntent ?? new ValueStreamCallback<Beer>();
+    this.input = inputIntent ?? ValueStreamCallback<String>(),
+    this.beerSelected = beerSelectedIntent ?? ValueStreamCallback<Beer>();
 }
 
 class SelectedQuantityIntentValue {

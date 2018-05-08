@@ -25,9 +25,9 @@ class CheckInQuantityState extends Union3Impl<
       CheckInQuantityQuantitySelected,
       CheckInQuantityQuantityNotSelectedError> union, {this.currentStateSelectedQuantity}) : super(union);
 
-  factory CheckInQuantityState.base(Beer selectedBeer) => new CheckInQuantityState._(factory.first(new CheckInQuantityStateBase(selectedBeer)));
-  factory CheckInQuantityState.quantitySelected(Beer selectedBeer, CheckInQuantity quantity) => new CheckInQuantityState._(factory.second(new CheckInQuantityQuantitySelected(selectedBeer, quantity)), currentStateSelectedQuantity: quantity);
-  factory CheckInQuantityState.error(Beer selectedBeer) => new CheckInQuantityState._(factory.third(new CheckInQuantityQuantityNotSelectedError(selectedBeer)));
+  factory CheckInQuantityState.base(Beer selectedBeer) => CheckInQuantityState._(factory.first(CheckInQuantityStateBase(selectedBeer)));
+  factory CheckInQuantityState.quantitySelected(Beer selectedBeer, CheckInQuantity quantity) => CheckInQuantityState._(factory.second(CheckInQuantityQuantitySelected(selectedBeer, quantity)), currentStateSelectedQuantity: quantity);
+  factory CheckInQuantityState.error(Beer selectedBeer) => CheckInQuantityState._(factory.third(CheckInQuantityQuantityNotSelectedError(selectedBeer)));
 }
 
 class CheckInQuantityStateBase extends State {

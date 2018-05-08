@@ -9,7 +9,7 @@ class OnboardingSecondPageState extends Union1Impl<OnboardingSecondPageStateOnbo
 
   OnboardingSecondPageState._(Union1<OnboardingSecondPageStateOnboarding> union) : super(union);
 
-  factory OnboardingSecondPageState.onboarding() => new OnboardingSecondPageState._(factory.first(new OnboardingSecondPageStateOnboarding()));
+  factory OnboardingSecondPageState.onboarding() => OnboardingSecondPageState._(factory.first(OnboardingSecondPageStateOnboarding()));
 }
 
 class OnboardingSecondPageStateOnboarding extends State {}

@@ -9,29 +9,29 @@ import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
 import 'package:beer_me_up/page/account/accountpage.dart';
 
-void main() => runApp(new BeerMeUpApp());
+void main() => runApp(BeerMeUpApp());
 
 class BeerMeUpApp extends StatelessWidget {
-  static FirebaseAnalytics analytics = new FirebaseAnalytics();
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Beer Me Up',
-      theme: new ThemeData(
+      theme: ThemeData(
         primaryColor: Colors.blueAccent[400],
         accentColor: Colors.amber[500],
 
       ),
-      home: new HomePage(),
+      home: HomePage(),
       routes: <String, WidgetBuilder> {
-        ONBOARDING_PAGE_ROUTE: (BuildContext context) => new OnboardingPage(),
-        LOGIN_PAGE_ROUTE: (BuildContext context) => new LoginPage(),
-        CHECK_IN_PAGE_ROUTE: (BuildContext context) => new CheckInPage(),
-        ACCOUNT_PAGE_ROUTE: (BuildContext context) => new AccountPage(),
+        ONBOARDING_PAGE_ROUTE: (BuildContext context) => OnboardingPage(),
+        LOGIN_PAGE_ROUTE: (BuildContext context) => LoginPage(),
+        CHECK_IN_PAGE_ROUTE: (BuildContext context) => CheckInPage(),
+        ACCOUNT_PAGE_ROUTE: (BuildContext context) => AccountPage(),
       },
       navigatorObservers: [
-        new FirebaseAnalyticsObserver(analytics: analytics),
+        FirebaseAnalyticsObserver(analytics: analytics),
       ],
     );
   }

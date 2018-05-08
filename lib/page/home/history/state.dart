@@ -22,9 +22,9 @@ class HistoryState extends Union3Impl<
       HistoryStateLoad,
       HistoryStateError> union) : super(union);
 
-  factory HistoryState.loading() => new HistoryState._(factory.first(new HistoryStateLoading()));
-  factory HistoryState.load(List<HistoryListItem> items) => new HistoryState._(factory.second(new HistoryStateLoad(items)));
-  factory HistoryState.error(String error) => new HistoryState._(factory.third(new HistoryStateError(error)));
+  factory HistoryState.loading() => HistoryState._(factory.first(HistoryStateLoading()));
+  factory HistoryState.load(List<HistoryListItem> items) => HistoryState._(factory.second(HistoryStateLoad(items)));
+  factory HistoryState.error(String error) => HistoryState._(factory.third(HistoryStateError(error)));
 }
 
 class HistoryStateLoading extends State {}

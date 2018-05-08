@@ -14,10 +14,10 @@ class HomeIntent {
     final VoidStreamCallback beerCheckIn,
     final VoidStreamCallback showAccountPage,
   }) :
-    this.showProfile = showProfile ?? new VoidStreamCallback(),
-    this.showHistory = showHistory ?? new VoidStreamCallback(),
-    this.retry = retry ?? new VoidStreamCallback(),
-    this.beerCheckIn = beerCheckIn ?? new VoidStreamCallback(),
-    this.showAccountPage = showAccountPage ?? new VoidStreamCallback();
+    this.showProfile = showProfile ?? VoidStreamCallback(),
+    this.showHistory = showHistory ?? VoidStreamCallback(),
+    this.retry = retry ?? VoidStreamCallback(),
+    this.beerCheckIn = beerCheckIn ?? VoidStreamCallback(),
+    this.showAccountPage = showAccountPage ?? VoidStreamCallback();
 
 }

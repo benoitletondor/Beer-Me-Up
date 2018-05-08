@@ -32,8 +32,8 @@ class HomePage extends StatefulWidget {
     AuthenticationService authService,
     UserDataService dataService}) {
 
-    final _intent = intent ?? new HomeIntent();
-    final _model = model ?? new HomeViewModel(
+    final _intent = intent ?? HomeIntent();
+    final _model = model ?? HomeViewModel(
       authService ?? AuthenticationService.instance,
       dataService ?? UserDataService.instance,
       _intent.showProfile,
@@ -43,11 +43,11 @@ class HomePage extends StatefulWidget {
       _intent.showAccountPage,
     );
 
-    return new HomePage._(key: key, intent: _intent, model: _model);
+    return HomePage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  _HomePageState createState() => new _HomePageState(intent: intent, model: model);
+  _HomePageState createState() => _HomePageState(intent: intent, model: model);
 }
 
 class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, HomeState> {
@@ -63,11 +63,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<HomeState> snapshot) {
         if( !snapshot.hasData ) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -82,31 +82,31 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
   }
 
   Widget _buildContentWidget(int index) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(true),
-      body: new Center(
-        child: new Stack(
+      body: Center(
+        child: Stack(
           children: <Widget>[
-            new Offstage(
+            Offstage(
               offstage: index != _TAB_PROFILE_INDEX,
-              child: new TickerMode(
+              child: TickerMode(
                 enabled: index == _TAB_PROFILE_INDEX,
-                child: new ProfilePage(),
+                child: ProfilePage(),
               ),
             ),
-            new Offstage(
+            Offstage(
               offstage: index != _TAB_HISTORY_INDEX,
-              child: new TickerMode(
+              child: TickerMode(
                 enabled: index == _TAB_HISTORY_INDEX,
-                child: new HistoryPage(),
+                child: HistoryPage(),
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: new FittedBox(
-        child: new MaterialExtendedFAB(
-          icon: new Image.asset(
+      floatingActionButton: FittedBox(
+        child: MaterialExtendedFAB(
+          icon: Image.asset(
             "images/fab_icon.png",
             width: 20.0,
           ),
@@ -116,12 +116,12 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           onPressed: intent.beerCheckIn,
         ),
       ),
-      floatingActionButtonLocation: new _CenterBottomNavBarFloatFabLocation(),
-      bottomNavigationBar: new Theme(
+      floatingActionButtonLocation: const _CenterBottomNavBarFloatFabLocation(),
+      bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Theme.of(context).primaryColor,
         ),
-        child: new BottomNavigationBar(
+        child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: index,
           fixedColor: Colors.white,
@@ -136,26 +136,25 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
               intent.showHistory();
             }
           },
-          items: <BottomNavigationBarItem>[
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.person),
-              title: new Text(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text(
                 "Profile",
-                style: new TextStyle(
+                style: TextStyle(
                   fontFamily: "Google Sans",
                 ),
               ),
             ),
-            new BottomNavigationBarItem( // Fake item
-              icon: new Container(),
-              title: new Container(),
-              backgroundColor: Theme.of(context).primaryColor,
+            BottomNavigationBarItem( // Fake item
+              icon: SizedBox(),
+              title: SizedBox(),
             ),
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.history),
-              title: new Text(
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              title: Text(
                 "History",
-                style: new TextStyle(
+                style: TextStyle(
                   fontFamily: "Google Sans",
                 ),
               ),
@@ -167,16 +166,16 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
   }
 
   Widget _buildLoadingWidget() {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(false),
-      body: new LoadingWidget(),
+      body: LoadingWidget(),
     );
   }
 
   Widget _buildErrorWidget({@required String error}) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(false),
-      body: new ErrorOccurredWidget(
+      body: ErrorOccurredWidget(
         error,
         () => intent.retry(),
       ),
@@ -184,10 +183,10 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
   }
 
   AppBar _buildAppBar(bool authenticated) {
-    final List<Widget> actions = new List();
+    final List<Widget> actions = List();
     if( authenticated ) {
-      actions.add(new PopupMenuButton<String>( // overflow menu
-        icon: new Icon(Icons.more_vert),
+      actions.add(PopupMenuButton<String>( // overflow menu
+        icon: const Icon(Icons.more_vert),
         onSelected: (menu) {
           performSelectionHaptic(context);
 
@@ -198,11 +197,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           }
         },
         itemBuilder: (BuildContext context) {
-          return [new PopupMenuItem<String>(
+          return const [PopupMenuItem<String>(
             value: "account",
-            child: new Text(
+            child: Text(
               "Account",
-              style: new TextStyle(
+              style: TextStyle(
                 fontFamily: "Google Sans",
               ),
             ),
@@ -211,8 +210,8 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
       );
     }
 
-    return new AppBar(
-      title: new Image.asset("images/toolbar_icon.png"),
+    return AppBar(
+      title: Image.asset("images/toolbar_icon.png"),
       centerTitle: true,
       actions: actions,
     );
@@ -240,6 +239,6 @@ class _CenterBottomNavBarFloatFabLocation extends FloatingActionButtonLocation {
 
     fabY += (scaffoldGeometry.floatingActionButtonSize.height / 1.3);
 
-    return new Offset(fabX, fabY);
+    return Offset(fabX, fabY);
   }
 }

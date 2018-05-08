@@ -15,7 +15,7 @@ class OnboardingViewModel extends BaseViewModel<OnboardingState> {
   }
 
   @override
-  OnboardingState initialState() => new OnboardingState.onboarding();
+  OnboardingState initialState() => OnboardingState.onboarding();
 
   _finish(Null event) async {
     await _authService.setUserSawOnboarding();

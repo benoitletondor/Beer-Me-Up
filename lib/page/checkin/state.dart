@@ -28,10 +28,10 @@ class CheckInState extends Union4Impl<
       CheckInStatePredictionsAvailable,
       CheckInStateError> union, {this.currentStatePredictions}) : super(union);
 
-  factory CheckInState.empty() => new CheckInState._(factory.first(new CheckInStateInputEmpty()));
-  factory CheckInState.searching(List<Beer> previousPredictions) => new CheckInState._(factory.second(new CheckInStateSearching(previousPredictions)));
-  factory CheckInState.predictions(List<Beer> predictions) => new CheckInState._(factory.third(new CheckInStatePredictionsAvailable(predictions)), currentStatePredictions: predictions);
-  factory CheckInState.error(String error) => new CheckInState._(factory.fourth(new CheckInStateError(error)));
+  factory CheckInState.empty() => CheckInState._(factory.first(CheckInStateInputEmpty()));
+  factory CheckInState.searching(List<Beer> previousPredictions) => CheckInState._(factory.second(CheckInStateSearching(previousPredictions)));
+  factory CheckInState.predictions(List<Beer> predictions) => CheckInState._(factory.third(CheckInStatePredictionsAvailable(predictions)), currentStatePredictions: predictions);
+  factory CheckInState.error(String error) => CheckInState._(factory.fourth(CheckInStateError(error)));
 }
 
 class CheckInStateInputEmpty extends State {}
@@ -97,9 +97,9 @@ class AutoCompleteResponse {
 
   AutoCompleteResponse._(this.status, this.errorMessage, this.predictions);
 
-  factory AutoCompleteResponse.error(String error) => new AutoCompleteResponse._(false, error, []);
-  factory AutoCompleteResponse.empty() => new AutoCompleteResponse._(true, null, []);
-  factory AutoCompleteResponse.success(List<Beer> predictions) => new AutoCompleteResponse._(true, null, predictions);
+  factory AutoCompleteResponse.error(String error) => AutoCompleteResponse._(false, error, []);
+  factory AutoCompleteResponse.empty() => AutoCompleteResponse._(true, null, []);
+  factory AutoCompleteResponse.success(List<Beer> predictions) => AutoCompleteResponse._(true, null, predictions);
 
   bool isSuccessful() => status;
   bool isEmpty() => predictions.isEmpty;

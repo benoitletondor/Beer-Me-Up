@@ -38,15 +38,15 @@ class MaterialFlatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTapDown: (details) { performSelectionHaptic(context); },
-      child: new FlatButton(
+      child: FlatButton(
         onPressed: onPressed,
         textColor: textColor,
-        child: new Text(
+        child: Text(
           text,
           textAlign: TextAlign.center,
-          style: new TextStyle(
+          style: const TextStyle(
             fontFamily: 'Google Sans',
             fontWeight: FontWeight.bold,
             fontSize: 16.0,

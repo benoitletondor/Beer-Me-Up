@@ -28,8 +28,8 @@ class LoginPage extends StatefulWidget {
     LoginViewModel model,
     AuthenticationService userService}) {
 
-    final _intent = intent ?? new LoginIntent();
-    final _model = model ?? new LoginViewModel(
+    final _intent = intent ?? LoginIntent();
+    final _model = model ?? LoginViewModel(
       userService ?? AuthenticationService.instance,
       _intent.showSignIn,
       _intent.showSignUp,
@@ -46,19 +46,19 @@ class LoginPage extends StatefulWidget {
       _intent.signInPasswordInputChanged,
     );
 
-    return new LoginPage._(key: key, intent: _intent, model: _model);
+    return LoginPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  _LoginPageState createState() => new _LoginPageState(intent: intent, model: model);
+  _LoginPageState createState() => _LoginPageState(intent: intent, model: model);
 }
 
 class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, LoginState> {
 
-  final signUpEmailController = new TextEditingController();
-  final signUpPassController = new TextEditingController();
-  final signInEmailController = new TextEditingController();
-  final signInPassController = new TextEditingController();
+  final signUpEmailController = TextEditingController();
+  final signUpPassController = TextEditingController();
+  final signInEmailController = TextEditingController();
+  final signInPassController = TextEditingController();
 
   _LoginPageState({
     @required LoginIntent intent,
@@ -67,11 +67,11 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<LoginState> snapshot) {
         if( !snapshot.hasData ) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -86,32 +86,32 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   }
 
   Widget _buildSignUpScreen(BuildContext context, {String error}) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(context),
-      body: new SafeArea(
-        child: new SingleChildScrollView(
-          child: new Container(
-            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-            child: new Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(
+                Text(
                   "Create your account",
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18.0,
                     fontFamily: "Google Sans",
                     color: Colors.blueGrey[900],
                   ),
                 ),
-                new Offstage(
+                Offstage(
                   offstage: error == null,
-                  child: new Column(
+                  child: Column(
                     children: <Widget>[
-                      new Padding(padding: EdgeInsets.only(top: 16.0)),
-                      new Text(
+                      const Padding(padding: EdgeInsets.only(top: 16.0)),
+                      Text(
                         error ?? "",
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.red[600],
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -120,18 +120,18 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ],
                   ),
                 ),
-                new Padding(padding: EdgeInsets.only(top: 16.0)),
-                new TextField(
-                  decoration: new InputDecoration(
+                const Padding(padding: EdgeInsets.only(top: 16.0)),
+                TextField(
+                  decoration: const InputDecoration(
                     hintText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: signUpEmailController,
                   onChanged: (val) { intent.signUpEmailInputChanged(); },
                 ),
-                new Padding(padding: EdgeInsets.only(top: 16.0)),
-                new TextField(
-                  decoration: new InputDecoration(
+                const Padding(padding: EdgeInsets.only(top: 16.0)),
+                TextField(
+                  decoration: const InputDecoration(
                     hintText: "Password",
                   ),
                   keyboardType: TextInputType.text,
@@ -139,76 +139,76 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   controller: signUpPassController,
                   onChanged: (val) { intent.signUpPasswordInputChanged(); },
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 25.0)),
-                new Center(
-                  child: new MaterialRaisedButton.primary(
+                const Padding(padding: EdgeInsets.only(top: 25.0)),
+                Center(
+                  child: MaterialRaisedButton.primary(
                     context: context,
-                    onPressed: () { intent.signUp(new LoginFormData(signUpEmailController.text, signUpPassController.text)); },
+                    onPressed: () { intent.signUp(LoginFormData(signUpEmailController.text, signUpPassController.text)); },
                     text: "Sign-up"
                   ),
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 25.0)),
-                new Row(
+                const Padding(padding: EdgeInsets.only(top: 25.0)),
+                Row(
                   children: <Widget>[
-                    new Expanded(
-                      child: new Container(
+                    Expanded(
+                      child: Container(
                         height: 2.0,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.black38,
                         ),
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(left: 16.0)),
-                    new Text(
+                    const Padding(padding: EdgeInsets.only(left: 16.0)),
+                    Text(
                       "OR",
-                      style: new TextStyle(
+                      style: TextStyle(
                         fontSize: 18.0,
                         fontFamily: "Google Sans",
                         color: Colors.black38,
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(left: 16.0)),
-                    new Expanded(
-                      child: new Container(
+                    const Padding(padding: EdgeInsets.only(left: 16.0)),
+                    Expanded(
+                      child: Container(
                         height: 2.0,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.black38,
                         ),
                       ),
                     ),
                   ],
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 25.0)),
-                new Center(
-                  child: new MaterialRaisedButton.primary(
+                const Padding(padding: EdgeInsets.only(top: 25.0)),
+                Center(
+                  child: MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithGoogle,
                     text: "Sign-in with Google",
                     leading: Image.asset("images/google.png"),
                   ),
                 ),
-                new Padding(padding: const EdgeInsets.only(top: 16.0)),
-                new Center(
-                  child: new MaterialRaisedButton.primary(
+                const Padding(padding: EdgeInsets.only(top: 16.0)),
+                Center(
+                  child: MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithFacebook,
                     text: "Sign-in with Facebook",
                     leading: Image.asset("images/facebook.png"),
                   ),
                 ),
-                new Padding(padding: EdgeInsets.only(top: 30.0)),
-                new Row(
+                const Padding(padding: EdgeInsets.only(top: 30.0)),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Icon(
+                    Icon(
                       Icons.lock,
                       color: Colors.blueGrey[900],
                     ),
-                    new Padding(padding: EdgeInsets.only(left: 10.0)),
-                    new Expanded(
-                      child: new Text(
+                    const Padding(padding: EdgeInsets.only(left: 10.0)),
+                    Expanded(
+                      child: Text(
                         "Like privacy? We feel you. We don’t use or sell your data. It’s your personal beer logging, not ours ;)",
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.blueGrey[900],
                           fontSize: 14.0,
                           letterSpacing: -0.5,
@@ -217,9 +217,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ),
                   ],
                 ),
-                new Padding(padding: EdgeInsets.only(top: 20.0)),
-                new Center(
-                  child: new MaterialFlatButton.primary(
+                const Padding(padding: EdgeInsets.only(top: 20.0)),
+                Center(
+                  child: MaterialFlatButton.primary(
                     context: context,
                     onPressed: intent.showSignIn,
                     text: "Already have an account? Sign-in",
@@ -234,34 +234,34 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   }
 
   Widget _buildLoginScreen(BuildContext context, {String error}) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(context),
-      body: new Builder(
+      body: Builder(
         builder: (BuildContext context) {
-          return new SafeArea(
-            child: new SingleChildScrollView(
-              child: new Container(
-                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-                child: new Column(
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text(
+                    Text(
                       "Sign-in with your account",
-                      style: new TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18.0,
                         fontFamily: "Google Sans",
                         color: Colors.blueGrey[900],
                       ),
                     ),
-                    new Offstage(
+                    Offstage(
                       offstage: error == null,
-                      child: new Column(
+                      child: Column(
                         children: <Widget>[
-                          new Padding(padding: EdgeInsets.only(top: 16.0)),
-                          new Text(
+                          const Padding(padding: EdgeInsets.only(top: 16.0)),
+                          Text(
                             error ?? "",
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.red[600],
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -270,18 +270,18 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                         ],
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 16.0)),
-                    new TextField(
-                      decoration: new InputDecoration(
+                    const Padding(padding: EdgeInsets.only(top: 16.0)),
+                    TextField(
+                      decoration: InputDecoration(
                         hintText: "Email",
                       ),
                       keyboardType: TextInputType.emailAddress,
                       controller: signInEmailController,
                       onChanged: (val) { intent.signInEmailInputChanged(); },
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 16.0)),
-                    new TextField(
-                      decoration: new InputDecoration(
+                    const Padding(padding: EdgeInsets.only(top: 16.0)),
+                    TextField(
+                      decoration: InputDecoration(
                         hintText: "Password",
                       ),
                       keyboardType: TextInputType.text,
@@ -289,74 +289,74 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       controller: signInPassController,
                       onChanged: (val) { intent.signInPasswordInputChanged(); },
                     ),
-                    new Padding(padding: const EdgeInsets.only(top: 25.0)),
-                    new Center(
-                      child: new MaterialRaisedButton.primary(
+                    const Padding(padding: EdgeInsets.only(top: 25.0)),
+                    Center(
+                      child: MaterialRaisedButton.primary(
                           context: context,
-                          onPressed: () { intent.signIn(new LoginFormData(signInEmailController.text, signInPassController.text)); },
+                          onPressed: () { intent.signIn(LoginFormData(signInEmailController.text, signInPassController.text)); },
                           text: "Sign-in"
                       ),
                     ),
-                    new Padding(padding: const EdgeInsets.only(top: 16.0)),
-                    new Center(
-                      child: new MaterialFlatButton.primary(
+                    const Padding(padding: EdgeInsets.only(top: 16.0)),
+                    Center(
+                      child: MaterialFlatButton.primary(
                           context: context,
                           onPressed: () { intent.forgotPassword(context); },
                           text: "Forgot password?"
                       ),
                     ),
-                    new Padding(padding: const EdgeInsets.only(top: 20.0)),
-                    new Row(
+                    const Padding(padding: EdgeInsets.only(top: 20.0)),
+                    Row(
                       children: <Widget>[
-                        new Expanded(
-                          child: new Container(
+                        Expanded(
+                          child: Container(
                             height: 2.0,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.black38,
                             ),
                           ),
                         ),
-                        new Padding(padding: EdgeInsets.only(left: 16.0)),
-                        new Text(
+                        const Padding(padding: EdgeInsets.only(left: 16.0)),
+                        Text(
                           "OR",
-                          style: new TextStyle(
+                          style: TextStyle(
                             fontSize: 18.0,
                             fontFamily: "Google Sans",
                             color: Colors.black38,
                           ),
                         ),
-                        new Padding(padding: EdgeInsets.only(left: 16.0)),
-                        new Expanded(
-                          child: new Container(
+                        const Padding(padding: EdgeInsets.only(left: 16.0)),
+                        Expanded(
+                          child: Container(
                             height: 2.0,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.black38,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    new Padding(padding: const EdgeInsets.only(top: 25.0)),
-                    new Center(
-                      child: new MaterialRaisedButton.primary(
+                    const Padding(padding: EdgeInsets.only(top: 25.0)),
+                    Center(
+                      child: MaterialRaisedButton.primary(
                         context: context,
                         onPressed: intent.signInWithGoogle,
                         text: "Sign-in with Google",
                         leading: Image.asset("images/google.png"),
                       ),
                     ),
-                    new Padding(padding: const EdgeInsets.only(top: 16.0)),
-                    new Center(
-                      child: new MaterialRaisedButton.primary(
+                    const Padding(padding: EdgeInsets.only(top: 16.0)),
+                    Center(
+                      child: MaterialRaisedButton.primary(
                         context: context,
                         onPressed: intent.signInWithFacebook,
                         text: "Sign-in with Facebook",
                         leading: Image.asset("images/facebook.png"),
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 30.0)),
-                    new Center(
-                      child: new MaterialFlatButton.primary(
+                    const Padding(padding: EdgeInsets.only(top: 30.0)),
+                    Center(
+                      child: MaterialFlatButton.primary(
                         context: context,
                         onPressed: intent.showSignUp,
                         text: "Don't have an account yet? Sign-up",
@@ -373,15 +373,15 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
   }
 
   Widget _buildAuthenticatingScreen(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(context),
-      body: new LoadingWidget(),
+      body: LoadingWidget(),
     );
   }
 
   AppBar _buildAppBar(BuildContext context) {
-    return new AppBar(
-      title: new Image.asset("images/toolbar_icon.png"),
+    return AppBar(
+      title: Image.asset("images/toolbar_icon.png"),
       centerTitle: true,
     );
   }

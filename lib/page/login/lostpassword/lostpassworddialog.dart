@@ -5,56 +5,56 @@ import 'package:beer_me_up/common/widget/materialflatbutton.dart';
 
 // FIXME this view would need some proper MVI
 Future<String> showLostPasswordDialog(BuildContext context) async {
-  final emailController = new TextEditingController();
+  final emailController = TextEditingController();
 
   return showDialog<String>(
     context: context,
-    builder: (context) => new SimpleDialog(
-      title: new Text(
+    builder: (context) => SimpleDialog(
+      title: Text(
         'Retrieve password',
-        style: new TextStyle(
+        style: TextStyle(
           color: Colors.blueGrey[900],
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
       ),
-      contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
       children: <Widget>[
-        new Container(
+        Container(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: new Column(
+          child: Column(
             children: <Widget>[
-              new Text(
+              Text(
                 "Enter your login email and we'll send you instructions to reset your password",
-                style: new TextStyle(
+                style: TextStyle(
                   color: Colors.blueGrey[900],
                   fontSize: 15.0,
                 ),
               ),
-              new Padding(padding: EdgeInsets.only(top: 16.0)),
-              new TextField(
+              const Padding(padding: EdgeInsets.only(top: 16.0)),
+              TextField(
                 controller: emailController,
-                decoration: new InputDecoration(
-                  icon: const Icon(Icons.email),
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.email),
                   hintText: "Email",
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              new Padding(padding: EdgeInsets.only(top: 25.0)),
+              const Padding(padding: EdgeInsets.only(top: 25.0)),
             ],
           ),
         ),
-        new Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            new MaterialFlatButton(
+            MaterialFlatButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               text: "Cancel",
               textColor: Colors.blueGrey[900],
             ),
-            new MaterialFlatButton.primary(
+            MaterialFlatButton.primary(
               context: context,
               onPressed: () {
                 if( emailController.value.text.trim().isEmpty ) {
@@ -66,7 +66,7 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
               },
               text: "Reset password",
             ),
-            new Padding(padding: EdgeInsets.only(right: 8.0)),
+            const Padding(padding: EdgeInsets.only(right: 8.0)),
           ],
         ),
       ],
@@ -77,24 +77,24 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
 _showEmptyEmailDialog(BuildContext context) {
   showDialog(
     context: context,
-    builder: (context) => new AlertDialog(
-      title: new Text(
+    builder: (context) => AlertDialog(
+      title: Text(
         "Empty email",
-        style: new TextStyle(
+        style: TextStyle(
           color: Colors.blueGrey[900],
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
       ),
-      content: new Text(
+      content: Text(
         "Please provide an email",
-        style: new TextStyle(
+        style: TextStyle(
           color: Colors.blueGrey[900],
           fontSize: 15.0,
         ),
       ),
       actions: <Widget>[
-        new MaterialFlatButton.primary(
+        MaterialFlatButton.primary(
           context: context,
           onPressed: () {
             Navigator.of(context).pop();
@@ -107,21 +107,21 @@ _showEmptyEmailDialog(BuildContext context) {
 }
 
 showLostPasswordEmailSentSnackBar(BuildContext context) {
-  Scaffold.of(context).showSnackBar(new SnackBar(
-    content: new Text("Email with instructions has been send."),
+  Scaffold.of(context).showSnackBar(const SnackBar(
+    content: Text("Email with instructions has been send."),
     duration: Duration(seconds: 3),
   ));
 }
 
 showLostPasswordEmailErrorSendingSnackBar(BuildContext context, String error) {
-  Scaffold.of(context).showSnackBar(new SnackBar(
-    content: new Text(
+  Scaffold.of(context).showSnackBar(SnackBar(
+    content: Text(
       "An error occurred while sending en email with instructions ($error)",
-      style: new TextStyle(
+      style: TextStyle(
         color: Colors.red[600],
       ),
     ),
-    duration: Duration(seconds: 5),
+    duration: const Duration(seconds: 5),
   ));
 }
 

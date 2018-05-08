@@ -22,14 +22,14 @@ class OnboardingSecondPage extends StatefulWidget {
     OnboardingSecondPageIntent intent,
     OnboardingSecondPageViewModel model,}) {
 
-    final _intent = intent ?? new OnboardingSecondPageIntent();
-    final _model = model ?? new OnboardingSecondPageViewModel();
+    final _intent = intent ?? OnboardingSecondPageIntent();
+    final _model = model ?? OnboardingSecondPageViewModel();
 
-    return new OnboardingSecondPage._(key: key, intent: _intent, model: _model);
+    return OnboardingSecondPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<StatefulWidget> createState() => new _OnboardingSecondPageState(intent: intent, model: model);
+  State<StatefulWidget> createState() => _OnboardingSecondPageState(intent: intent, model: model);
 }
 
 class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, OnboardingSecondPageViewModel, OnboardingSecondPageIntent, OnboardingSecondPageState> {
@@ -41,121 +41,121 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<OnboardingSecondPageState> snapshot) {
         if (!snapshot.hasData) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
           (onboarding) => _buildOnboardingScreen(),
-          () => new Container(),
+          () => Container(),
         );
       },
     );
   }
 
   Widget _buildOnboardingScreen() {
-    return new SafeArea(
-      child: new Container(
+    return SafeArea(
+      child: Container(
         padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 50.0),
-        child: new Column(
+        child: Column(
           children: <Widget>[
-            new ConstrainedBox(
-              constraints: new BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
-              child: new Image.asset("images/large_logo.png"),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+              child: Image.asset("images/large_logo.png"),
             ),
-            new Padding(padding: EdgeInsets.only(top: 16.0)),
-            new Expanded(
-              child: new SingleChildScrollView(
-                child: new Column(
-                  children: <Widget>[
-                    new Text(
+            Padding(padding: EdgeInsets.only(top: 16.0)),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: const <Widget>[
+                    Text(
                       "How does it work?",
-                      style: new TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Google Sans',
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                         fontSize: 18.0,
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 25.0)),
-                    new RichText(
-                      text: new TextSpan(
+                    Padding(padding: EdgeInsets.only(top: 25.0)),
+                    RichText(
+                      text: TextSpan(
                         text: "1. ",
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
-                          new TextSpan(
+                          TextSpan(
                             text: "Create an account",
-                            style: new TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          new TextSpan(
+                          TextSpan(
                             text: ", to save and retreive your beer check-ins at any time",
                           )
                         ],
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 10.0)),
-                    new RichText(
-                      text: new TextSpan(
+                    Padding(padding: EdgeInsets.only(top: 10.0)),
+                    RichText(
+                      text: TextSpan(
                         text: "2. Every time you drink a beer, just ",
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
-                          new TextSpan(
+                          TextSpan(
                             text: "check-in it",
-                            style: new TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          new TextSpan(
+                          TextSpan(
                             text: " into the app",
                           )
                         ],
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 10.0)),
-                    new RichText(
-                      text: new TextSpan(
+                    Padding(padding: EdgeInsets.only(top: 10.0)),
+                    RichText(
+                      text: TextSpan(
                         text: "3. Get a full ",
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
-                          new TextSpan(
+                          TextSpan(
                             text: "history",
-                            style: new TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          new TextSpan(
+                          TextSpan(
                             text: ", with ",
                           ),
-                          new TextSpan(
+                          TextSpan(
                             text: "stats",
-                            style: new TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          new TextSpan(
+                          TextSpan(
                             text: ", about your all the beers you drank",
                           )
                         ],
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.only(top: 25.0)),
-                    new Text(
+                    Padding(padding: EdgeInsets.only(top: 25.0)),
+                    Text(
                       "And that's it! That easy!",
-                      style: new TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Google Sans',
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
@@ -166,9 +166,9 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
                 ),
               ),
             ),
-            new Padding(padding: EdgeInsets.only(top: 16.0)),
-            new Center(
-              child: new MaterialRaisedButton.accent(
+            const Padding(padding: EdgeInsets.only(top: 16.0)),
+            Center(
+              child: MaterialRaisedButton.accent(
                 context: context,
                 onPressed: intent.finish,
                 text: "Let's go"

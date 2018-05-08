@@ -8,22 +8,22 @@ class ErrorOccurredWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new Column(
+    return Center(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Text(
+          const Text(
             "An error occurred",
-            style: new TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold
             ),
           ),
-          new Padding(padding: const EdgeInsets.only(top: 10.0)),
-          new Text(_error),
-          new Padding(padding: const EdgeInsets.only(top: 30.0)),
-          new RaisedButton(
+          const Padding(padding: EdgeInsets.only(top: 10.0)),
+          Text(_error),
+          const Padding(padding: EdgeInsets.only(top: 30.0)),
+          RaisedButton(
             onPressed: _retryCallback,
-            child: new Text("Retry"),
+            child: const Text("Retry"),
           )
         ],
       ),

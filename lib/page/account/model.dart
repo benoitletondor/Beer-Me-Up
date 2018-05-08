@@ -26,14 +26,14 @@ class AccountViewModel extends BaseViewModel<AccountState> {
   }
 
   @override
-  AccountState initialState() => new AccountState.loading();
+  AccountState initialState() => AccountState.loading();
 
   _loadData() async {
-    setState(new AccountState.loading());
+    setState(AccountState.loading());
 
     final user = await _authService.getCurrentUser();
 
-    setState(new AccountState.account(user.email, user.displayName));
+    setState(AccountState.account(user.email, user.displayName));
   }
 
   _logout(Null event) async {
@@ -41,8 +41,8 @@ class AccountViewModel extends BaseViewModel<AccountState> {
     await _authService.resetUserSawOnboarding(); // FIXME remove that later
     popUntil(ModalRoute.withName('/'));
     pushReplacement(
-      new MaterialPageRoute(
-        builder: (BuildContext context) => new HomePage(),
+      MaterialPageRoute(
+        builder: (BuildContext context) => HomePage(),
         settings: RouteSettings(
           name: "/",
           isInitialRoute: true

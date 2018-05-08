@@ -32,18 +32,18 @@ class CheckInPage extends StatefulWidget {
     CheckInViewModel model,
     UserDataService dataService}) {
 
-    final _intent = intent ?? new CheckInIntent();
-    final _model = model ?? new CheckInViewModel(
+    final _intent = intent ?? CheckInIntent();
+    final _model = model ?? CheckInViewModel(
       dataService ?? UserDataService.instance,
       _intent.input,
       _intent.beerSelected,
     );
 
-    return new CheckInPage._(key: key, intent: _intent, model: _model);
+    return CheckInPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<CheckInPage> createState() => new _CheckInPageState(intent: intent, model: model);
+  State<CheckInPage> createState() => _CheckInPageState(intent: intent, model: model);
 }
 
 class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckInIntent, CheckInState> {
@@ -57,7 +57,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
   Future<Null> search(String value) async {
     _timer?.cancel();
-    _timer = new Timer(const Duration(milliseconds: 300), () {
+    _timer = Timer(Duration(milliseconds: 300), () {
       _timer.cancel();
       intent.input(value);
     });
@@ -65,11 +65,11 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<CheckInState> snapshot) {
         if( !snapshot.hasData ) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -83,9 +83,9 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   }
 
   Widget _buildResultScreen(List<Beer> predictions) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new _BeersListView(
+      body: _BeersListView(
         beers: predictions,
         onTap: (beer) => intent.beerSelected(beer),
       ),
@@ -93,15 +93,15 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   }
 
   Widget _buildLoadingScreen(List<Beer> previousPrediction) {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new Stack(
+      body: Stack(
         children: <Widget>[
-          new Container(
-            constraints: new BoxConstraints(maxHeight: 3.0),
-            child: new LinearProgressIndicator()
+          Container(
+            constraints: const BoxConstraints(maxHeight: 3.0),
+            child: const LinearProgressIndicator()
           ),
-          new _BeersListView(
+          _BeersListView(
             beers: previousPrediction,
             onTap: intent.beerSelected,
           ),
@@ -111,22 +111,23 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   }
 
   Widget _buildEmptyScreen() {
-    return new Scaffold(
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new Stack(children: []),
+      body: Stack(children: []),
     );
   }
 
   Widget _buildErrorScreen(String error) {
-    return new Scaffold(
+    // TODO
+    return Scaffold(
       appBar: _buildAppBar(),
-      body: new Stack(children: []),
+      body: Stack(children: []),
     );
   }
 
   Widget _buildAppBar() {
-    return new AppBar(
-      title: new _AppBarPlacesAutoCompleteTextField(
+    return AppBar(
+      title: _AppBarPlacesAutoCompleteTextField(
         onInputChanged: (input) => search(input),
       ),
     );
@@ -142,14 +143,17 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new TextField(
+    return Center(
+      child: TextField(
         autofocus: true,
         maxLines: 1,
-        style: new TextStyle(color: Colors.white, fontSize: 16.0),
-        decoration: new InputDecoration(
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16.0
+        ),
+        decoration: const InputDecoration(
           hintText: "Type a beer name",
-          hintStyle: new TextStyle(color: const Color(0x99FFFFFF), fontSize: 16.0),
+          hintStyle: TextStyle(color: Color(0x99FFFFFF), fontSize: 16.0),
           border: InputBorder.none,
         ),
         onChanged: (input) => onInputChanged(input),
@@ -169,12 +173,12 @@ class _BeersListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView.builder(
+    return ListView.builder(
       itemCount: beers.length,
       itemBuilder: (BuildContext context, int index) {
         final Beer beer = beers[index];
 
-        return new BeerTile(
+        return BeerTile(
           beer: beer,
           title: beer.name,
           subtitle: beer.style?.shortName,

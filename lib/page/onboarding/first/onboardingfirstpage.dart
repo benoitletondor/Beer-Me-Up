@@ -22,14 +22,14 @@ class OnboardingFirstPage extends StatefulWidget {
     OnboardingFirstPageIntent intent,
     OnboardingFirstPageViewModel model,}) {
 
-    final _intent = intent ?? new OnboardingFirstPageIntent();
-    final _model = model ?? new OnboardingFirstPageViewModel();
+    final _intent = intent ?? OnboardingFirstPageIntent();
+    final _model = model ?? OnboardingFirstPageViewModel();
 
-    return new OnboardingFirstPage._(key: key, intent: _intent, model: _model);
+    return OnboardingFirstPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<StatefulWidget> createState() => new _OnboardingFirstPageState(intent: intent, model: model);
+  State<StatefulWidget> createState() => _OnboardingFirstPageState(intent: intent, model: model);
 }
 
 class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, OnboardingFirstPageViewModel, OnboardingFirstPageIntent, OnboardingFirstPageState> {
@@ -41,53 +41,53 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<OnboardingFirstPageState> snapshot) {
         if (!snapshot.hasData) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
           (onboarding) => _buildOnboardingScreen(context),
-          () => new Container(),
+          () => Container(),
         );
       },
     );
   }
 
   Widget _buildOnboardingScreen(BuildContext context) {
-    return new SafeArea(
-      child: new Container(
+    return SafeArea(
+      child: Container(
         padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 50.0),
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new ConstrainedBox(
-              constraints: new BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2),
-              child: new Image.asset("images/round_logo.png"),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2),
+              child: Image.asset("images/round_logo.png"),
             ),
-            new Container(
-              child: new Row(
+            Container(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Expanded(
-                    child: new Column(
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        new Text(
+                      children: const <Widget>[
+                        Text(
                           "Ever wondered...",
-                          style: new TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Google Sans',
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 20.0,
                           ),
                         ),
-                        new Padding(padding: EdgeInsets.only(top: 10.0)),
-                        new Text(
+                        Padding(padding: EdgeInsets.only(top: 10.0)),
+                        Text(
                           "\"What was that beer I drank last time that tasted so good?\"",
-                          style: new TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
                           ),
@@ -95,16 +95,16 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
                       ],
                     ),
                   ),
-                  new Padding(padding: EdgeInsets.only(left: 15.0)),
-                  new Image.asset(
+                  const Padding(padding: EdgeInsets.only(left: 15.0)),
+                  Image.asset(
                     "images/thinking_face.png",
                     width: 50.0,
                   ),
                 ],
               ),
             ),
-            new Center(
-              child: new MaterialRaisedButton.accent(
+            Center(
+              child: MaterialRaisedButton.accent(
                 context: context,
                 onPressed: intent.next,
                 text: "Yeah! Totally!"

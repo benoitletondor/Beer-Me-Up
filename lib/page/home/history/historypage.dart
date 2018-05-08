@@ -29,23 +29,23 @@ class HistoryPage extends StatefulWidget {
     HistoryViewModel model,
     UserDataService dataService}) {
 
-    final _intent = intent ?? new HistoryIntent();
-    final _model = model ?? new HistoryViewModel(
+    final _intent = intent ?? HistoryIntent();
+    final _model = model ?? HistoryViewModel(
       dataService ?? UserDataService.instance,
       _intent.retry,
       _intent.loadMore,
     );
 
-    return new HistoryPage._(key: key, intent: _intent, model: _model);
+    return HistoryPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  _HistoryPageState createState() => new _HistoryPageState(intent: intent, model: model);
+  _HistoryPageState createState() => _HistoryPageState(intent: intent, model: model);
 }
 
 class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, HistoryIntent, HistoryState> {
-  static final _listSectionDateFormatter = new DateFormat.yMMMMd();
-  static final _listRowCheckInDateFormatter = new DateFormat().add_Hm();
+  static final _listSectionDateFormatter = DateFormat.yMMMMd();
+  static final _listRowCheckInDateFormatter = DateFormat().add_Hm();
 
   _HistoryPageState({
     @required HistoryIntent intent,
@@ -54,11 +54,11 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<HistoryState> snapshot) {
         if( !snapshot.hasData ) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
@@ -71,23 +71,23 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   }
 
   Widget _buildLoadingWidget() {
-    return new Container(
-      padding: EdgeInsets.only(top: 10.0, bottom: 25.0),
-      child: new LoadingWidget(),
+    return Container(
+      padding: const EdgeInsets.only(top: 10.0, bottom: 25.0),
+      child: LoadingWidget(),
     );
   }
 
   Widget _buildErrorWidget({@required String error}) {
-    return new ErrorOccurredWidget(
+    return ErrorOccurredWidget(
       error,
       intent.retry
     );
   }
 
   Widget _buildLoadWidget({@required List<HistoryListItem> items}) {
-    return new ListView.builder(
+    return ListView.builder(
       itemCount: items.length,
-      padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
+      padding: EdgeInsets.only(top: 20.0, bottom: 36.0),
       itemBuilder: (BuildContext context, int index) {
         final item = items[index];
 
@@ -101,17 +101,17 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           return _buildListLoadingMore();
         }
 
-        return new Container();
+        return Container();
       },
     );
   }
 
   Widget _buildListSectionWidget(DateTime date, int index) {
-    return new Container(
-      padding: new EdgeInsets.only(top: index == 0 ? 0.0 : 30.0, left: 16.0, right: 16.0),
-      child: new Text(
+    return Container(
+      padding: EdgeInsets.only(top: index == 0 ? 0.0 : 30.0, left: 16.0, right: 16.0),
+      child: Text(
         _listSectionDateFormatter.format(date),
-        style: new TextStyle(
+        style: TextStyle(
           fontFamily: "Google Sans",
           color: Colors.blueGrey[900],
           fontSize: 18.0,
@@ -121,7 +121,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   }
 
   Widget _buildListRow(CheckIn checkIn) {
-    return new BeerTile(
+    return BeerTile(
       beer: checkIn.beer,
       title: checkIn.beer.name,
       subtitle: "${_listRowCheckInDateFormatter.format(checkIn.date)} - ${checkIn.quantity.toString()}",
@@ -129,10 +129,10 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   }
 
   Widget _buildListLoadMore(BuildContext context) {
-    return new Container(
-      padding: EdgeInsets.only(top: 10.0, bottom: 25.0),
-      child: new Center(
-        child: new MaterialRaisedButton.primary(
+    return Container(
+      padding: const EdgeInsets.only(top: 10.0, bottom: 25.0),
+      child: Center(
+        child: MaterialRaisedButton.primary(
           context: context,
           text: "Load more",
           onPressed: intent.loadMore,
@@ -142,8 +142,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   }
 
   Widget _buildListLoadingMore() {
-    return new Center(
-      child: new CircularProgressIndicator(),
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

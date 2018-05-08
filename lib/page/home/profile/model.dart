@@ -23,7 +23,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   }
 
   @override
-  ProfileState initialState() => new ProfileState.loading();
+  ProfileState initialState() => ProfileState.loading();
 
   @override
   Stream<ProfileState> bind(BuildContext context) {
@@ -42,16 +42,16 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
   _loadData() async {
     try {
-      setState(new ProfileState.loading());
+      setState(ProfileState.loading());
 
       final ProfileData data = await loadProfileData();
 
-      setState(new ProfileState.load(data));
+      setState(ProfileState.load(data));
 
       _bindToUpdates();
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error loading profile");
-      setState(new ProfileState.error(e.toString()));
+      setState(ProfileState.error(e.toString()));
     }
   }
 
@@ -84,7 +84,7 @@ class ProfileData {
   ProfileData(this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.weekDrankQuantity);
 
   factory ProfileData.fromData(List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
-    final Map<BeerCategory, double> categoriesCounter = new Map();
+    final Map<BeerCategory, double> categoriesCounter = Map();
 
     BeerCheckInsData favouriteBeer;
     BeerCategory favouriteCategory;
@@ -107,13 +107,13 @@ class ProfileData {
       }
     }
 
-    final Map<String, BeerCheckInsData> weekBeersMap = new Map();
+    final Map<String, BeerCheckInsData> weekBeersMap = Map();
     double weekDrankQuantity = 0.0;
 
     for(CheckIn checkin in checkIns) {
       BeerCheckInsData data = weekBeersMap[checkin.beer.id];
 
-      weekBeersMap[checkin.beer.id] = new BeerCheckInsData(
+      weekBeersMap[checkin.beer.id] = BeerCheckInsData(
         checkin.beer,
         (data == null ? 0 : data.numberOfCheckIns) + 1,
         data == null ? checkin.date : (data.lastCheckinTime.isBefore(checkin.date) ? checkin.date : data.lastCheckinTime),
@@ -126,7 +126,7 @@ class ProfileData {
     final List<BeerCheckInsData> checkInsList =  weekBeersMap.values.toList(growable: false);
     checkInsList.sort((a, b) => b.drankQuantity.compareTo(a.drankQuantity));
 
-    return new ProfileData(
+    return ProfileData(
       favouriteBeer,
       favouriteCategory,
       checkInsList,

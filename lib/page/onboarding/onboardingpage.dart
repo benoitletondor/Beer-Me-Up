@@ -1,7 +1,6 @@
 import 'package:meta/meta.dart';
 import 'dart:math';
 
-import 'package:flutter_stream_friends/flutter_stream_friends.dart';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/service/authenticationservice.dart';
@@ -32,21 +31,21 @@ class OnboardingPage extends StatefulWidget {
     OnboardingViewModel model,
     AuthenticationService userService}) {
 
-    final _intent = intent ?? new OnboardingIntent();
-    final _model = model ?? new OnboardingViewModel(
+    final _intent = intent ?? OnboardingIntent();
+    final _model = model ?? OnboardingViewModel(
       userService ?? AuthenticationService.instance,
       _intent.finish,
     );
 
-    return new OnboardingPage._(key: key, intent: _intent, model: _model);
+    return OnboardingPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<StatefulWidget> createState() => new _OnboardingPageState(intent: intent, model: model);
+  State<StatefulWidget> createState() => _OnboardingPageState(intent: intent, model: model);
 }
 
 class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel, OnboardingIntent, OnboardingState> {
-  final PageController _controller = new PageController();
+  final PageController _controller = PageController();
 
   _OnboardingPageState({
     @required OnboardingIntent intent,
@@ -55,31 +54,31 @@ class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<OnboardingState> snapshot) {
         if (!snapshot.hasData) {
-          return new Container();
+          return Container();
         }
 
         return snapshot.data.join(
           (onboarding) => _buildOnboardingScreen(context),
-          () => new Container(),
+          () => Container(),
         );
       },
     );
   }
 
   Widget _buildOnboardingScreen(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: new Stack(
+      body: Stack(
         children: <Widget>[
-          new PageView(
+          PageView(
             controller: _controller,
             children: <Widget>[
-              new OnboardingFirstPage(
-                intent: new OnboardingFirstPageIntent(
+              OnboardingFirstPage(
+                intent: OnboardingFirstPageIntent(
                   nextIntent: () {
                     _controller.nextPage(
                       duration: Duration(milliseconds: 250),
@@ -88,26 +87,26 @@ class _OnboardingPageState extends ViewState<OnboardingPage, OnboardingViewModel
                   },
                 ),
               ),
-              new OnboardingSecondPage(
-                intent: new OnboardingSecondPageIntent(
+              OnboardingSecondPage(
+                intent: OnboardingSecondPageIntent(
                   finishIntent: intent.finish,
                 ),
               )
             ],
           ),
-          new Positioned(
+          Positioned(
             bottom: 20.0,
             left: 0.0,
             right: 0.0,
-            child: new Center(
-              child: new _DotsIndicator(
+            child: Center(
+              child: _DotsIndicator(
                 color: Colors.white,
                 controller: _controller,
                 itemCount: 2,
                 onPageSelected: (int page) {
                   _controller.animateToPage(
                     page,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.ease,
                   );
                 },
@@ -161,16 +160,16 @@ class _DotsIndicator extends AnimatedWidget {
       ),
     );
     double zoom = 1.0 + (_kMaxZoom - 1.0) * selectedness;
-    return new Container(
+    return Container(
       width: _kDotSpacing,
-      child: new Center(
-        child: new Material(
+      child: Center(
+        child: Material(
           color: color,
           type: MaterialType.circle,
-          child: new Container(
+          child: Container(
             width: _kDotSize * zoom,
             height: _kDotSize * zoom,
-            child: new InkWell(
+            child: InkWell(
               onTap: () => onPageSelected(index),
             ),
           ),
@@ -180,9 +179,9 @@ class _DotsIndicator extends AnimatedWidget {
   }
 
   Widget build(BuildContext context) {
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: new List<Widget>.generate(itemCount, _buildDot),
+      children: List<Widget>.generate(itemCount, _buildDot),
     );
   }
 }

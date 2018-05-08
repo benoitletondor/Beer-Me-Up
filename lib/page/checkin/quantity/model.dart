@@ -19,16 +19,16 @@ class CheckInQuantityViewModel extends BaseViewModel<CheckInQuantityState> {
   }
 
   @override
-  CheckInQuantityState initialState() => new CheckInQuantityState.base(selectedBeer);
+  CheckInQuantityState initialState() => CheckInQuantityState.base(selectedBeer);
 
   _onQuantitySelected(CheckInQuantity quantity) async {
-    setState(new CheckInQuantityState.quantitySelected(selectedBeer, quantity));
+    setState(CheckInQuantityState.quantitySelected(selectedBeer, quantity));
   }
 
   _onCheckInConfirmed(Null event) async {
     final selectedQuantity = getState().currentStateSelectedQuantity;
     if( selectedQuantity == null ) {
-      setState(new CheckInQuantityState.error(selectedBeer));
+      setState(CheckInQuantityState.error(selectedBeer));
       return;
     }
 
