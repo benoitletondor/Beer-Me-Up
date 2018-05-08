@@ -92,7 +92,13 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   }
 
   _onNewCheckin(CheckIn checkIn) async {
-    _checkIns.insert(0, checkIn);
+    if( _checkIns.isNotEmpty && _checkIns[0].date.isAfter(checkIn.date) ) {
+      _checkIns.add(checkIn);
+      _checkIns.sort((a, b) => b.date.compareTo(a.date));
+    } else {
+      _checkIns.insert(0, checkIn);
+    }
+
     _items = await _buildItemList(_checkIns, _hasMore);
 
     setState(HistoryState.load(_items));

@@ -54,10 +54,13 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
       builder: (BuildContext context) => CheckInQuantityPage(selectedBeer: selectedBeer)
     ));
 
-    if( quantityResult != null && quantityResult[SELECTED_CHECKIN_QUANTITY_KEY] != null ) {
+    if( quantityResult != null &&
+        quantityResult[SELECTED_CHECKIN_QUANTITY_KEY] != null &&
+        quantityResult[SELECTED_CHECKIN_DATE_KEY] != null ) {
       pop({
         SELECTED_BEER_KEY: selectedBeer,
         SELECTED_QUANTITY_KEY: quantityResult[SELECTED_CHECKIN_QUANTITY_KEY],
+        SELECTED_DATE_KEY: quantityResult[SELECTED_CHECKIN_DATE_KEY]
       });
     }
   }

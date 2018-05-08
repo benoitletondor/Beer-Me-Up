@@ -268,7 +268,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ),
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Email",
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -277,7 +277,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ),
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Password",
                       ),
                       keyboardType: TextInputType.text,

@@ -86,24 +86,23 @@ class HomeViewModel extends BaseViewModel<HomeState> {
   }
 
   _beerCheckIn(Null event) async {
-    final Map returnValue = await pushNamed("/checkin");
+    final Map returnValue = await pushNamed(CHECK_IN_PAGE_ROUTE);
 
     if( returnValue != null ) {
       final Beer selectedBeer = returnValue[SELECTED_BEER_KEY];
       final CheckInQuantity selectedQuantity = returnValue[SELECTED_QUANTITY_KEY];
-      debugPrint("Selected beer: ${selectedBeer.name} - ${selectedQuantity.value}L");
+      final DateTime checkInDate = returnValue[SELECTED_DATE_KEY];
 
       try {
         await _dataService.saveBeerCheckIn(CheckIn(
-          date: DateTime.now(),
+          creationDate: new DateTime.now(),
+          date: checkInDate,
           beer: selectedBeer,
           quantity: selectedQuantity,
         ));
       } catch ( e, stackTrace) {
         printException(e, stackTrace, "Error saving checkin");
       }
-    } else {
-      debugPrint("No beer selected");
     }
   }
 

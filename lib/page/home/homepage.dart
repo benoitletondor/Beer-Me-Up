@@ -116,7 +116,7 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           onPressed: intent.beerCheckIn,
         ),
       ),
-      floatingActionButtonLocation: const _CenterBottomNavBarFloatFabLocation(),
+      floatingActionButtonLocation: _CenterBottomNavBarFloatFabLocation(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Theme.of(context).primaryColor,

@@ -10,8 +10,6 @@ class CheckInQuantityState extends Union3Impl<
     CheckInQuantityQuantitySelected,
     CheckInQuantityQuantityNotSelectedError> {
 
-  CheckInQuantity currentStateSelectedQuantity;
-
   static final Triplet<
       CheckInQuantityStateBase,
       CheckInQuantityQuantitySelected,
@@ -23,36 +21,40 @@ class CheckInQuantityState extends Union3Impl<
   CheckInQuantityState._(Union3<
       CheckInQuantityStateBase,
       CheckInQuantityQuantitySelected,
-      CheckInQuantityQuantityNotSelectedError> union, {this.currentStateSelectedQuantity}) : super(union);
+      CheckInQuantityQuantityNotSelectedError> union) : super(union);
 
-  factory CheckInQuantityState.base(Beer selectedBeer) => CheckInQuantityState._(factory.first(CheckInQuantityStateBase(selectedBeer)));
-  factory CheckInQuantityState.quantitySelected(Beer selectedBeer, CheckInQuantity quantity) => CheckInQuantityState._(factory.second(CheckInQuantityQuantitySelected(selectedBeer, quantity)), currentStateSelectedQuantity: quantity);
-  factory CheckInQuantityState.error(Beer selectedBeer) => CheckInQuantityState._(factory.third(CheckInQuantityQuantityNotSelectedError(selectedBeer)));
+  factory CheckInQuantityState.base(Beer selectedBeer, DateTime date) => CheckInQuantityState._(factory.first(CheckInQuantityStateBase(selectedBeer, date)));
+  factory CheckInQuantityState.quantitySelected(Beer selectedBeer, CheckInQuantity quantity, DateTime date) => CheckInQuantityState._(factory.second(CheckInQuantityQuantitySelected(selectedBeer, quantity, date)));
+  factory CheckInQuantityState.error(Beer selectedBeer, DateTime date) => CheckInQuantityState._(factory.third(CheckInQuantityQuantityNotSelectedError(selectedBeer, date)));
 }
 
 class CheckInQuantityStateBase extends State {
   final Beer selectedBeer;
+  final DateTime date;
 
-  CheckInQuantityStateBase(this.selectedBeer);
+  CheckInQuantityStateBase(this.selectedBeer, this.date);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
         other is CheckInQuantityStateBase &&
         runtimeType == other.runtimeType &&
-        selectedBeer == other.selectedBeer;
+        selectedBeer == other.selectedBeer &&
+        date == other.date;
 
   @override
   int get hashCode =>
       super.hashCode ^
-      selectedBeer.hashCode;
+      selectedBeer.hashCode ^
+      date.hashCode;
 }
 
 class CheckInQuantityQuantitySelected extends State {
   final Beer selectedBeer;
   final CheckInQuantity quantity;
+  final DateTime date;
 
-  CheckInQuantityQuantitySelected(this.selectedBeer, this.quantity);
+  CheckInQuantityQuantitySelected(this.selectedBeer, this.quantity, this.date);
 
   @override
   bool operator ==(Object other) =>
@@ -60,29 +62,34 @@ class CheckInQuantityQuantitySelected extends State {
         other is CheckInQuantityQuantitySelected &&
         runtimeType == other.runtimeType &&
         selectedBeer == other.selectedBeer &&
-        quantity == other.quantity;
+        quantity == other.quantity &&
+        date == other.date;
 
   @override
   int get hashCode =>
       super.hashCode ^
       selectedBeer.hashCode ^
-      quantity.hashCode;
+      quantity.hashCode ^
+      date.hashCode;
 }
 
 class CheckInQuantityQuantityNotSelectedError extends State {
   final Beer selectedBeer;
+  final DateTime date;
 
-  CheckInQuantityQuantityNotSelectedError(this.selectedBeer);
+  CheckInQuantityQuantityNotSelectedError(this.selectedBeer, this.date);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
         other is CheckInQuantityQuantityNotSelectedError &&
         runtimeType == other.runtimeType &&
-        selectedBeer == other.selectedBeer;
+        selectedBeer == other.selectedBeer &&
+        date == other.date;
 
   @override
   int get hashCode =>
       super.hashCode ^
-      selectedBeer.hashCode;
+      selectedBeer.hashCode ^
+      date.hashCode;
 }

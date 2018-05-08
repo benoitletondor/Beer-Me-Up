@@ -3,11 +3,13 @@ import 'package:meta/meta.dart';
 import 'package:beer_me_up/model/beer.dart';
 
 class CheckIn {
+  final DateTime creationDate;
   final DateTime date;
   final Beer beer;
   final CheckInQuantity quantity;
 
   CheckIn({
+    @required this.creationDate,
     @required this.date,
     @required this.beer,
     @required this.quantity,
@@ -18,12 +20,14 @@ class CheckIn {
       identical(this, other) ||
           other is CheckIn &&
               runtimeType == other.runtimeType &&
+              creationDate == other.creationDate &&
               date == other.date &&
               beer == other.beer &&
               quantity == other.quantity;
 
   @override
   int get hashCode =>
+      creationDate.hashCode ^
       date.hashCode ^
       beer.hashCode ^
       quantity.hashCode;

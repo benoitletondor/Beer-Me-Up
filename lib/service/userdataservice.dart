@@ -125,7 +125,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     final subscription = _userDoc
       .reference
       .collection("history")
-      .where("date", isGreaterThan: DateTime.now())
+      .where("creation_date", isGreaterThan: DateTime.now())
       .snapshots()
       .listen(
         (querySnapshot) {
@@ -166,7 +166,9 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
     final numberOfCheckIns = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["checkin_counter"] : 0;
     final drankQuantity = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["drank_quantity"] : 0.0;
+    final lastCheckinDate = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["last_checkin"] : null;
 
+    final lastCheckin = lastCheckinDate != null ? checkIn.date.isAfter(lastCheckinDate) ? checkIn.date : lastCheckinDate : checkIn.date;
     await beerDocument
       .setData(
         {
@@ -175,7 +177,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "beer_style_id": checkIn.beer.style?.id,
           "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
-          "last_checkin": checkIn.date,
+          "last_checkin": lastCheckin,
           "checkin_counter": numberOfCheckIns + 1,
           "drank_quantity": drankQuantity + checkIn.quantity.value,
         },
@@ -193,6 +195,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         .reference
         .collection("history")
         .add({
+          "creation_date": checkIn.creationDate,
           "date": checkIn.date,
           "beer": _createValueForBeer(checkIn.beer),
           "beer_id": checkIn.beer.id,
@@ -248,6 +251,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   CheckIn _parseCheckinFromDocument(DocumentSnapshot doc) {
     return CheckIn(
+      creationDate: doc["creation_date"],
       date: doc["date"],
       beer: _parseBeerFromValue(doc["beer"], doc["beer_version"]),
       quantity: _parseQuantityFromValue(doc["quantity"]),
