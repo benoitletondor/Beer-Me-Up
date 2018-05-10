@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/common/exceptionprint.dart';
 import 'state.dart';
-import 'package:beer_me_up/page/checkin/quantity/checkinquantitypage.dart';
+import 'package:beer_me_up/page/checkin/confirm/checkinconfirmpage.dart';
 import 'checkinpage.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/model/beer.dart';
@@ -50,17 +50,19 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
   }
 
   _onBeerSelected(Beer selectedBeer) async {
-    final quantityResult = await push(MaterialPageRoute(
-      builder: (BuildContext context) => CheckInQuantityPage(selectedBeer: selectedBeer)
+    final confirmResult = await push(MaterialPageRoute(
+      builder: (BuildContext context) => CheckInConfirmPage(selectedBeer: selectedBeer)
     ));
 
-    if( quantityResult != null &&
-        quantityResult[SELECTED_CHECKIN_QUANTITY_KEY] != null &&
-        quantityResult[SELECTED_CHECKIN_DATE_KEY] != null ) {
+    if( confirmResult != null &&
+        confirmResult[SELECTED_CHECKIN_QUANTITY_KEY] != null &&
+        confirmResult[SELECTED_CHECKIN_DATE_KEY] != null &&
+        confirmResult[CHECKIN_POINTS_KEY] != null ) {
       pop({
         SELECTED_BEER_KEY: selectedBeer,
-        SELECTED_QUANTITY_KEY: quantityResult[SELECTED_CHECKIN_QUANTITY_KEY],
-        SELECTED_DATE_KEY: quantityResult[SELECTED_CHECKIN_DATE_KEY]
+        SELECTED_QUANTITY_KEY: confirmResult[SELECTED_CHECKIN_QUANTITY_KEY],
+        SELECTED_DATE_KEY: confirmResult[SELECTED_CHECKIN_DATE_KEY],
+        POINTS_KEY: confirmResult[CHECKIN_POINTS_KEY],
       });
     }
   }

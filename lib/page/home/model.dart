@@ -59,8 +59,6 @@ class HomeViewModel extends BaseViewModel<HomeState> {
         return;
       }
 
-      debugPrint("User logged in $currentUser");
-
       setState(HomeState.loading());
 
       await _dataService.initDB(currentUser);
@@ -92,6 +90,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       final Beer selectedBeer = returnValue[SELECTED_BEER_KEY];
       final CheckInQuantity selectedQuantity = returnValue[SELECTED_QUANTITY_KEY];
       final DateTime checkInDate = returnValue[SELECTED_DATE_KEY];
+      final int checkInPoints = returnValue[POINTS_KEY];
 
       try {
         await _dataService.saveBeerCheckIn(CheckIn(
@@ -99,6 +98,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
           date: checkInDate,
           beer: selectedBeer,
           quantity: selectedQuantity,
+          points: checkInPoints,
         ));
       } catch ( e, stackTrace) {
         printException(e, stackTrace, "Error saving checkin");

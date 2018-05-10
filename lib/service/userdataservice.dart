@@ -19,12 +19,20 @@ abstract class UserDataService {
 
   Future<CheckinFetchResponse> fetchCheckInHistory({CheckIn startAfter});
   Stream<CheckIn> listenForCheckIn();
+  Future<CheckinDetails> getCheckinDetails(Beer beer, DateTime date);
   Future<void> saveBeerCheckIn(CheckIn checkIn);
 
   Future<List<BeerCheckInsData>> fetchBeerCheckInsData();
   Future<List<CheckIn>> fetchThisWeekCheckIns();
 
   Future<List<Beer>> findBeersMatching(String pattern);
+}
+
+class CheckinDetails {
+  final List<CheckIn> weekCheckIns;
+  final bool beerAlreadyCheckedIn;
+
+  CheckinDetails(this.weekCheckIns, this.beerAlreadyCheckedIn);
 }
 
 class CheckinFetchResponse {
@@ -149,6 +157,27 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   }
 
   @override
+  Future<CheckinDetails> getCheckinDetails(Beer beer, DateTime date) async {
+    _assertDBInitialized();
+
+    final List<CheckIn> checkins = await fetchWeekCheckIns(date);
+    final beerDocument = _userDoc
+        .reference
+        .collection("beers")
+        .document(beer.id);
+
+    bool beerAlreadyCheckedIn = false;
+    try {
+      final beerDoc = await beerDocument.get();
+      beerAlreadyCheckedIn = beerDoc != null && beerDoc.exists;
+    } catch (e) {
+      beerAlreadyCheckedIn = false;
+    }
+
+    return CheckinDetails(checkins, beerAlreadyCheckedIn);
+  }
+
+  @override
   Future<void> saveBeerCheckIn(CheckIn checkIn) async {
     _assertDBInitialized();
 
@@ -203,7 +232,19 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
           "quantity": checkIn.quantity.value,
+          "points": checkIn.points,
         });
+
+    int currentPointsCounter = _userDoc.data.containsKey("points") ? _userDoc.data["points"] as int : 0;
+    await _userDoc
+      .reference
+      .setData({
+        "points": currentPointsCounter+checkIn.points,
+      },
+      merge: true);
+
+    // Update user doc
+    _userDoc = await _userDoc.reference.get();
   }
 
   Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
@@ -255,6 +296,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       date: doc["date"],
       beer: _parseBeerFromValue(doc["beer"], doc["beer_version"]),
       quantity: _parseQuantityFromValue(doc["quantity"]),
+      points: doc["points"],
     );
   }
 
@@ -409,32 +451,42 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   @override
   Future<List<CheckIn>> fetchThisWeekCheckIns() async {
+    return fetchWeekCheckIns(DateTime.now());
+  }
+
+  Future<List<CheckIn>> fetchWeekCheckIns(DateTime date) async {
     _assertDBInitialized();
 
-    final now = DateTime.now();
-    final today = DateTime(
-      now.year,
-      now.month,
-      now.day,
+    final day = DateTime(
+      date.year,
+      date.month,
+      date.day,
     );
 
-    final DateTime thisWeekStartDate = today.add(
+    final DateTime weekStartDate = day.add(
       Duration(
-        days: -(now.weekday - 1)
+        days: -(day.weekday - 1)
+      )
+    );
+
+    final DateTime weekEndDate = day.add(
+      Duration(
+        days: 7 - day.weekday
       )
     );
 
     final QuerySnapshot snapshots = await _userDoc
-      .reference
-      .collection("history")
-      .where("date", isGreaterThanOrEqualTo: thisWeekStartDate)
-      .orderBy("date", descending: true)
-      .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
-      .getDocuments();
+        .reference
+        .collection("history")
+        .where("date", isGreaterThanOrEqualTo: weekStartDate)
+        .where("date", isLessThanOrEqualTo: weekEndDate)
+        .orderBy("date", descending: true)
+        .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
+        .getDocuments();
 
     return snapshots.documents
-      .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
-      .toList(growable: false);
+        .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
+        .toList(growable: false);
   }
 
 }

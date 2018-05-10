@@ -8,7 +8,6 @@ abstract class Config {
 
   int getDefaultCheckInPoints();
   int getFirstBeerCheckInPoints();
-  int getFirstCategoryCheckInPoints();
   int getFirstWeekBeerCheckInPoints();
   int getFirstWeekCategoryCheckInPoints();
   int getFirstWeekCheckInPoints();
@@ -18,13 +17,11 @@ class _ConfigImpl implements Config {
   static const _DEFAULT_CHECKIN_POINTS_KEY = "default_checkin";
   static const _DEFAULT_DEFAULT_CHECKIN_POINTS_VALUE = 2;
   static const _FIRST_BEER_CHECKIN_POINTS_KEY = "first_beer_checkin";
-  static const _DEFAULT_FIRST_BEER_CHECKIN_POINTS_VALUE = 20;
-  static const _FIRST_CATEGORY_CHECKIN_POINTS_KEY = "first_category_checkin";
-  static const _DEFAULT_FIRST_CATEGORY_CHECKIN_POINTS_VALUE = 30;
+  static const _DEFAULT_FIRST_BEER_CHECKIN_POINTS_VALUE = 40;
   static const _FIRST_WEEK_BEER_CHECKIN_POINTS_KEY = "first_week_beer_checkin";
-  static const _DEFAULT_FIRST_WEEK_BEER_CHECKIN_POINTS_VALUE = 10;
+  static const _DEFAULT_FIRST_WEEK_BEER_CHECKIN_POINTS_VALUE = 15;
   static const _FIRST_WEEK_CATEGORY_CHECKIN_POINTS_KEY = "first_week_category_checkin";
-  static const _DEFAULT_FIRST_WEEK_CATEGORY_CHECKIN_POINTS_VALUE = 15;
+  static const _DEFAULT_FIRST_WEEK_CATEGORY_CHECKIN_POINTS_VALUE = 20;
   static const _FIRST_WEEK_CHECKIN_POINTS_KEY = "first_week_checkin";
   static const _DEFAULT_FIRST_WEEK_CHECKIN_POINTS_VALUE = 10;
 
@@ -40,7 +37,6 @@ class _ConfigImpl implements Config {
       remoteConfig.setDefaults(<String, dynamic>{
         _DEFAULT_CHECKIN_POINTS_KEY: _DEFAULT_DEFAULT_CHECKIN_POINTS_VALUE,
         _FIRST_BEER_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_BEER_CHECKIN_POINTS_VALUE,
-        _FIRST_CATEGORY_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_CATEGORY_CHECKIN_POINTS_VALUE,
         _FIRST_WEEK_BEER_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_BEER_CHECKIN_POINTS_VALUE,
         _FIRST_WEEK_CATEGORY_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_CATEGORY_CHECKIN_POINTS_VALUE,
         _FIRST_WEEK_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_CHECKIN_POINTS_VALUE,
@@ -48,7 +44,7 @@ class _ConfigImpl implements Config {
 
       _remoteConfig = remoteConfig;
 
-      await _remoteConfig.fetch(expiration: const Duration(hours: 12));
+      await _remoteConfig.fetch(expiration: const Duration(hours: 1));
       await _remoteConfig.activateFetched();
 
       debugPrint("Remote config fetched");
@@ -74,15 +70,6 @@ class _ConfigImpl implements Config {
       return _remoteConfig.getInt(_FIRST_BEER_CHECKIN_POINTS_KEY);
     } else {
       return _DEFAULT_FIRST_BEER_CHECKIN_POINTS_VALUE;
-    }
-  }
-
-  @override
-  int getFirstCategoryCheckInPoints() {
-    if( _remoteConfig != null ) {
-      return _remoteConfig.getInt(_FIRST_CATEGORY_CHECKIN_POINTS_KEY);
-    } else {
-      return _DEFAULT_FIRST_CATEGORY_CHECKIN_POINTS_VALUE;
     }
   }
 

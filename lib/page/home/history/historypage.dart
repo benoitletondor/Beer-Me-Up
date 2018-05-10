@@ -79,8 +79,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
 
   Widget _buildErrorWidget({@required String error}) {
     return ErrorOccurredWidget(
-      error,
-      intent.retry
+      error: error,
+      onRetryPressed: intent.retry
     );
   }
 
@@ -124,6 +124,21 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
       beer: checkIn.beer,
       title: checkIn.beer.name,
       subtitle: "${_listRowCheckInDateFormatter.format(checkIn.date)} - ${checkIn.quantity.toString()}",
+      thirdWidget: Row(
+        children: <Widget>[
+          Image.asset(
+            "images/coin.png",
+            width: 13.0,
+          ),
+          const Padding(padding: EdgeInsets.only(left: 5.0)),
+          Text(
+            checkIn.points.toString(),
+            style: TextStyle(
+              fontSize: 14.0,
+            ),
+          )
+        ],
+      ),
     );
   }
 

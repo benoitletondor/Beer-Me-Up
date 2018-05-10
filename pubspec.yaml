@@ -46,6 +46,7 @@ flutter:
     - images/beer_half_pint.png
     - images/beer_pint.png
     - images/beer_icon_big_white_background.png
+    - images/coin.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

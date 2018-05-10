@@ -7,12 +7,14 @@ class CheckIn {
   final DateTime date;
   final Beer beer;
   final CheckInQuantity quantity;
+  final int points;
 
   CheckIn({
     @required this.creationDate,
     @required this.date,
     @required this.beer,
     @required this.quantity,
+    @required this.points,
   });
 
   @override
@@ -23,14 +25,16 @@ class CheckIn {
               creationDate == other.creationDate &&
               date == other.date &&
               beer == other.beer &&
-              quantity == other.quantity;
+              quantity == other.quantity &&
+              points == other.points;
 
   @override
   int get hashCode =>
       creationDate.hashCode ^
       date.hashCode ^
       beer.hashCode ^
-      quantity.hashCode;
+      quantity.hashCode ^
+      points.hashCode;
 }
 
 class CheckInQuantity {

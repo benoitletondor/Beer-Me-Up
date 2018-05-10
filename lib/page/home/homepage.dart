@@ -176,8 +176,8 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
     return Scaffold(
       appBar: _buildAppBar(false),
       body: ErrorOccurredWidget(
-        error,
-        () => intent.retry(),
+        error: error,
+        onRetryPressed: intent.retry,
       ),
     );
   }

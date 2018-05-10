@@ -9,6 +9,7 @@ class BeerTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final String thirdTitle;
+  final Widget thirdWidget;
   final GestureTapCallback onTap;
 
   BeerTile({
@@ -16,6 +17,7 @@ class BeerTile extends StatelessWidget {
     @required this.title,
     this.subtitle,
     this.thirdTitle,
+    this.thirdWidget,
     this.onTap,
   });
 
@@ -58,6 +60,11 @@ class BeerTile extends StatelessWidget {
           fontSize: 14.0,
         ),
       ));
+    }
+
+    if( thirdWidget != null ) {
+      children.add(Padding(padding: EdgeInsets.only(top: 5.0)));
+      children.add(thirdWidget);
     }
 
     return InkWell(

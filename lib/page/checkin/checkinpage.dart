@@ -16,6 +16,7 @@ const String CHECK_IN_PAGE_ROUTE = "/checkin";
 const String SELECTED_BEER_KEY = "selectedBeer";
 const String SELECTED_QUANTITY_KEY = "selectedQuantity";
 const String SELECTED_DATE_KEY = "selectedDate";
+const String POINTS_KEY = "points";
 
 class CheckInPage extends StatefulWidget {
   final CheckInIntent intent;

@@ -19,6 +19,8 @@ class BeerMeUpApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    config.toString(); // Access object to ensure creation at startup time
+
     return MaterialApp(
       title: 'Beer Me Up',
       theme: ThemeData(
