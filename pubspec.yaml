@@ -19,6 +19,7 @@ dependencies:
   firebase_auth: 0.5.8
   cloud_firestore: 0.7.0+2
   firebase_analytics: 0.3.3
+  firebase_remote_config: 0.0.2
 
 dev_dependencies:
   flutter_test:

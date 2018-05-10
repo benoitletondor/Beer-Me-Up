@@ -255,14 +255,17 @@ class _CheckInQuantityPageState extends ViewState<CheckInQuantityPage, CheckInQu
       case CheckInQuantity.BOTTLE:
         return Image.asset(
           "images/beer_bottle.png",
+          height: 82.0,
         );
       case CheckInQuantity.HALF_PINT:
         return Image.asset(
           "images/beer_half_pint.png",
+          height: 53.0,
         );
       case CheckInQuantity.PINT:
         return Image.asset(
           "images/beer_pint.png",
+          height: 53.0,
         );
     }
 
