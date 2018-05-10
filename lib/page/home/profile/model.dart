@@ -62,8 +62,9 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   Future<ProfileData> loadProfileData() async {
     final List<BeerCheckInsData> data = await _dataService.fetchBeerCheckInsData();
     final List<CheckIn> checkIns = await _dataService.fetchThisWeekCheckIns();
+    final int totalPoints = await _dataService.getTotalUserPoints();
 
-    return ProfileData.fromData(data, checkIns);
+    return ProfileData.fromData(totalPoints, data, checkIns);
   }
 
   void _bindToUpdates() {
@@ -77,13 +78,15 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 class ProfileData {
   final BeerCategory favouriteCategory;
   final BeerCheckInsData favouriteBeer;
+  final int totalPoints;
 
   final List<BeerCheckInsData> weekBeers;
-  final double weekDrankQuantity;
+  final int numberOfBeers;
+  final int weekPoints;
 
-  ProfileData(this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.weekDrankQuantity);
+  ProfileData(this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
 
-  factory ProfileData.fromData(List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
+  factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
     final Map<BeerCategory, double> categoriesCounter = Map();
 
     BeerCheckInsData favouriteBeer;
@@ -108,7 +111,7 @@ class ProfileData {
     }
 
     final Map<String, BeerCheckInsData> weekBeersMap = Map();
-    double weekDrankQuantity = 0.0;
+    int points = 0;
 
     for(CheckIn checkin in checkIns) {
       BeerCheckInsData data = weekBeersMap[checkin.beer.id];
@@ -120,17 +123,19 @@ class ProfileData {
         (data == null ? 0.0 : data.drankQuantity) + checkin.quantity.value,
       );
 
-      weekDrankQuantity += checkin.quantity.value;
+      points += checkin.points;
     }
     
-    final List<BeerCheckInsData> checkInsList =  weekBeersMap.values.toList(growable: false);
+    final List<BeerCheckInsData> checkInsList = weekBeersMap.values.toList(growable: false);
     checkInsList.sort((a, b) => b.drankQuantity.compareTo(a.drankQuantity));
 
     return ProfileData(
       favouriteBeer,
       favouriteCategory,
       checkInsList,
-      weekDrankQuantity,
+      weekBeersMap.length,
+      points,
+      totalPoints,
     );
   }
 }

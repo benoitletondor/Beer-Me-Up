@@ -123,7 +123,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
     return BeerTile(
       beer: checkIn.beer,
       title: checkIn.beer.name,
-      subtitle: "${_listRowCheckInDateFormatter.format(checkIn.date)} - ${checkIn.quantity.toString()}",
+      subtitle: "${_listRowCheckInDateFormatter.format(checkIn.date)} - ${(checkIn.quantity.value*100).toStringAsPrecision(2)}cl",
       thirdWidget: Row(
         children: <Widget>[
           Image.asset(
@@ -133,10 +133,10 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           const Padding(padding: EdgeInsets.only(left: 5.0)),
           Text(
             checkIn.points.toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14.0,
             ),
-          )
+          ),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
@@ -83,41 +84,79 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
       children: <Widget>[
         Container(
-          child: const Text(
-            "This week",
-            style: TextStyle(
-              fontFamily: "Google Sans",
-              fontSize: 24.0,
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        ),
-        Padding(padding: const EdgeInsets.only(top: 16.0)),
-        Container(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                "You drank: ",
-                style: TextStyle(
-                  fontSize: 16.0,
+              const Padding(padding: EdgeInsets.only(right: 16.0)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      "This week",
+                      style: TextStyle(
+                        fontFamily: "Google Sans",
+                        fontSize: 30.0,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 2.0)),
+                    RichText(
+                      text: TextSpan(
+                        text: "You had ",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Theme.of(context).textTheme.body1.color,
+                        ),
+                        children: <TextSpan> [
+                          TextSpan(
+                            text: "${profileData.numberOfBeers}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: " different beers",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                "${profileData.weekDrankQuantity.toStringAsPrecision(2)}L",
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
+              const Padding(padding: EdgeInsets.only(right: 16.0)),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 22.0),
+                margin: const EdgeInsets.only(top: 2.0),
+                child: Row(
+                  children: <Widget>[
+                    Image.asset(
+                      "images/coin.png",
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 8.0)),
+                    Text(
+                      "${profileData.weekPoints}",
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                 ),
               ),
+              const Padding(padding: EdgeInsets.only(right: 16.0)),
             ],
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
         ),
-        const Padding(padding: EdgeInsets.only(top: 20.0)),
+        Padding(padding: const EdgeInsets.only(top: 30.0)),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: const Text(
-            "Top 5",
+            "Top 3",
             style: TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,
@@ -133,10 +172,36 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             "All time",
             style: TextStyle(
               fontFamily: "Google Sans",
-              fontSize: 24.0,
+              fontSize: 30.0,
             ),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2.0)),
+        new Container(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: new Row(
+            children: <Widget>[
+              Text(
+                "Total of points: ",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(left: 5.0)),
+              Image.asset(
+                "images/coin.png",
+                width: 13.0,
+              ),
+              const Padding(padding: EdgeInsets.only(left: 5.0)),
+              Text(
+                profileData.totalPoints.toString(),
+                style: const TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+            ],
+          ),
         ),
         const Padding(padding: EdgeInsets.only(top: 20.0)),
         Offstage(
@@ -157,7 +222,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               BeerTile(
                 beer: profileData.favouriteBeer?.beer,
                 title: profileData.favouriteBeer?.beer?.name,
-                subtitle: "Drank ${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
+                subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
               )
             ],
           ),
@@ -198,14 +263,15 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   List<Widget> _buildWeekBeers(List<BeerCheckInsData> weekBeers) {
     return weekBeers
       .map((checkInData) => _buildWeekBeer(checkInData))
-      .toList(growable: false);
+      .toList(growable: false)
+      .sublist(0, min(3, weekBeers.length));
   }
 
   Widget _buildWeekBeer(BeerCheckInsData beerCheckIn) {
     return BeerTile(
       beer: beerCheckIn.beer,
       title: beerCheckIn.beer.name,
-      subtitle: "Drank ${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L.",
+      subtitle: "${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L",
       thirdTitle: "Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
     );
   }

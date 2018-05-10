@@ -24,6 +24,7 @@ abstract class UserDataService {
 
   Future<List<BeerCheckInsData>> fetchBeerCheckInsData();
   Future<List<CheckIn>> fetchThisWeekCheckIns();
+  Future<int> getTotalUserPoints();
 
   Future<List<Beer>> findBeersMatching(String pattern);
 }
@@ -235,16 +236,15 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "points": checkIn.points,
         });
 
+    _userDoc = await _userDoc.reference.get();
     int currentPointsCounter = _userDoc.data.containsKey("points") ? _userDoc.data["points"] as int : 0;
+
     await _userDoc
       .reference
       .setData({
         "points": currentPointsCounter+checkIn.points,
       },
       merge: true);
-
-    // Update user doc
-    _userDoc = await _userDoc.reference.get();
   }
 
   Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
@@ -487,6 +487,12 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     return snapshots.documents
         .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
         .toList(growable: false);
+  }
+
+  @override
+  Future<int> getTotalUserPoints() async {
+    final userDoc = await _userDoc.reference.get();
+    return userDoc["points"] as int;
   }
 
 }
