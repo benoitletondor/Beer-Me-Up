@@ -284,7 +284,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
       ),
     ));
 
-    if( selectedBeer.style.shortName != null ) {
+    if( selectedBeer.style?.shortName != null ) {
       children.add(Text(
         selectedBeer.style.shortName,
         maxLines: 2,
