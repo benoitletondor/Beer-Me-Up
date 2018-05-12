@@ -66,7 +66,7 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
               child: Image.asset("images/large_logo.png"),
             ),
-            Padding(padding: EdgeInsets.only(top: 16.0)),
+            const Padding(padding: EdgeInsets.only(top: 16.0)),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

@@ -25,9 +25,17 @@ abstract class AuthenticationService {
   Future<bool> hasUserSeenOnboarding();
   Future<void> setUserSawOnboarding();
   Future<void> resetUserSawOnboarding();
+
+  Future<bool> hapticFeedbackEnabled();
+  Future<void> setHapticFeedbackEnabled(bool enabled);
+
+  Future<bool> analyticsEnabled();
+  Future<void> setAnalyticsEnabled(bool enabled);
 }
 
 const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
+const String _ANALYTICS_ENABLED_KEY = "analyticsEnabled";
+const String _HAPTIC_FEEDBACK_ENABLED_KEY = "hapticFeedbackEnabled";
 
 class _AuthenticationServiceImpl implements AuthenticationService {
 
@@ -197,6 +205,38 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<void> sendResetPasswordEmail(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  @override
+  Future<bool> analyticsEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if( !prefs.getKeys().contains(_ANALYTICS_ENABLED_KEY) ) {
+      return true;
+    }
+
+    return prefs.getBool(_ANALYTICS_ENABLED_KEY);
+  }
+
+  @override
+  Future<bool> hapticFeedbackEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if( !prefs.getKeys().contains(_HAPTIC_FEEDBACK_ENABLED_KEY) ) {
+      return true;
+    }
+
+    return prefs.getBool(_HAPTIC_FEEDBACK_ENABLED_KEY);
+  }
+
+  @override
+  Future<void> setAnalyticsEnabled(bool enabled) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(_ANALYTICS_ENABLED_KEY, enabled);
+  }
+
+  @override
+  Future<void> setHapticFeedbackEnabled(bool enabled) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(_HAPTIC_FEEDBACK_ENABLED_KEY, enabled);
   }
 
 }

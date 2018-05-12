@@ -153,7 +153,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: Container(
                         height: 2.0,
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey[900],
+                          color: Theme.of(context).textTheme.title.color,
                         ),
                       ),
                     ),
@@ -170,7 +170,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: Container(
                         height: 2.0,
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey[900],
+                          color: Theme.of(context).textTheme.title.color,
                         ),
                       ),
                     ),
@@ -308,7 +308,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                           child: Container(
                             height: 2.0,
                             decoration: BoxDecoration(
-                              color: Colors.blueGrey[900],
+                              color: Theme.of(context).textTheme.title.color
                             ),
                           ),
                         ),
@@ -325,7 +325,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                           child: Container(
                             height: 2.0,
                             decoration: BoxDecoration(
-                              color: Colors.blueGrey[900],
+                              color: Theme.of(context).textTheme.title.color
                             ),
                           ),
                         ),

@@ -40,7 +40,7 @@ class HomePage extends StatefulWidget {
       _intent.showHistory,
       _intent.retry,
       _intent.beerCheckIn,
-      _intent.showAccountPage,
+      _intent.showSettingsPage,
     );
 
     return HomePage._(key: key, intent: _intent, model: _model);
@@ -84,7 +84,13 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
   Widget _buildContentWidget(int index) {
     return Scaffold(
       appBar: _buildAppBar(true),
-      body: Center(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/beer_background.jpg"),
+            fit: BoxFit.fitHeight,
+          ),
+        ),
         child: Stack(
           children: <Widget>[
             Offstage(
@@ -191,16 +197,16 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           performSelectionHaptic(context);
 
           switch (menu) {
-            case "account" :
-              intent.showAccountPage();
+            case "settings" :
+              intent.showSettingsPage();
               break;
           }
         },
         itemBuilder: (BuildContext context) {
           return const [PopupMenuItem<String>(
-            value: "account",
+            value: "settings",
             child: Text(
-              "Account",
+              "Settings",
               style: TextStyle(
                 fontFamily: "Google Sans",
               ),

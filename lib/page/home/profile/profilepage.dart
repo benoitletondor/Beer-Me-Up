@@ -156,7 +156,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: const Text(
-            "Top 3",
+            "Your week",
             style: TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,

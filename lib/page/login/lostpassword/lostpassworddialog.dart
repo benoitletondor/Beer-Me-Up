@@ -50,7 +50,7 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
                 Navigator.of(context).pop();
               },
               text: "Cancel",
-              textColor: Colors.blueGrey[900],
+              textColor: Theme.of(context).textTheme.title.color,
             ),
             MaterialFlatButton.primary(
               context: context,

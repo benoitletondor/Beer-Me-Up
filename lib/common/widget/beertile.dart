@@ -11,6 +11,7 @@ class BeerTile extends StatelessWidget {
   final String thirdTitle;
   final Widget thirdWidget;
   final GestureTapCallback onTap;
+  final BoxDecoration decoration;
 
   BeerTile({
     @required this.beer,
@@ -19,6 +20,7 @@ class BeerTile extends StatelessWidget {
     this.thirdTitle,
     this.thirdWidget,
     this.onTap,
+    this.decoration,
   });
 
   @override
@@ -75,6 +77,7 @@ class BeerTile extends StatelessWidget {
       child: Semantics(
         enabled: onTap != null,
         child: Container(
+          decoration: decoration,
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
           child: Row(
             children: <Widget>[

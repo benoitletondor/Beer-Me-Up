@@ -9,7 +9,7 @@ import 'package:beer_me_up/page/home/homepage.dart';
 import 'package:beer_me_up/page/onboarding/onboardingpage.dart';
 import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
-import 'package:beer_me_up/page/account/accountpage.dart';
+import 'package:beer_me_up/page/settings/settingspage.dart';
 
 void main() => runApp(BeerMeUpApp());
 
@@ -26,6 +26,7 @@ class BeerMeUpApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueAccent[400],
         accentColor: Colors.amber[500],
+        canvasColor: const Color(0xFFF8F8F8),
         textTheme: Typography(platform: defaultTargetPlatform).black.apply(
           bodyColor: Colors.blueGrey[900],
           displayColor: Colors.blueGrey[900],
@@ -36,7 +37,7 @@ class BeerMeUpApp extends StatelessWidget {
         ONBOARDING_PAGE_ROUTE: (BuildContext context) => OnboardingPage(),
         LOGIN_PAGE_ROUTE: (BuildContext context) => LoginPage(),
         CHECK_IN_PAGE_ROUTE: (BuildContext context) => CheckInPage(),
-        ACCOUNT_PAGE_ROUTE: (BuildContext context) => AccountPage(),
+        SETTINGS_PAGE_ROUTE: (BuildContext context) => SettingsPage(),
       },
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),

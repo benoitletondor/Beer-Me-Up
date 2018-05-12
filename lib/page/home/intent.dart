@@ -5,19 +5,19 @@ class HomeIntent {
   final VoidStreamCallback showHistory;
   final VoidStreamCallback retry;
   final VoidStreamCallback beerCheckIn;
-  final VoidStreamCallback showAccountPage;
+  final VoidStreamCallback showSettingsPage;
 
   HomeIntent({
     final VoidStreamCallback showProfile,
     final VoidStreamCallback showHistory,
     final VoidStreamCallback retry,
     final VoidStreamCallback beerCheckIn,
-    final VoidStreamCallback showAccountPage,
+    final VoidStreamCallback showSettingsPage,
   }) :
     this.showProfile = showProfile ?? VoidStreamCallback(),
     this.showHistory = showHistory ?? VoidStreamCallback(),
     this.retry = retry ?? VoidStreamCallback(),
     this.beerCheckIn = beerCheckIn ?? VoidStreamCallback(),
-    this.showAccountPage = showAccountPage ?? VoidStreamCallback();
+    this.showSettingsPage = showSettingsPage ?? VoidStreamCallback();
 
 }

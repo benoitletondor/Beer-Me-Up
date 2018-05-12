@@ -11,7 +11,7 @@ import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
-import 'package:beer_me_up/page/account/accountpage.dart';
+import 'package:beer_me_up/page/settings/settingspage.dart';
 
 class HomeViewModel extends BaseViewModel<HomeState> {
   final AuthenticationService _authService;
@@ -24,13 +24,13 @@ class HomeViewModel extends BaseViewModel<HomeState> {
       Stream<Null> onHistoryTabButtonPressed,
       Stream<Null> onErrorRetryButtonPressed,
       Stream<Null> onBeerCheckInButtonPressed,
-      Stream<Null> onAccountButtonPressed,) {
+      Stream<Null> onSettingsButtonPressed,) {
 
     onProfileTabButtonPressed.listen(_showProfileTab);
     onHistoryTabButtonPressed.listen(_showHistoryTab);
     onErrorRetryButtonPressed.listen(_retryLoading);
     onBeerCheckInButtonPressed.listen(_beerCheckIn);
-    onAccountButtonPressed.listen(_showAccountPage);
+    onSettingsButtonPressed.listen(_showSettingsPage);
   }
 
   @override
@@ -106,7 +106,7 @@ class HomeViewModel extends BaseViewModel<HomeState> {
     }
   }
 
-  _showAccountPage(Null event) async {
-    pushNamed(ACCOUNT_PAGE_ROUTE);
+  _showSettingsPage(Null event) async {
+    pushNamed(SETTINGS_PAGE_ROUTE);
   }
 }
