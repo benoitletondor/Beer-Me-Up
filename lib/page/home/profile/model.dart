@@ -7,11 +7,16 @@ import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
+import 'package:beer_me_up/common/datehelper.dart';
 
 import 'state.dart';
 
 class ProfileViewModel extends BaseViewModel<ProfileState> {
   final UserDataService _dataService;
+
+  List<BeerCheckInsData> _checkInsData;
+  List<CheckIn> _checkIns;
+  int _totalPoints;
 
   StreamSubscription<CheckIn> _checkInSubscription;
 
@@ -44,9 +49,9 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     try {
       setState(ProfileState.loading());
 
-      final ProfileData data = await loadProfileData();
+      await _loadProfileData();
 
-      setState(ProfileState.load(data));
+      setState(ProfileState.load(await _buildProfileData()));
 
       _bindToUpdates();
     } catch (e, stackTrace) {
@@ -59,19 +64,54 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     _loadData();
   }
 
-  Future<ProfileData> loadProfileData() async {
-    final List<BeerCheckInsData> data = await _dataService.fetchBeerCheckInsData();
-    final List<CheckIn> checkIns = await _dataService.fetchThisWeekCheckIns();
-    final int totalPoints = await _dataService.getTotalUserPoints();
+  _loadProfileData() async {
+    _checkInsData = List.from(await _dataService.fetchBeerCheckInsData());
+    _checkIns = List.from(await _dataService.fetchThisWeekCheckIns());
+    _totalPoints = await _dataService.getTotalUserPoints();
+  }
 
-    return ProfileData.fromData(totalPoints, data, checkIns);
+  Future<ProfileData> _buildProfileData() async {
+    return ProfileData.fromData(_totalPoints, _checkInsData, _checkIns);
   }
 
   void _bindToUpdates() {
     _checkInSubscription?.cancel();
     _checkInSubscription = _dataService.listenForCheckIn().listen((checkIn) {
-      _loadData();
+      _handleCheckIn(checkIn);
     });
+  }
+
+  void _handleCheckIn(CheckIn checkIn) async {
+    setState(ProfileState.loading());
+
+    try {
+      final weekDate = getWeekStartAndEndDate(DateTime.now());
+      if( checkIn.date.isAfter(weekDate.item1) && checkIn.date.isBefore(weekDate.item2) ) {
+        _checkIns.add(checkIn);
+      }
+
+      int dataIndex = _checkInsData.indexWhere((checkInData) => checkInData.beer == checkIn.beer);
+      if( dataIndex < 0 ) {
+        _checkInsData.add(BeerCheckInsData(checkIn.beer, 1, checkIn.date, checkIn.quantity.value));
+      } else {
+        final currentData = _checkInsData[dataIndex];
+        _checkInsData.removeAt(dataIndex);
+
+        _checkInsData.add(BeerCheckInsData(
+          checkIn.beer,
+          currentData.numberOfCheckIns + 1,
+          checkIn.date.isAfter(currentData.lastCheckinTime) ? checkIn.date : currentData.lastCheckinTime,
+          currentData.drankQuantity + checkIn.quantity.value,
+        ));
+      }
+
+      _totalPoints += checkIn.points;
+
+      setState(ProfileState.load(await _buildProfileData()));
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, "Error updating profile");
+      setState(ProfileState.error(e.toString()));
+    }
   }
 }
 

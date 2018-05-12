@@ -11,6 +11,7 @@ import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/service/brewerydbservice.dart';
+import 'package:beer_me_up/common/datehelper.dart';
 
 abstract class UserDataService {
   static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient());
@@ -457,29 +458,13 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
   Future<List<CheckIn>> fetchWeekCheckIns(DateTime date) async {
     _assertDBInitialized();
 
-    final day = DateTime(
-      date.year,
-      date.month,
-      date.day,
-    );
-
-    final DateTime weekStartDate = day.add(
-      Duration(
-        days: -(day.weekday - 1)
-      )
-    );
-
-    final DateTime weekEndDate = day.add(
-      Duration(
-        days: 7 - day.weekday
-      )
-    );
+    final weekDates = getWeekStartAndEndDate(date);
 
     final QuerySnapshot snapshots = await _userDoc
         .reference
         .collection("history")
-        .where("date", isGreaterThanOrEqualTo: weekStartDate)
-        .where("date", isLessThanOrEqualTo: weekEndDate)
+        .where("date", isGreaterThanOrEqualTo: weekDates.item1)
+        .where("date", isLessThanOrEqualTo: weekDates.item2)
         .orderBy("date", descending: true)
         .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
         .getDocuments();

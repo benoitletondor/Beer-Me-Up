@@ -9,6 +9,8 @@ dependencies:
 
   shared_preferences: 0.4.1
 
+  tuple: 1.0.1
+
   sealed_unions: 2.0.0
   flutter_stream_friends: 0.8.0
 

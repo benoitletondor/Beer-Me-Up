@@ -263,8 +263,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   List<Widget> _buildWeekBeers(List<BeerCheckInsData> weekBeers) {
     return weekBeers
       .map((checkInData) => _buildWeekBeer(checkInData))
-      .toList(growable: false)
-      .sublist(0, min(3, weekBeers.length));
+      .toList(growable: false);
   }
 
   Widget _buildWeekBeer(BeerCheckInsData beerCheckIn) {
