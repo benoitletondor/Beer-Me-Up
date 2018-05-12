@@ -6,6 +6,7 @@ import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/common/hapticfeedback.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -106,7 +107,10 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
                 const Padding(padding: EdgeInsets.only(right: 16.0)),
                 Switch(
                   value: hapticFeedbackEnabled,
-                  onChanged: intent.toggleHapticFeedback,
+                  onChanged: (value) {
+                    intent.toggleHapticFeedback(value);
+                    performSelectionHaptic(context);
+                  },
                   activeColor: Colors.white,
                   inactiveThumbColor: Theme.of(context).primaryColorDark,
                 ),
@@ -128,7 +132,10 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
               const Padding(padding: EdgeInsets.only(right: 16.0)),
               Switch(
                 value: analyticsEnabled,
-                onChanged: intent.toggleAnalytics,
+                onChanged: (value) {
+                  performSelectionHaptic(context);
+                  intent.toggleAnalytics(value);
+                },
                 activeColor: Colors.white,
                 inactiveThumbColor: Theme.of(context).primaryColorDark,
               ),
