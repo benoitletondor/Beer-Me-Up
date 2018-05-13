@@ -4,30 +4,81 @@ import 'package:beer_me_up/common/mvi/state.dart';
 
 import 'model.dart';
 
-class ProfileState extends Union3Impl<
+class ProfileState extends Union6Impl<
     ProfileStateLoading,
+    ProfileStateEmpty,
+    ProfileStateLoadNoAllTime,
+    ProfileStateLoadNoWeek,
     ProfileStateLoad,
     ProfileStateError> {
 
-  static final Triplet<
+  static final Sextet<
       ProfileStateLoading,
+      ProfileStateEmpty,
+      ProfileStateLoadNoAllTime,
+      ProfileStateLoadNoWeek,
       ProfileStateLoad,
-      ProfileStateError> factory = const Triplet<
+      ProfileStateError> factory = Sextet<
       ProfileStateLoading,
+      ProfileStateEmpty,
+      ProfileStateLoadNoAllTime,
+      ProfileStateLoadNoWeek,
       ProfileStateLoad,
       ProfileStateError>();
 
-  ProfileState._(Union3<
+  ProfileState._(Union6<
       ProfileStateLoading,
+      ProfileStateEmpty,
+      ProfileStateLoadNoAllTime,
+      ProfileStateLoadNoWeek,
       ProfileStateLoad,
       ProfileStateError> union) : super(union);
 
   factory ProfileState.loading() => ProfileState._(factory.first(ProfileStateLoading()));
-  factory ProfileState.load(ProfileData data) => ProfileState._(factory.second(ProfileStateLoad(data)));
-  factory ProfileState.error(String error) => ProfileState._(factory.third(ProfileStateError(error)));
+  factory ProfileState.empty() => ProfileState._(factory.second(ProfileStateEmpty()));
+  factory ProfileState.loadNoAllTime(ProfileData data) => ProfileState._(factory.third(ProfileStateLoadNoAllTime(data)));
+  factory ProfileState.loadNoWeek(ProfileData data) => ProfileState._(factory.fourth(ProfileStateLoadNoWeek(data)));
+  factory ProfileState.load(ProfileData data) => ProfileState._(factory.fifth(ProfileStateLoad(data)));
+  factory ProfileState.error(String error) => ProfileState._(factory.sixth(ProfileStateError(error)));
 }
 
 class ProfileStateLoading extends State {}
+
+class ProfileStateLoadNoAllTime extends State {
+  final ProfileData profileData;
+
+  ProfileStateLoadNoAllTime(this.profileData);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is ProfileStateLoadNoAllTime &&
+          runtimeType == other.runtimeType &&
+          profileData == other.profileData;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      profileData.hashCode;
+}
+
+class ProfileStateLoadNoWeek extends State {
+  final ProfileData profileData;
+
+  ProfileStateLoadNoWeek(this.profileData);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is ProfileStateLoadNoWeek &&
+              runtimeType == other.runtimeType &&
+              profileData == other.profileData;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      profileData.hashCode;
+}
 
 class ProfileStateLoad extends State {
   final ProfileData profileData;
@@ -46,6 +97,8 @@ class ProfileStateLoad extends State {
       super.hashCode ^
       profileData.hashCode;
 }
+
+class ProfileStateEmpty extends State {}
 
 class ProfileStateError extends State {
   final String error;

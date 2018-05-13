@@ -4,27 +4,32 @@ import 'package:beer_me_up/common/mvi/state.dart';
 
 import 'model.dart';
 
-class HistoryState extends Union3Impl<
+class HistoryState extends Union4Impl<
     HistoryStateLoading,
     HistoryStateLoad,
+    HistoryStateEmpty,
     HistoryStateError> {
 
-  static final Triplet<
+  static final Quartet<
       HistoryStateLoading,
       HistoryStateLoad,
-      HistoryStateError> factory = const Triplet<
+      HistoryStateEmpty,
+      HistoryStateError> factory = const Quartet<
       HistoryStateLoading,
       HistoryStateLoad,
+      HistoryStateEmpty,
       HistoryStateError>();
 
-  HistoryState._(Union3<
+  HistoryState._(Union4<
       HistoryStateLoading,
       HistoryStateLoad,
+      HistoryStateEmpty,
       HistoryStateError> union) : super(union);
 
   factory HistoryState.loading() => HistoryState._(factory.first(HistoryStateLoading()));
   factory HistoryState.load(List<HistoryListItem> items) => HistoryState._(factory.second(HistoryStateLoad(items)));
-  factory HistoryState.error(String error) => HistoryState._(factory.third(HistoryStateError(error)));
+  factory HistoryState.empty() => HistoryState._(factory.third(HistoryStateEmpty()));
+  factory HistoryState.error(String error) => HistoryState._(factory.fourth(HistoryStateError(error)));
 }
 
 class HistoryStateLoading extends State {}
@@ -46,6 +51,8 @@ class HistoryStateLoad extends State {
       super.hashCode ^
       items.hashCode;
 }
+
+class HistoryStateEmpty extends State {}
 
 class HistoryStateError extends State {
   final String error;

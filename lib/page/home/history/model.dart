@@ -52,7 +52,11 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       _items = await _buildItemList(_checkIns, _hasMore);
 
-      setState(HistoryState.load(_items));
+      if( _items.isEmpty ) {
+        setState(HistoryState.empty());
+      } else {
+        setState(HistoryState.load(_items));
+      }
 
       _bindToUpdates();
     } catch (e, stackTrace) {

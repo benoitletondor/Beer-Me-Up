@@ -52,6 +52,8 @@ flutter:
     - images/beer_background.jpg
     - images/brewerydb.png
     - images/search_empty_state.png
+    - images/main_empty_state.png
+    - images/arrow_bottom.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

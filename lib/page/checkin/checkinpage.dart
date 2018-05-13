@@ -249,10 +249,10 @@ class _BeersListView extends StatelessWidget {
               final Beer beer = beers[index];
 
               return BeerTile(
-                  beer: beer,
-                  title: beer.name,
-                  subtitle: beer.style?.shortName,
-                  onTap: () { onTap(beer); }
+                beer: beer,
+                title: beer.name,
+                subtitle: beer.style?.shortName,
+                onTap: () { onTap(beer); }
               );
             },
           ),

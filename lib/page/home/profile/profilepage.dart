@@ -61,6 +61,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
+          (empty) => _buildEmptyWidget(),
+          (loadNoAllTime) => _buildLoadWidget(loadNoAllTime.profileData),
+          (loadNoWeek) => _buildLoadWidget(loadNoWeek.profileData),
           (load) => _buildLoadWidget(load.profileData),
           (error) => _buildErrorWidget(error: error.error),
         );
@@ -70,6 +73,44 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   Widget _buildLoadingWidget() {
     return LoadingWidget();
+  }
+
+  Widget _buildEmptyWidget() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              "Welcome into your own beer museum",
+              style: TextStyle(
+                fontFamily: "Google Sans",
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 40.0)),
+          Image.asset("images/main_empty_state.png"),
+          const Padding(padding: EdgeInsets.only(top: 40.0)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              "Check the next beer you have into the app to start your history",
+              style: TextStyle(
+                fontFamily: "Google Sans",
+                fontSize: 20.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20.0)),
+          Image.asset("images/arrow_bottom.png"),
+        ],
+      ),
+    );
   }
 
   Widget _buildErrorWidget({@required String error}) {

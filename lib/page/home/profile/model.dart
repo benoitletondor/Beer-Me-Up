@@ -51,7 +51,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
       await _loadProfileData();
 
-      setState(ProfileState.load(await _buildProfileData()));
+      _setStateWithProfileData(await _buildProfileData());
 
       _bindToUpdates();
     } catch (e, stackTrace) {
@@ -107,15 +107,30 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
       _totalPoints += checkIn.points;
 
-      setState(ProfileState.load(await _buildProfileData()));
+      _setStateWithProfileData(await _buildProfileData());
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error updating profile");
       setState(ProfileState.error(e.toString()));
     }
   }
+
+  _setStateWithProfileData(ProfileData profileData) {
+    if( !profileData.hasAllTime && !profileData.hasWeek ) {
+      setState(ProfileState.empty());
+    } else if( profileData.hasWeek && profileData.hasAllTime ) {
+      setState(ProfileState.load(profileData));
+    } else if( profileData.hasAllTime ) {
+      setState(ProfileState.loadNoWeek(profileData));
+    } else {
+      setState(ProfileState.loadNoAllTime(profileData));
+    }
+  }
 }
 
 class ProfileData {
+  final bool hasAllTime;
+  final bool hasWeek;
+
   final BeerCategory favouriteCategory;
   final BeerCheckInsData favouriteBeer;
   final int totalPoints;
@@ -124,7 +139,7 @@ class ProfileData {
   final int numberOfBeers;
   final int weekPoints;
 
-  ProfileData(this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
+  ProfileData(this.hasAllTime, this.hasWeek, this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
 
   factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
     final Map<BeerCategory, double> categoriesCounter = Map();
@@ -170,6 +185,8 @@ class ProfileData {
     checkInsList.sort((a, b) => b.drankQuantity.compareTo(a.drankQuantity));
 
     return ProfileData(
+      checkInsData.length >= 3,
+      checkIns.isNotEmpty,
       favouriteBeer,
       favouriteCategory,
       checkInsList,
