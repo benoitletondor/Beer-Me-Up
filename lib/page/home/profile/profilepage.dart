@@ -121,184 +121,266 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   }
 
   Widget _buildLoadWidget(ProfileData profileData) {
+    List<Widget> content = new List();
+
+    if( profileData.hasWeek ) {
+      content.addAll(_buildThisWeekSection(profileData));
+    } else {
+      content.addAll(_buildThisWeekEmptySection());
+    }
+
+    if( profileData.hasAllTime ) {
+      content.addAll(_buildAllTimeSection(profileData));
+    }
+
     return ListView(
       padding: const EdgeInsets.only(top: 20.0, bottom: 45.0),
-      children: <Widget>[
-        Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const Padding(padding: EdgeInsets.only(right: 16.0)),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text(
-                      "This week",
-                      style: TextStyle(
-                        fontFamily: "Google Sans",
-                        fontSize: 30.0,
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 2.0)),
-                    RichText(
-                      text: TextSpan(
-                        text: "You had ",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Theme.of(context).textTheme.body1.color,
-                        ),
-                        children: <TextSpan> [
-                          TextSpan(
-                            text: "${profileData.numberOfBeers}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const TextSpan(
-                            text: " different beers",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 16.0)),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 22.0),
-                margin: const EdgeInsets.only(top: 2.0),
-                child: Row(
-                  children: <Widget>[
-                    Image.asset(
-                      "images/coin.png",
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 8.0)),
-                    Text(
-                      "${profileData.weekPoints}",
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 16.0)),
-            ],
-          ),
-        ),
-        Padding(padding: const EdgeInsets.only(top: 30.0)),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: const Text(
-            "Your week",
-            style: TextStyle(
-              fontFamily: "Google Sans",
-              fontSize: 18.0,
-            ),
-          ),
-        ),
-        Column(
-          children: _buildWeekBeers(profileData.weekBeers),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 30.0)),
-        Container(
-          child: const Text(
-            "All time",
-            style: TextStyle(
-              fontFamily: "Google Sans",
-              fontSize: 30.0,
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 2.0)),
-        new Container(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: new Row(
-            children: <Widget>[
-              Text(
-                "Total of points: ",
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 5.0)),
-              Image.asset(
-                "images/coin.png",
-                width: 13.0,
-              ),
-              const Padding(padding: EdgeInsets.only(left: 5.0)),
-              Text(
-                profileData.totalPoints.toString(),
-                style: const TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 20.0)),
-        Offstage(
-          offstage: profileData.favouriteBeer == null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: const Text(
-                  "Your favourite beer",
-                  style: TextStyle(
-                    fontFamily: "Google Sans",
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-              BeerTile(
-                beer: profileData.favouriteBeer?.beer,
-                title: profileData.favouriteBeer?.beer?.name,
-                subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
-              )
-            ],
-          ),
-        ),
-        Offstage(
-          offstage: profileData.favouriteCategory == null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Padding(padding: EdgeInsets.only(top: 20.0)),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: const Text(
-                  "Your favourite category",
-                  style: TextStyle(
-                    fontFamily: "Google Sans",
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 10.0)),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  profileData.favouriteCategory?.name ?? "",
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      children: content,
     );
+  }
+
+  List<Widget> _buildThisWeekSection(ProfileData profileData) {
+    return <Widget> [
+      Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    "This week",
+                    style: TextStyle(
+                      fontFamily: "Google Sans",
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 2.0)),
+                  RichText(
+                    text: TextSpan(
+                      text: "You had ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Theme.of(context).textTheme.body1.color,
+                      ),
+                      children: <TextSpan> [
+                        TextSpan(
+                          text: "${profileData.numberOfBeers}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: " different beers",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 22.0),
+              margin: const EdgeInsets.only(top: 2.0),
+              child: Row(
+                children: <Widget>[
+                  Image.asset(
+                    "images/coin.png",
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 8.0)),
+                  Text(
+                    "${profileData.weekPoints}",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+          ],
+        ),
+      ),
+      Padding(padding: const EdgeInsets.only(top: 30.0)),
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: const Text(
+          "Your week",
+          style: TextStyle(
+            fontFamily: "Google Sans",
+            fontSize: 18.0,
+          ),
+        ),
+      ),
+      Column(
+        children: _buildWeekBeers(profileData.weekBeers),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 30.0)),
+    ];
+  }
+
+  List<Widget> _buildAllTimeSection(ProfileData profileData) {
+    return <Widget>[
+      Container(
+        child: const Text(
+          "All time",
+          style: TextStyle(
+            fontFamily: "Google Sans",
+            fontSize: 30.0,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 2.0)),
+      new Container(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: new Row(
+          children: <Widget>[
+            Text(
+              "Total of points: ",
+              style: const TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 5.0)),
+            Image.asset(
+              "images/coin.png",
+              width: 13.0,
+            ),
+            const Padding(padding: EdgeInsets.only(left: 5.0)),
+            Text(
+              profileData.totalPoints.toString(),
+              style: const TextStyle(
+                fontSize: 14.0,
+              ),
+            ),
+          ],
+        ),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 20.0)),
+      Offstage(
+        offstage: profileData.favouriteBeer == null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: const Text(
+                "Your favourite beer",
+                style: TextStyle(
+                  fontFamily: "Google Sans",
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            BeerTile(
+              beer: profileData.favouriteBeer?.beer,
+              title: profileData.favouriteBeer?.beer?.name,
+              subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
+            )
+          ],
+        ),
+      ),
+      Offstage(
+        offstage: profileData.favouriteCategory == null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.only(top: 20.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: const Text(
+                "Your favourite category",
+                style: TextStyle(
+                  fontFamily: "Google Sans",
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 10.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                profileData.favouriteCategory?.name ?? "",
+                style: const TextStyle(
+                  fontSize: 15.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> _buildThisWeekEmptySection() {
+    return <Widget> [
+      Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    "This week",
+                    style: TextStyle(
+                      fontFamily: "Google Sans",
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 2.0)),
+                  Text(
+                    "Nothing checked-in this week so far",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 22.0),
+              margin: const EdgeInsets.only(top: 2.0),
+              child: Row(
+                children: <Widget>[
+                  Image.asset(
+                    "images/coin.png",
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 8.0)),
+                  const Text(
+                    "0",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 16.0)),
+          ],
+        ),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 30.0)),
+    ];
   }
 
   List<Widget> _buildWeekBeers(List<BeerCheckInsData> weekBeers) {
@@ -311,7 +393,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     return BeerTile(
       beer: beerCheckIn.beer,
       title: beerCheckIn.beer.name,
-      subtitle: "${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsFixed(2)}L",
+      subtitle: "${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsPrecision(2)}L",
       thirdTitle: "Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
     );
   }

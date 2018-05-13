@@ -119,7 +119,6 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
                           fontSize: 18.0,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(left: 16.0)),
                       MaterialFlatButton(
                         text: "(Change date)",
                         textColor: Colors.white,
