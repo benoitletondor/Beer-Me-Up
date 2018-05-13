@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-
 import 'package:beer_me_up/service/config.dart';
 import 'package:beer_me_up/page/home/homepage.dart';
 import 'package:beer_me_up/page/onboarding/onboardingpage.dart';
 import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
 import 'package:beer_me_up/page/settings/settingspage.dart';
+import 'package:beer_me_up/service/analytics.dart';
+import 'package:beer_me_up/service/authenticationservice.dart';
 
 void main() => runApp(BeerMeUpApp());
 
 class BeerMeUpApp extends StatelessWidget {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static OptOutAwareFirebaseAnalytics analytics = OptOutAwareFirebaseAnalytics(FirebaseAnalytics());
   static Config config = Config.create();
 
   @override

@@ -5,6 +5,7 @@ import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/page/login/lostpassword/lostpassworddialog.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
+import 'package:beer_me_up/main.dart';
 
 import 'state.dart';
 import 'intent.dart';
@@ -56,6 +57,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithGoogle();
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signInWithGoogle");
@@ -68,6 +71,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithGoogle();
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signUpWithGoogle");
@@ -80,6 +85,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithFacebook();
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signInWithFacebook");
@@ -92,6 +99,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithFacebook();
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error while _signUpWithFacebook");
@@ -135,6 +144,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signUpWithAccount(formData.email, formData.password);
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     }
     catch(e, stackTrace) {
@@ -158,6 +169,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     try {
       await _authService.signInWithAccount(formData.email, formData.password);
+      BeerMeUpApp.analytics.logLogin();
+
       pushReplacementNamed("/");
     }
     catch(e, stackTrace) {
