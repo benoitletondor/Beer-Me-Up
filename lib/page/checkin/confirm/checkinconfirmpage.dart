@@ -362,7 +362,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
       if( loadingError != null  ) {
         child = ErrorOccurredWidget(
           error: loadingError,
-          onRetryPressed: intent.retry,
+          onRetry: intent.retry,
         );
       } else {
         child = LoadingWidget();

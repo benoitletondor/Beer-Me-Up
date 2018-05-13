@@ -7,6 +7,7 @@ import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
+import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -81,7 +82,8 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
         return snapshot.data.join(
           (empty) => _buildEmptyScreen(),
-          (searching) => _buildLoadingScreen(searching.previousPredictions),
+          (searching) => _buildEmptyLoadingScreen(),
+          (searchingWithPredictions) => _buildLoadingScreen(searchingWithPredictions.previousPredictions),
           (predictions) => _buildResultScreen(predictions.predictions),
           (noPredictions) => _buildEmptyResultScreen(),
           (error) => _buildErrorScreen(error.error),
@@ -107,6 +109,16 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
     );
   }
 
+  Widget _buildEmptyLoadingScreen() {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: Container(
+        constraints: const BoxConstraints(maxHeight: 3.0),
+        child: const LinearProgressIndicator(),
+      ),
+    );
+  }
+
   Widget _buildLoadingScreen(List<Beer> previousPrediction) {
     return Scaffold(
       appBar: _buildAppBar(),
@@ -128,23 +140,22 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   Widget _buildEmptyScreen() {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Stack(children: []),
+      body: Container(),
     );
   }
 
   Widget _buildErrorScreen(String error) {
-    // TODO
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Stack(children: []),
+      body: ErrorOccurredWidget(error: error),
     );
   }
 
   Widget _buildAppBar() {
     return AppBar(
       title: _AppBarPlacesAutoCompleteTextField(
-        onInputChanged: (input) => _search(input),
-        onInputSubmitted: (input) => _validateSearch(input),
+        onInputChanged: _search,
+        onInputSubmitted: _validateSearch,
       ),
     );
   }
@@ -174,8 +185,8 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
           hintStyle: const TextStyle(color: Color(0x99FFFFFF), fontSize: 16.0),
           border: InputBorder.none,
         ),
-        onChanged: (input) => onInputChanged(input),
-        onSubmitted: (input) => onInputSubmitted(input),
+        onChanged: onInputChanged,
+        onSubmitted: onInputSubmitted,
       ),
     );
   }
@@ -192,18 +203,42 @@ class _BeersListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: beers.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Beer beer = beers[index];
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView.builder(
+            itemCount: beers.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if( index == beers.length ) {
+                return const BreweryDBWidget();
+              }
 
-        return BeerTile(
-          beer: beer,
-          title: beer.name,
-          subtitle: beer.style?.shortName,
-          onTap: () { onTap(beer); }
-        );
-      },
+              final Beer beer = beers[index];
+
+              return BeerTile(
+                  beer: beer,
+                  title: beer.name,
+                  subtitle: beer.style?.shortName,
+                  onTap: () { onTap(beer); }
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
+}
+
+class BreweryDBWidget extends StatelessWidget {
+  const BreweryDBWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 5.0, top: 16.0),
+      constraints: const BoxConstraints(maxHeight: 50.0),
+      child: Image.asset("images/brewerydb.png"),
+    );
+  }
+
 }

@@ -75,7 +75,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   Widget _buildErrorWidget({@required String error}) {
     return ErrorOccurredWidget(
       error: error,
-      onRetryPressed: intent.retry,
+      onRetry: intent.retry,
     );
   }
 

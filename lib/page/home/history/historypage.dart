@@ -80,7 +80,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
   Widget _buildErrorWidget({@required String error}) {
     return ErrorOccurredWidget(
       error: error,
-      onRetryPressed: intent.retry
+      onRetry: intent.retry
     );
   }
 

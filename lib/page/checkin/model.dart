@@ -12,6 +12,8 @@ import 'package:beer_me_up/model/beer.dart';
 class CheckInViewModel extends BaseViewModel<CheckInState> {
   final UserDataService _dataService;
 
+  final List<Beer> currentPredictions = List();
+
   CheckInViewModel(
       this._dataService,
       Stream<String> onUserInputChanged,
@@ -26,26 +28,32 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
 
   _onUserInput(String userInput) async {
     if( userInput == null || userInput.trim().isEmpty ) {
+      currentPredictions.clear();
       setState(CheckInState.empty());
       return;
     }
 
-    final CheckInState state = getState();
-
-    List<Beer> currentPredictions;
-    if( state != null && state.currentStatePredictions != null ) {
-      currentPredictions = state.currentStatePredictions;
+    if( currentPredictions.isNotEmpty ) {
+      setState(CheckInState.searchingWithPredictions(currentPredictions));
     } else {
-      currentPredictions = List<Beer>(0);
+      setState(CheckInState.searching());
     }
-
-    setState(CheckInState.searching(currentPredictions));
 
     try {
       final matchingBeers = await _dataService.findBeersMatching(userInput);
-      setState(CheckInState.predictions(matchingBeers));
+
+      currentPredictions.clear();
+
+      if( matchingBeers.isNotEmpty ) {
+        currentPredictions.addAll(matchingBeers);
+        setState(CheckInState.predictions(matchingBeers));
+      } else {
+        setState(CheckInState.noPredictions());
+      }
     } catch( e, stackTrace ) {
       printException(e, stackTrace, "Error looking for beers matching $userInput");
+      currentPredictions.clear();
+
       setState(CheckInState.error(e.toString()));
     }
   }

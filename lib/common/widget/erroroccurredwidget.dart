@@ -7,11 +7,11 @@ class ErrorOccurredWidget extends StatelessWidget {
   ErrorOccurredWidget({
     Key key,
     @required this.error,
-    this.onRetryPressed,
+    this.onRetry,
   }) : super(key: key);
 
   final String error;
-  final VoidCallback onRetryPressed;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +34,20 @@ class ErrorOccurredWidget extends StatelessWidget {
               error,
               textAlign: TextAlign.center,
             ),
-            const Padding(padding: EdgeInsets.only(top: 10.0)),
-            MaterialFlatButton.primary(
-              context: context,
-              onPressed: onRetryPressed,
-              text: "Retry",
-            )
+            Offstage(
+              offstage: onRetry == null,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Padding(padding: EdgeInsets.only(top: 10.0)),
+                  MaterialFlatButton.primary(
+                    context: context,
+                    onPressed: onRetry,
+                    text: "Retry",
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
