@@ -46,7 +46,10 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   Future<FirebaseUser> getCurrentUser() async {
-    return await _firebaseAuth.currentUser();
+    return await _firebaseAuth.currentUser().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to get your user data. Please check your network connection."))
+    );
   }
 
   @override
@@ -60,7 +63,10 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     try {
-      final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => Future.error(Exception("Unable to sign in. Please check your network connection."))
+      );
       if( user == null ) {
         throw Exception("Unable to sign-in");
       }
@@ -98,6 +104,9 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     final FirebaseUser user = await _firebaseAuth.signInWithGoogle(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
+    ).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to sign in. Please check your network connection."))
     );
 
     if( user == null ) {
@@ -134,6 +143,9 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     final token = result.accessToken.token;
     final FirebaseUser user = await _firebaseAuth.signInWithFacebook(
       accessToken: token,
+    ).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to sign in. Please check your network connection."))
     );
 
     assert(user.email != null);
@@ -157,7 +169,10 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     try {
-      final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      final user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => Future.error(Exception("Unable to sign in. Please check your network connection."))
+      );
 
       if( user == null ) {
         throw Exception("Unable to sign-up");
@@ -204,7 +219,10 @@ class _AuthenticationServiceImpl implements AuthenticationService {
 
   @override
   Future<void> sendResetPasswordEmail(String email) async {
-    await _firebaseAuth.sendPasswordResetEmail(email: email);
+    await _firebaseAuth.sendPasswordResetEmail(email: email).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to send reset password request. Please check your network connection."))
+    );
   }
 
   @override

@@ -57,17 +57,14 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   @override
   Future<void> initDB(FirebaseUser currentUser) async {
-    _userDoc = await _connectDB(currentUser);
+    _userDoc = await _connectDB(currentUser).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => Future.error(Exception("Unable to connect to database. Please check your network connection."))
+    );
   }
 
   Future<DocumentSnapshot> _connectDB(FirebaseUser user) async {
-    DocumentSnapshot doc;
-    try {
-      doc = await _firestore.collection("users").document(user.uid).get();
-    } catch (e, stackTrace) {
-      printException(e, stackTrace, "Error in firestore while getting user collection");
-      doc = null;
-    }
+    DocumentSnapshot doc = await _firestore.collection("users").document(user.uid).get();
 
     if( doc == null || !doc.exists ) {
       debugPrint("Creating document reference for id ${user.uid}");
@@ -115,7 +112,10 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       query = query.startAfter([startAfter.date]);
     }
 
-    final checkinCollection = await query.getDocuments();
+    final checkinCollection = await query.getDocuments().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to get your check-ins data. Please check your network connection."))
+    );
 
     final checkinArray = checkinCollection.documents;
     if( checkinArray.isEmpty ) {
@@ -146,7 +146,10 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
             });
         },
         onDone: _controller.close,
-        onError: (e) { _controller.close(); },
+        onError: (e, stackTrace) {
+          printException(e, stackTrace, "Error listening for checkin");
+          _controller.close();
+        },
         cancelOnError: true,
       );
 
@@ -168,13 +171,12 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         .collection("beers")
         .document(beer.id);
 
-    bool beerAlreadyCheckedIn = false;
-    try {
-      final beerDoc = await beerDocument.get();
-      beerAlreadyCheckedIn = beerDoc != null && beerDoc.exists;
-    } catch (e) {
-      beerAlreadyCheckedIn = false;
-    }
+    final beerDoc = await beerDocument.get().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => Future.error(Exception("Unable to get check-ins details. Please check your network connection."))
+    );
+
+    bool beerAlreadyCheckedIn = beerDoc != null && beerDoc.exists;
 
     return CheckinDetails(checkins, beerAlreadyCheckedIn);
   }
@@ -188,12 +190,10 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       .collection("beers")
       .document(checkIn.beer.id);
 
-    DocumentSnapshot beerDocumentValues;
-    try {
-      beerDocumentValues = await beerDocument.get();
-    } catch (e, stackTrace) {
-      printException(e, stackTrace, "Error getting existing values for beer ${checkIn.beer.name}");
-    }
+    DocumentSnapshot beerDocumentValues = await beerDocument.get().timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => Future.error(Exception("Unable save check-in. Please check your network connection."))
+    );
 
     final numberOfCheckIns = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["checkin_counter"] : 0;
     final drankQuantity = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["drank_quantity"] : 0.0;
@@ -438,7 +438,11 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     final beerDocsSnapshot = await _userDoc
       .reference
       .collection("beers")
-      .getDocuments();
+      .getDocuments()
+      .timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
+      );
 
     return beerDocsSnapshot.documents.map((beerSnapshot) =>
       BeerCheckInsData(
@@ -467,7 +471,11 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         .where("date", isLessThanOrEqualTo: weekDates.item2)
         .orderBy("date", descending: true)
         .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
-        .getDocuments();
+        .getDocuments()
+        .timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
+        );
 
     return snapshots.documents
         .map((checkinDocument) => _parseCheckinFromDocument(checkinDocument))
