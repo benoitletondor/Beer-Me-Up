@@ -105,7 +105,40 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   Widget _buildEmptyResultScreen() {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Stack(children: []),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Opacity(
+                opacity: 0.6,
+                child: Image.asset(
+                  "images/search_empty_state.png",
+                  width: 100.0,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 16.0)),
+              const Text(
+                "Can't find any beer matching your search",
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontFamily: "Google Sans",
+                  fontSize: 18.0,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 5.0)),
+              const Text(
+                "Try to type more or check the spelling",
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 16.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
