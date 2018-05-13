@@ -81,7 +81,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
   Widget _buildLoadWidget(ProfileData profileData) {
     return ListView(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 36.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 45.0),
       children: <Widget>[
         Container(
           child: Row(

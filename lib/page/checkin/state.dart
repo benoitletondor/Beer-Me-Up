@@ -4,34 +4,39 @@ import 'package:beer_me_up/common/mvi/state.dart';
 
 import 'package:beer_me_up/model/beer.dart';
 
-class CheckInState extends Union4Impl<
+class CheckInState extends Union5Impl<
     CheckInStateInputEmpty,
     CheckInStateSearching,
     CheckInStatePredictionsAvailable,
+    CheckInStateNoPredictionsAvailable,
     CheckInStateError> {
 
   List<Beer> currentStatePredictions;
 
-  static final Quartet<
+  static final Quintet<
       CheckInStateInputEmpty,
       CheckInStateSearching,
       CheckInStatePredictionsAvailable,
-      CheckInStateError> factory = const Quartet<
+      CheckInStateNoPredictionsAvailable,
+      CheckInStateError> factory = const Quintet<
         CheckInStateInputEmpty,
         CheckInStateSearching,
         CheckInStatePredictionsAvailable,
+        CheckInStateNoPredictionsAvailable,
         CheckInStateError>();
 
-  CheckInState._(Union4<
+  CheckInState._(Union5<
       CheckInStateInputEmpty,
       CheckInStateSearching,
       CheckInStatePredictionsAvailable,
+      CheckInStateNoPredictionsAvailable,
       CheckInStateError> union, {this.currentStatePredictions}) : super(union);
 
   factory CheckInState.empty() => CheckInState._(factory.first(CheckInStateInputEmpty()));
   factory CheckInState.searching(List<Beer> previousPredictions) => CheckInState._(factory.second(CheckInStateSearching(previousPredictions)));
   factory CheckInState.predictions(List<Beer> predictions) => CheckInState._(factory.third(CheckInStatePredictionsAvailable(predictions)), currentStatePredictions: predictions);
-  factory CheckInState.error(String error) => CheckInState._(factory.fourth(CheckInStateError(error)));
+  factory CheckInState.noPredictions() => CheckInState._(factory.fourth(CheckInStateNoPredictionsAvailable()));
+  factory CheckInState.error(String error) => CheckInState._(factory.fifth(CheckInStateError(error)));
 }
 
 class CheckInStateInputEmpty extends State {}
@@ -71,6 +76,9 @@ class CheckInStatePredictionsAvailable extends State {
       super.hashCode ^
       predictions.hashCode;
 }
+
+class CheckInStateNoPredictionsAvailable extends State {}
+
 
 class CheckInStateError extends State {
   final String error;

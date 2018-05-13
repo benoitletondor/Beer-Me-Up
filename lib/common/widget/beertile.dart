@@ -32,7 +32,7 @@ class BeerTile extends StatelessWidget {
     final List<Widget> children = List();
     children.add(Text(
       title,
-      maxLines: 1,
+      maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
         fontWeight: FontWeight.w500,
@@ -52,7 +52,7 @@ class BeerTile extends StatelessWidget {
     }
 
     if( thirdTitle != null ) {
-      children.add(Padding(padding: EdgeInsets.only(top: 5.0)));
+      children.add(const Padding(padding: EdgeInsets.only(top: 5.0)));
       children.add(Text(
         thirdTitle,
         maxLines: 1,
@@ -65,7 +65,7 @@ class BeerTile extends StatelessWidget {
     }
 
     if( thirdWidget != null ) {
-      children.add(Padding(padding: EdgeInsets.only(top: 5.0)));
+      children.add(const Padding(padding: EdgeInsets.only(top: 5.0)));
       children.add(thirdWidget);
     }
 

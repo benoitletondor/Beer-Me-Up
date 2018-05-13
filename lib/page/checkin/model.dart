@@ -27,6 +27,7 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
   _onUserInput(String userInput) async {
     if( userInput == null || userInput.trim().isEmpty ) {
       setState(CheckInState.empty());
+      return;
     }
 
     final CheckInState state = getState();

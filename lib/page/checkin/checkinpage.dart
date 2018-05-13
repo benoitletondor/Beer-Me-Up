@@ -57,12 +57,17 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
   Timer _timer;
 
-  Future<Null> search(String value) async {
+  Future<Null> _search(String value) async {
     _timer?.cancel();
-    _timer = Timer(Duration(milliseconds: 300), () {
+    _timer = Timer(Duration(milliseconds: 600), () {
       _timer.cancel();
       intent.input(value);
     });
+  }
+
+  _validateSearch(String value) {
+    _timer?.cancel();
+    intent.input(value);
   }
 
   @override
@@ -78,6 +83,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
           (empty) => _buildEmptyScreen(),
           (searching) => _buildLoadingScreen(searching.previousPredictions),
           (predictions) => _buildResultScreen(predictions.predictions),
+          (noPredictions) => _buildEmptyResultScreen(),
           (error) => _buildErrorScreen(error.error),
         );
       },
@@ -91,6 +97,13 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
         beers: predictions,
         onTap: (beer) => intent.beerSelected(beer),
       ),
+    );
+  }
+
+  Widget _buildEmptyResultScreen() {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: Stack(children: []),
     );
   }
 
@@ -130,7 +143,8 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
   Widget _buildAppBar() {
     return AppBar(
       title: _AppBarPlacesAutoCompleteTextField(
-        onInputChanged: (input) => search(input),
+        onInputChanged: (input) => _search(input),
+        onInputSubmitted: (input) => _validateSearch(input),
       ),
     );
   }
@@ -138,9 +152,11 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
 class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
   final ValueChanged<String> onInputChanged;
+  final ValueChanged<String> onInputSubmitted;
 
   _AppBarPlacesAutoCompleteTextField({
     @required this.onInputChanged,
+    @required this.onInputSubmitted,
   });
 
   @override
@@ -155,10 +171,11 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
         ),
         decoration: const InputDecoration(
           hintText: "Type a beer name",
-          hintStyle: TextStyle(color: Color(0x99FFFFFF), fontSize: 16.0),
+          hintStyle: const TextStyle(color: Color(0x99FFFFFF), fontSize: 16.0),
           border: InputBorder.none,
         ),
         onChanged: (input) => onInputChanged(input),
+        onSubmitted: (input) => onInputSubmitted(input),
       ),
     );
   }
