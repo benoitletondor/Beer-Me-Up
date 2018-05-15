@@ -243,7 +243,7 @@ class _BeersListView extends StatelessWidget {
             itemCount: beers.length + 1,
             itemBuilder: (BuildContext context, int index) {
               if( index == beers.length ) {
-                return const BreweryDBWidget();
+                return const _BeerContentProviderAttributionWidget();
               }
 
               final Beer beer = beers[index];
@@ -262,15 +262,17 @@ class _BeersListView extends StatelessWidget {
   }
 }
 
-class BreweryDBWidget extends StatelessWidget {
-  const BreweryDBWidget();
+class _BeerContentProviderAttributionWidget extends StatelessWidget {
+  const _BeerContentProviderAttributionWidget();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(bottom: 5.0, top: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       constraints: const BoxConstraints(maxHeight: 50.0),
-      child: Image.asset("images/brewerydb.png"),
+      child: Center(
+        child: Image.asset("images/untappd.png"),
+      ),
     );
   }
 
