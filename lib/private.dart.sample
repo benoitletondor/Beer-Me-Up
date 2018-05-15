@@ -1,1 +1,3 @@
 const BREWERY_DB_API_KEY = "";
+const UNTAPPD_CLIENT_SECRET = "";
+const UNTAPPD_CLIENT_ID = "";

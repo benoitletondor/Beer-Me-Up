@@ -7,7 +7,6 @@ class Beer {
   final BeerLabel label;
   final double abv;
   final BeerStyle style;
-  final BeerCategory category;
 
   Beer({
     @required this.id,
@@ -16,7 +15,6 @@ class Beer {
     this.abv,
     this.label,
     this.style,
-    this.category,
   });
 
   @override
@@ -29,8 +27,7 @@ class Beer {
               description == other.description &&
               label == other.label &&
               abv == other.abv &&
-              style == other.style &&
-              category == other.category;
+              style == other.style;
 
   @override
   int get hashCode =>
@@ -39,54 +36,22 @@ class Beer {
       description.hashCode ^
       label.hashCode ^
       abv.hashCode ^
-      style.hashCode ^
-      category.hashCode;
+      style.hashCode;
 }
 
 class BeerStyle {
-  final int id;
+  final String id;
   final String name;
-  final String shortName;
-  final String description;
 
   BeerStyle({
     @required this.id,
     @required this.name,
-    this.shortName,
-    this.description,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
           other is BeerStyle &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              name == other.name &&
-              shortName == other.shortName &&
-              description == other.description;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      shortName.hashCode ^
-      description.hashCode;
-}
-
-class BeerCategory {
-  final int id;
-  final String name;
-
-  BeerCategory({
-    @required this.id,
-    @required this.name,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is BeerCategory &&
               runtimeType == other.runtimeType &&
               id == other.id &&
               name == other.name;
@@ -96,6 +61,7 @@ class BeerCategory {
       id.hashCode ^
       name.hashCode;
 }
+
 
 class BeerLabel {
   final String iconUrl;

@@ -136,6 +136,8 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - path_provider (0.0.1):
+    - Flutter
   - Protobuf (3.5.0)
   - shared_preferences (0.0.1):
     - Flutter
@@ -149,6 +151,7 @@ DEPENDENCIES:
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in/ios`)
+  - path_provider (from `Pods/.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
@@ -195,6 +198,8 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/flutter_facebook_login/ios
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in/ios
+  path_provider:
+    :path: Pods/.symlinks/plugins/path_provider/ios
   shared_preferences:
     :path: Pods/.symlinks/plugins/shared_preferences/ios
 
@@ -230,6 +235,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 

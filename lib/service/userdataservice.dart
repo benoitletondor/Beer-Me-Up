@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,11 +9,13 @@ import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beercheckinsdata.dart';
-import 'package:beer_me_up/service/brewerydbservice.dart';
+import 'package:beer_me_up/service/beersearch/beersearchservice.dart';
+import 'package:beer_me_up/service/beersearch/brewerydbservice.dart';
+import 'package:beer_me_up/service/beersearch/untappdservice.dart';
 import 'package:beer_me_up/common/datehelper.dart';
 
 abstract class UserDataService {
-  static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient());
+  static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient(), UntappdService());
 
   Future<void> initDB(FirebaseUser currentUser);
 
@@ -48,12 +49,14 @@ const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
 const _LIMIT_FOR_WEEKLY_CHECKINS = 100;
 const _BEER_VERSION = 1;
 
-class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
-  DocumentSnapshot _userDoc;
+class _UserDataServiceImpl implements UserDataService {
   final HttpClient _httpClient;
+  final BeerSearchService _beerSearchService;
   final Firestore _firestore;
 
-  _UserDataServiceImpl(this._firestore, this._httpClient);
+  DocumentSnapshot _userDoc;
+
+  _UserDataServiceImpl(this._firestore, this._httpClient, this._beerSearchService);
 
   @override
   Future<void> initDB(FirebaseUser currentUser) async {
@@ -127,6 +130,29 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       .toList(growable: false);
 
     return CheckinFetchResponse(checkIns, checkIns.length >= _NUMBER_OF_RESULTS_FOR_HISTORY ? true : false);
+  }
+
+  @override
+  Future<List<BeerCheckInsData>> fetchBeerCheckInsData() async {
+    _assertDBInitialized();
+
+    final beerDocsSnapshot = await _userDoc
+        .reference
+        .collection("beers")
+        .getDocuments()
+        .timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
+    );
+
+    return beerDocsSnapshot.documents.map((beerSnapshot) =>
+        BeerCheckInsData(
+          _parseBeerFromValue(beerSnapshot.data["beer"], beerSnapshot.data["beer_version"]),
+          beerSnapshot.data["checkin_counter"],
+          beerSnapshot.data["last_checkin"],
+          beerSnapshot.data["drank_quantity"],
+        )
+    ).toList(growable: false);
   }
 
   Stream<CheckIn> listenForCheckIn() {
@@ -205,8 +231,6 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
         {
           "beer": _createValueForBeer(checkIn.beer),
           "beer_id": checkIn.beer.id,
-          "beer_style_id": checkIn.beer.style?.id,
-          "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
           "last_checkin": lastCheckin,
           "checkin_counter": numberOfCheckIns + 1,
@@ -230,8 +254,6 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
           "date": checkIn.date,
           "beer": _createValueForBeer(checkIn.beer),
           "beer_id": checkIn.beer.id,
-          "beer_style_id": checkIn.beer.style?.id,
-          "beer_category_id": checkIn.beer.category?.id,
           "beer_version": _BEER_VERSION,
           "quantity": checkIn.quantity.value,
           "points": checkIn.points,
@@ -250,23 +272,12 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   Beer _parseBeerFromValue(Map<dynamic, dynamic> data, int version) {
     BeerStyle style;
-    BeerCategory category;
 
     final Map<dynamic, dynamic> styleData = data["style"];
     if( styleData != null ) {
       style = BeerStyle(
         id: styleData["id"],
         name: styleData["name"],
-        description: styleData["description"],
-        shortName: styleData["shortName"],
-      );
-    }
-
-    final Map<dynamic, dynamic> categoryData = data["category"];
-    if( categoryData != null ) {
-      category = BeerCategory(
-        id: categoryData["id"],
-        name: categoryData["name"],
       );
     }
 
@@ -287,7 +298,6 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       abv: data["abv"],
       label: label,
       style: style,
-      category: category,
     );
   }
 
@@ -313,22 +323,12 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
 
   Map<String, dynamic> _createValueForBeer(Beer beer) {
     Map<String, dynamic> style;
-    Map<String, dynamic> category;
     Map<String, dynamic> label;
 
     if( beer.style != null ) {
       style = {
         "id": beer.style.id,
         "name": beer.style.name,
-        "shortName": beer.style.shortName,
-        "description": beer.style.description,
-      };
-    }
-
-    if( beer.category != null ) {
-      category = {
-        "id": beer.category.id,
-        "name": beer.category.name,
       };
     }
 
@@ -347,111 +347,7 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
       "abv": beer.abv,
       "label": label,
       "style": style,
-      "category": category,
     };
-  }
-
-  @override
-  Future<List<Beer>> findBeersMatching(String pattern) async {
-    if( pattern == null || pattern.trim().isEmpty ) {
-      return List(0);
-    }
-
-    var uri = buildBreweryDBServiceURI(path: "search", queryParameters: {'q': pattern, 'type': 'beer'});
-    HttpClientRequest request = await _httpClient.getUrl(uri);
-    HttpClientResponse response = await request.close();
-    if( response.statusCode <200 || response.statusCode>299 ) {
-      throw Exception("Bad response: ${response.statusCode} (${response.reasonPhrase})");
-    }
-
-    String responseBody = await response.transform(utf8.decoder).join();
-    Map data = json.decode(responseBody);
-    int totalResults = data["totalResults"] ?? 0;
-    if( totalResults == 0 ) {
-      return List(0);
-    }
-
-    return (data['data'] as List).map((beerJson) {
-      BeerStyle style;
-      BeerCategory category;
-
-      final Map<dynamic, dynamic> styleData = beerJson["style"];
-      if( styleData != null ) {
-        style = BeerStyle(
-          id: styleData["id"],
-          name: styleData["name"],
-          description: styleData["description"],
-          shortName: styleData["shortName"],
-        );
-
-        final Map<dynamic, dynamic> categoryData = styleData["category"];
-        if( categoryData != null ) {
-          category = BeerCategory(
-            id: categoryData["id"],
-            name: categoryData["name"],
-          );
-        }
-      }
-
-      double abv;
-      if( beerJson["abv"] != null ) {
-        abv = double.parse(beerJson["abv"] as String);
-      } else if( styleData != null ) {
-        final String abvMin = styleData["abvMin"];
-        final String abvMax = styleData["abvMax"];
-
-        if( abvMax != null && abvMin != null ) {
-          abv = (double.parse(abvMax) + double.parse(abvMin)) / 2.0;
-        } else if( abvMin != null ) {
-          abv = double.parse(abvMin);
-        } else if( abvMax != null ) {
-          abv = double.parse(abvMax);
-        }
-      }
-
-      BeerLabel label;
-      final labelJson = beerJson["labels"];
-      if( labelJson != null && labelJson is Map ) {
-        label = BeerLabel(
-          iconUrl: labelJson["icon"],
-          mediumUrl: labelJson["medium"],
-          largeUrl: labelJson["large"],
-        );
-      }
-
-      return Beer(
-        id: beerJson["id"],
-        name: beerJson["name"],
-        description: beerJson["description"],
-        abv: abv,
-        label: label,
-        style: style,
-        category: category,
-      );
-    }).toList(growable: false);
-  }
-
-  @override
-  Future<List<BeerCheckInsData>> fetchBeerCheckInsData() async {
-    _assertDBInitialized();
-
-    final beerDocsSnapshot = await _userDoc
-      .reference
-      .collection("beers")
-      .getDocuments()
-      .timeout(
-        const Duration(seconds: 5),
-        onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
-      );
-
-    return beerDocsSnapshot.documents.map((beerSnapshot) =>
-      BeerCheckInsData(
-        _parseBeerFromValue(beerSnapshot.data["beer"], beerSnapshot.data["beer_version"]),
-        beerSnapshot.data["checkin_counter"],
-        beerSnapshot.data["last_checkin"],
-        beerSnapshot.data["drank_quantity"],
-      )
-    ).toList(growable: false);
   }
 
   @override
@@ -488,4 +384,8 @@ class _UserDataServiceImpl extends BreweryDBService implements UserDataService {
     return userDoc["points"] as int;
   }
 
+  @override
+  Future<List<Beer>> findBeersMatching(String pattern) {
+    return _beerSearchService.findBeersMatching(_httpClient, pattern);
+  }
 }

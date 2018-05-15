@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/common/hapticfeedback.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 class BeerTile extends StatelessWidget {
   final Beer beer;
   final String title;
@@ -102,8 +104,8 @@ class BeerTile extends StatelessWidget {
     if (beer.label?.iconUrl == null) {
       image = const Icon(IconData(0xe900, fontFamily: "beers"));
     } else {
-      image = Image.network(
-        beer.label.iconUrl,
+      image = CachedNetworkImage(
+        imageUrl: beer.label.iconUrl,
       );
     }
 

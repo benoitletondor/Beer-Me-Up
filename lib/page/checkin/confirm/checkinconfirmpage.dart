@@ -14,6 +14,8 @@ import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/service/config.dart';
 import 'package:beer_me_up/main.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'model.dart';
 import 'intent.dart';
 import 'state.dart';
@@ -283,9 +285,9 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
       ),
     ));
 
-    if( selectedBeer.style?.shortName != null ) {
+    if( selectedBeer.style?.name != null ) {
       children.add(Text(
-        selectedBeer.style.shortName,
+        selectedBeer.style.name,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -331,8 +333,8 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
     if (beer.label?.iconUrl == null) {
       image = const Icon(IconData(0xe900, fontFamily: "beers"), color: Colors.black,);
     } else {
-      image = Image.network(
-        beer.label.iconUrl,
+      image = CachedNetworkImage(
+        imageUrl: beer.label.iconUrl,
       );
     }
 

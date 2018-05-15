@@ -131,7 +131,7 @@ class ProfileData {
   final bool hasAllTime;
   final bool hasWeek;
 
-  final BeerCategory favouriteCategory;
+  final BeerStyle favouriteCategory;
   final BeerCheckInsData favouriteBeer;
   final int totalPoints;
 
@@ -142,10 +142,10 @@ class ProfileData {
   ProfileData(this.hasAllTime, this.hasWeek, this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
 
   factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
-    final Map<BeerCategory, double> categoriesCounter = Map();
+    final Map<BeerStyle, double> categoriesCounter = Map();
 
     BeerCheckInsData favouriteBeer;
-    BeerCategory favouriteCategory;
+    BeerStyle favouriteCategory;
     double favouriteCategoryCounter = 0.0;
 
     for(BeerCheckInsData checkinData in checkInsData) {
@@ -153,13 +153,13 @@ class ProfileData {
         favouriteBeer = checkinData;
       }
 
-      final category = checkinData.beer.category;
-      if( category != null ) {
-        categoriesCounter[category] = categoriesCounter.containsKey(category) ? categoriesCounter[category] + checkinData.drankQuantity : checkinData.drankQuantity;
+      final style = checkinData.beer.style;
+      if( style != null ) {
+        categoriesCounter[style] = categoriesCounter.containsKey(style) ? categoriesCounter[style] + checkinData.drankQuantity : checkinData.drankQuantity;
 
-        final double categoryCount = categoriesCounter[category];
+        final double categoryCount = categoriesCounter[style];
         if( favouriteCategory == null || categoryCount > favouriteCategoryCounter ) {
-          favouriteCategory = category;
+          favouriteCategory = style;
           favouriteCategoryCounter = categoryCount;
         }
       }
