@@ -48,40 +48,42 @@ class MaterialRaisedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) { performSelectionHaptic(context); },
-      child: RaisedButton(
-        onPressed: onPressed,
-        color: color,
-        textColor: textColor,
-        elevation: 1.0,
-        padding: EdgeInsets.only(left: leading == null ? 24.0 : 18.0, right: 24.0, top: 10.0, bottom: 10.0),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        ),
-        child: FittedBox(
-          child: Row(
-            children: <Widget>[
-              Offstage(
-                offstage: leading == null,
-                child: Row(
-                  children: <Widget>[
-                    leading ?? Container(),
-                    const Padding(padding: EdgeInsets.only(left: 10.0)),
-                  ],
-                ),
+    return RaisedButton(
+      onPressed: () {
+        performSelectionHaptic(context);
+        if( onPressed != null ) {
+          onPressed();
+        }
+      },
+      color: color,
+      textColor: textColor,
+      elevation: 1.0,
+      padding: EdgeInsets.only(left: leading == null ? 24.0 : 18.0, right: 24.0, top: 10.0, bottom: 10.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      child: FittedBox(
+        child: Row(
+          children: <Widget>[
+            Offstage(
+              offstage: leading == null,
+              child: Row(
+                children: <Widget>[
+                  leading ?? Container(),
+                  const Padding(padding: EdgeInsets.only(left: 10.0)),
+                ],
               ),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Google Sans',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
-                ),
-              )
-            ],
-          ),
+            ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'Google Sans',
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
+              ),
+            )
+          ],
         ),
       ),
     );

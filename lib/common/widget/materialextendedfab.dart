@@ -20,34 +20,36 @@ class MaterialExtendedFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) { performSelectionHaptic(context); },
-      child: RaisedButton(
-        onPressed: onPressed,
-        color: color,
-        textColor: textColor,
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        shape: const StadiumBorder(),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 45.0, maxHeight: 45.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(width: 16.0),
-              icon,
-              const SizedBox(width: 8.0),
-              Text(
-                text,
-                style: TextStyle(
-                  fontFamily: "Google Sans",
-                  color: textColor,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
+    return RaisedButton(
+      onPressed: () {
+        performSelectionHaptic(context);
+        if( onPressed != null ) {
+          onPressed();
+        }
+      },
+      color: color,
+      textColor: textColor,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      shape: const StadiumBorder(),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 45.0, maxHeight: 45.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(width: 16.0),
+            icon,
+            const SizedBox(width: 8.0),
+            Text(
+              text,
+              style: TextStyle(
+                fontFamily: "Google Sans",
+                color: textColor,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
               ),
-              const SizedBox(width: 20.0),
-            ],
-          ),
+            ),
+            const SizedBox(width: 20.0),
+          ],
         ),
       ),
     );
