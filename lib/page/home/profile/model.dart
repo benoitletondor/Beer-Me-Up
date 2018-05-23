@@ -116,7 +116,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
   _setStateWithProfileData(ProfileData profileData) {
     if( !profileData.hasAllTime && !profileData.hasWeek ) {
-      setState(ProfileState.empty());
+      setState(ProfileState.empty(profileData.hasAlreadyCheckedIn));
     } else if( profileData.hasWeek && profileData.hasAllTime ) {
       setState(ProfileState.load(profileData));
     } else if( profileData.hasAllTime ) {
@@ -130,6 +130,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 class ProfileData {
   final bool hasAllTime;
   final bool hasWeek;
+  final bool hasAlreadyCheckedIn;
 
   final BeerStyle favouriteCategory;
   final BeerCheckInsData favouriteBeer;
@@ -139,7 +140,7 @@ class ProfileData {
   final int numberOfBeers;
   final int weekPoints;
 
-  ProfileData(this.hasAllTime, this.hasWeek, this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
+  ProfileData(this.hasAllTime, this.hasWeek, this.hasAlreadyCheckedIn, this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
 
   factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
     final Map<BeerStyle, double> categoriesCounter = Map();
@@ -187,6 +188,7 @@ class ProfileData {
     return ProfileData(
       checkInsData.length >= 3,
       checkIns.isNotEmpty,
+      totalPoints > 0,
       favouriteBeer,
       favouriteCategory,
       checkInsList,

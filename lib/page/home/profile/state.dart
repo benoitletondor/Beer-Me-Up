@@ -35,7 +35,7 @@ class ProfileState extends Union6Impl<
       ProfileStateError> union) : super(union);
 
   factory ProfileState.loading() => ProfileState._(factory.first(ProfileStateLoading()));
-  factory ProfileState.empty() => ProfileState._(factory.second(ProfileStateEmpty()));
+  factory ProfileState.empty(bool hasAlreadyCheckedIn) => ProfileState._(factory.second(ProfileStateEmpty(hasAlreadyCheckedIn)));
   factory ProfileState.loadNoAllTime(ProfileData data) => ProfileState._(factory.third(ProfileStateLoadNoAllTime(data)));
   factory ProfileState.loadNoWeek(ProfileData data) => ProfileState._(factory.fourth(ProfileStateLoadNoWeek(data)));
   factory ProfileState.load(ProfileData data) => ProfileState._(factory.fifth(ProfileStateLoad(data)));
@@ -98,7 +98,23 @@ class ProfileStateLoad extends State {
       profileData.hashCode;
 }
 
-class ProfileStateEmpty extends State {}
+class ProfileStateEmpty extends State {
+  final bool hasAlreadyCheckedIn;
+
+  ProfileStateEmpty(this.hasAlreadyCheckedIn);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is ProfileStateEmpty &&
+          runtimeType == other.runtimeType &&
+          hasAlreadyCheckedIn == other.hasAlreadyCheckedIn;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      hasAlreadyCheckedIn.hashCode;
+}
 
 class ProfileStateError extends State {
   final String error;

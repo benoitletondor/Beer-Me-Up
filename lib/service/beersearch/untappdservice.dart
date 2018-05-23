@@ -14,7 +14,12 @@ class UntappdService implements BeerSearchService {
     Map<String, String> queryParameters,
   }) {
     final Map<String, String> queryParams = queryParameters ?? Map();
-    queryParams.addAll({"client_secret": UNTAPPD_CLIENT_SECRET, "client_id": UNTAPPD_CLIENT_ID});
+
+    if( Platform.isIOS ) {
+      queryParams.addAll({"client_secret": UNTAPPD_CLIENT_SECRET_IOS, "client_id": UNTAPPD_CLIENT_ID_IOS});
+    } else {
+      queryParams.addAll({"client_secret": UNTAPPD_CLIENT_SECRET_ANDROID, "client_id": UNTAPPD_CLIENT_ID_ANDROID});
+    }
 
     return Uri.https(_UNTAPPD_DB_API_ENDPOINT, "/v4/$path", queryParams);
   }

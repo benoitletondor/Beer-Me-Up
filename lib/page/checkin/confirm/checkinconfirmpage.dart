@@ -331,7 +331,10 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
   Widget _buildThumbnailImage(Beer beer) {
     Widget image;
     if (beer.label?.iconUrl == null) {
-      image = const Icon(IconData(0xe900, fontFamily: "beers"), color: Colors.black,);
+      image = Container(
+        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        child: Image.asset("images/default_beer.png"),
+      );
     } else {
       image = CachedNetworkImage(
         imageUrl: beer.label.iconUrl,

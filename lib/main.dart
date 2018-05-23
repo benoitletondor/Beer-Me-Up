@@ -8,17 +8,25 @@ import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
 import 'package:beer_me_up/page/settings/settingspage.dart';
 import 'package:beer_me_up/service/analytics.dart';
-import 'package:beer_me_up/service/authenticationservice.dart';
+import 'package:sentry/sentry.dart';
+import 'package:beer_me_up/private.dart';
+import 'package:beer_me_up/common/exceptionprint.dart';
 
 void main() => runApp(BeerMeUpApp());
 
 class BeerMeUpApp extends StatelessWidget {
   static OptOutAwareFirebaseAnalytics analytics = OptOutAwareFirebaseAnalytics(FirebaseAnalytics());
   static Config config = Config.create();
+  static SentryClient sentry = new SentryClient(dsn: SENTRY_DSN);
 
   @override
   Widget build(BuildContext context) {
     config.toString(); // Access object to ensure creation at startup time
+
+    // Set-up error reporting
+    FlutterError.onError = (FlutterErrorDetails error) {
+      printException(error.exception, error.stack, error.context);
+    };
 
     return MaterialApp(
       title: 'Beer Me Up',

@@ -61,7 +61,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
 
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
-          (empty) => _buildEmptyWidget(),
+          (empty) => _buildEmptyWidget(empty.hasAlreadyCheckedIn),
           (loadNoAllTime) => _buildLoadWidget(loadNoAllTime.profileData),
           (loadNoWeek) => _buildLoadWidget(loadNoWeek.profileData),
           (load) => _buildLoadWidget(load.profileData),
@@ -75,7 +75,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     return LoadingWidget();
   }
 
-  Widget _buildEmptyWidget() {
+  Widget _buildEmptyWidget(bool hasAlreadyCheckedIn) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -98,10 +98,10 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              "Check the next beer you have into the app to start your history",
+              hasAlreadyCheckedIn ? "Continue to check beers you have to build your profile." : "Check the next beer you have into the app to build your profile.",
               style: TextStyle(
                 fontFamily: "Google Sans",
-                fontSize: 20.0,
+                fontSize: 18.0,
               ),
               textAlign: TextAlign.center,
             ),
@@ -159,24 +159,50 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 2.0)),
-                  RichText(
-                    text: TextSpan(
-                      text: "You had ",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Theme.of(context).textTheme.body1.color,
-                      ),
-                      children: <TextSpan> [
-                        TextSpan(
-                          text: "${profileData.numberOfBeers}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
+                  Offstage(
+                    offstage: profileData.numberOfBeers <= 1,
+                    child: RichText(
+                      text: TextSpan(
+                        text: "You only had ",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Theme.of(context).textTheme.body1.color,
+                        ),
+                        children: <TextSpan> [
+                          TextSpan(
+                            text: "${profileData.numberOfBeers}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
+                          const TextSpan(
+                            text: " beer",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: profileData.numberOfBeers > 1,
+                    child: RichText(
+                      text: TextSpan(
+                        text: "You had ",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Theme.of(context).textTheme.body1.color,
                         ),
-                        const TextSpan(
-                          text: " different beers",
-                        ),
-                      ],
+                        children: <TextSpan> [
+                          TextSpan(
+                            text: "${profileData.numberOfBeers}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: " different beers",
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

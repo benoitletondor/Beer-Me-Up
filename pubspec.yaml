@@ -25,6 +25,8 @@ dependencies:
   firebase_analytics: 0.3.3
   firebase_remote_config: 0.0.2
 
+  sentry: 2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,6 +59,7 @@ flutter:
     - images/main_empty_state.png
     - images/arrow_bottom.png
     - images/untappd.png
+    - images/default_beer.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -65,9 +68,6 @@ flutter:
   # https://flutter.io/assets-and-images/#from-packages
 
   fonts:
-     - family: beers
-       fonts:
-         - asset: fonts/beers.ttf
      - family: Google Sans
        fonts:
          - asset: fonts/GoogleSans-Regular.ttf
