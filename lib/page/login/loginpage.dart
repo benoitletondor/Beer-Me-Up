@@ -44,6 +44,7 @@ class LoginPage extends StatefulWidget {
       _intent.signUpPasswordInputChanged,
       _intent.signInEmailInputChanged,
       _intent.signInPasswordInputChanged,
+      _intent.privacyPolicyClicked,
     );
 
     return LoginPage._(key: key, intent: _intent, model: _model);
@@ -99,7 +100,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   "Create your account",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 18.0,
+                    fontSize: 22.0,
                     fontFamily: "Google Sans",
                   ),
                 ),
@@ -145,6 +146,30 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     onPressed: () { intent.signUp(LoginFormData(signUpEmailController.text, signUpPassController.text)); },
                     text: "Sign-up"
                   ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 25.0)),
+                InkWell(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.lock,
+                        color: Colors.blueGrey[900],
+                        size: 22.0,
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 10.0)),
+                      const Expanded(
+                        child: Text(
+                          "Like privacy? We feel you. We don’t use or sell your data. Touch to read our privacy policy.",
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: intent.privacyPolicyClicked,
                 ),
                 const Padding(padding: EdgeInsets.only(top: 25.0)),
                 Row(
@@ -195,26 +220,6 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30.0)),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.lock,
-                      color: Colors.blueGrey[900],
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 10.0)),
-                    const Expanded(
-                      child: Text(
-                        "Like privacy? We feel you. We don’t use or sell your data. It’s your personal beer logging, not ours ;)",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20.0)),
                 Center(
                   child: MaterialFlatButton.primary(
                     context: context,
@@ -246,7 +251,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       "Sign-in with your account",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                         fontFamily: "Google Sans",
                       ),
                     ),

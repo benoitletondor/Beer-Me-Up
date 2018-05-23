@@ -16,6 +16,7 @@ class LoginIntent {
   final VoidStreamCallback signUpPasswordInputChanged;
   final VoidStreamCallback signInEmailInputChanged;
   final VoidStreamCallback signInPasswordInputChanged;
+  final VoidStreamCallback privacyPolicyClicked;
 
   LoginIntent({
     final VoidStreamCallback showSignInIntent,
@@ -31,6 +32,7 @@ class LoginIntent {
     VoidStreamCallback signUpPasswordInputChangedIntent,
     VoidStreamCallback signInEmailInputChangedIntent,
     VoidStreamCallback signInPasswordInputChangedIntent,
+    VoidStreamCallback privacyPolicyClickedIntent,
   }) :
     this.showSignIn = showSignInIntent ?? VoidStreamCallback(),
     this.showSignUp = showSignUpIntent ?? VoidStreamCallback(),
@@ -44,7 +46,8 @@ class LoginIntent {
     this.signUpEmailInputChanged = signUpEmailInputChangedIntent ?? VoidStreamCallback(),
     this.signUpPasswordInputChanged = signUpPasswordInputChangedIntent ?? VoidStreamCallback(),
     this.signInEmailInputChanged = signInEmailInputChangedIntent ?? VoidStreamCallback(),
-    this.signInPasswordInputChanged = signInPasswordInputChangedIntent ?? VoidStreamCallback();
+    this.signInPasswordInputChanged = signInPasswordInputChangedIntent ?? VoidStreamCallback(),
+    this.privacyPolicyClicked = privacyPolicyClickedIntent ?? VoidStreamCallback();
 }
 
 class LoginFormData {

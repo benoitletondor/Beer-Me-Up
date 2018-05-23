@@ -85,13 +85,6 @@ class _UserDataServiceImpl implements UserDataService {
       }
     }
 
-    await doc.reference.setData(
-      {
-        "last_saw": DateTime.now(),
-      },
-      merge: true,
-    );
-
     return doc;
   }
 

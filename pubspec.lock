@@ -132,6 +132,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
+  flutter_custom_tabs:
+    dependency: transitive
+    description:
+      name: flutter_custom_tabs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   flutter_facebook_login:
     dependency: "direct main"
     description:
@@ -139,6 +146,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  flutter_html_view:
+    dependency: "direct main"
+    description:
+      name: flutter_html_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   flutter_stream_friends:
     dependency: "direct main"
     description:
@@ -478,6 +492,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.5"
+  url_launcher:
+    dependency: transitive
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   usage:
     dependency: transitive
     description:

@@ -5,6 +5,7 @@ import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/page/login/lostpassword/lostpassworddialog.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
+import 'package:beer_me_up/page/tos/tospage.dart';
 import 'package:beer_me_up/main.dart';
 
 import 'state.dart';
@@ -27,7 +28,8 @@ class LoginViewModel extends BaseViewModel<LoginState> {
       Stream<Null> onSignUpEmailInputChanged,
       Stream<Null> onSignUpPasswordInputChanged,
       Stream<Null> onSignInEmailInputChanged,
-      Stream<Null> onSignInPasswordInputChanged,) {
+      Stream<Null> onSignInPasswordInputChanged,
+      Stream<Null> onPrivacyPolicyClicked,) {
 
     onShowSignInButtonPressed.listen(_showSignIn);
     onShowSignUpButtonPressed.listen(_showSignUp);
@@ -47,6 +49,7 @@ class LoginViewModel extends BaseViewModel<LoginState> {
     onSignUpWithFacebookButtonPressed.listen(_signUpWithFacebook);
 
     onForgotPasswordButtonPressed.listen(_showLostPasswordDialog);
+    onPrivacyPolicyClicked.listen(_showPrivacyPolicy);
   }
 
   @override
@@ -185,5 +188,9 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
   _hideSignUpError(Null event) async {
     setState(LoginState.signUp());
+  }
+
+  _showPrivacyPolicy(Null event) async {
+    pushNamed(TOS_PAGE_ROUTE);
   }
 }

@@ -7,6 +7,7 @@ import 'package:beer_me_up/page/onboarding/onboardingpage.dart';
 import 'package:beer_me_up/page/login/loginpage.dart';
 import 'package:beer_me_up/page/checkin/checkinpage.dart';
 import 'package:beer_me_up/page/settings/settingspage.dart';
+import 'package:beer_me_up/page/tos/tospage.dart';
 import 'package:beer_me_up/service/analytics.dart';
 import 'package:sentry/sentry.dart';
 import 'package:beer_me_up/private.dart';
@@ -45,6 +46,7 @@ class BeerMeUpApp extends StatelessWidget {
         LOGIN_PAGE_ROUTE: (BuildContext context) => LoginPage(),
         CHECK_IN_PAGE_ROUTE: (BuildContext context) => CheckInPage(),
         SETTINGS_PAGE_ROUTE: (BuildContext context) => SettingsPage(),
+        TOS_PAGE_ROUTE: (BuildContext context) => TOSPage(),
       },
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
