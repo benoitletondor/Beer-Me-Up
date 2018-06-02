@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -70,9 +71,9 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      "How does it work?",
+                      Localization.of(context).onboardingSecondTitle,
                       style: TextStyle(
                         fontFamily: 'Google Sans',
                         fontWeight: FontWeight.w500,
@@ -80,82 +81,82 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
                         fontSize: 18.0,
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 25.0)),
+                    const Padding(padding: EdgeInsets.only(top: 25.0)),
                     RichText(
                       text: TextSpan(
                         text: "1. ",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Create an account",
-                            style: TextStyle(
+                            text: Localization.of(context).onboardingSecondFirstExplainFirst,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: ", to save and retreive your beer check-ins at any time",
+                            text: Localization.of(context).onboardingSecondFirstExplainSecond,
                           )
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10.0)),
+                    const Padding(padding: EdgeInsets.only(top: 10.0)),
                     RichText(
                       text: TextSpan(
-                        text: "2. Every time you drink a beer, just ",
-                        style: TextStyle(
+                        text: Localization.of(context).onboardingSecondSecondExplainFirst,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "check-in it",
-                            style: TextStyle(
+                            text: Localization.of(context).onboardingSecondSecondExplainSecond,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: " into the app",
+                            text: Localization.of(context).onboardingSecondSecondExplainThird,
                           )
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10.0)),
+                    const Padding(padding: EdgeInsets.only(top: 10.0)),
                     RichText(
                       text: TextSpan(
-                        text: "3. Get a full ",
-                        style: TextStyle(
+                        text: Localization.of(context).onboardingSecondThirdExplainFirst,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "history",
-                            style: TextStyle(
+                            text: Localization.of(context).onboardingSecondThirdExplainSecond,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: ", with ",
+                            text: Localization.of(context).onboardingSecondThirdExplainThird,
                           ),
                           TextSpan(
-                            text: "stats",
-                            style: TextStyle(
+                            text: Localization.of(context).onboardingSecondThirdExplainFourth,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: ", about your all the beers you drank",
+                            text: Localization.of(context).onboardingSecondThirdExplainFifth,
                           )
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 25.0)),
+                    const Padding(padding: EdgeInsets.only(top: 25.0)),
                     Text(
-                      "And that's it! That easy!",
-                      style: TextStyle(
+                      Localization.of(context).onboardingSecondSubText,
+                      style: const TextStyle(
                         fontFamily: 'Google Sans',
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
@@ -171,7 +172,7 @@ class _OnboardingSecondPageState extends ViewState<OnboardingSecondPage, Onboard
               child: MaterialRaisedButton.accent(
                 context: context,
                 onPressed: intent.finish,
-                text: "Let's go"
+                text: Localization.of(context).onboardingSecondCTA
               ),
             ),
           ],

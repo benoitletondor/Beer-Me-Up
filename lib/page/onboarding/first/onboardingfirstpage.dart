@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -74,9 +75,9 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Text(
-                          "Ever wondered...",
+                          Localization.of(context).onboardingFirstTitle,
                           style: TextStyle(
                             fontFamily: 'Google Sans',
                             fontWeight: FontWeight.bold,
@@ -84,9 +85,9 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
                             fontSize: 20.0,
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(top: 10.0)),
+                        const Padding(padding: EdgeInsets.only(top: 10.0)),
                         Text(
-                          "\"What was that beer I drank last time that tasted so good?\"",
+                          Localization.of(context).onboardingFirstSubText,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
@@ -107,7 +108,7 @@ class _OnboardingFirstPageState extends ViewState<OnboardingFirstPage, Onboardin
               child: MaterialRaisedButton.accent(
                 context: context,
                 onPressed: intent.next,
-                text: "Yeah! Totally!"
+                text: Localization.of(context).onboardingFirstCTA
               ),
             ),
           ],
