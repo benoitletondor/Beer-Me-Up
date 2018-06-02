@@ -19,8 +19,6 @@ class LocalizationEN implements Localization {
   @override String get onboardingSecondCTA => "Let's go";
 
   @override String get loginCreateYourAccount => "Create your account";
-  @override String get loginEmail => "Email";
-  @override String get loginPassword => "Password";
   @override String get loginSignUpCTA => "Sign-up";
   @override String get loginPrivacyExplain => "Like privacy? We feel you. We don’t use or sell your data.";
   @override String get loginPrivacyReadCTA => "Touch to read our privacy policy.";
@@ -32,4 +30,25 @@ class LocalizationEN implements Localization {
   @override String get loginSignInCTA => "Sign-in";
   @override String get loginForgotPasswordCTA => "Forgot password?";
   @override String get loginNoAccountCTA => "Don't have an account yet? Sign-up";
+
+  @override String get forgotPasswordTitle => "Retrieve password";
+  @override String get forgotPasswordExplain => "Enter your login email and we'll send you instructions to reset your password";
+  @override String get forgotPasswordResetCTA => "Reset password";
+  @override String get forgotPasswordNoEmailTitle => "Empty email";
+  @override String get forgotPasswordNoEmailExplain => "Please provide an email";
+  @override String get forgotPasswordSuccessMessage => "Email with instructions has been send.";
+  @override String get forgotPasswordErrorMessage => "An error occurred while sending the email with instructions";
+
+  @override String get consentTitle => "Create your account";
+  @override String get consentTOSExplain => "By creating your account, you agree to the Terms of Service and Privacy Policy.";
+  @override String get consentAgeExplain => "You also certify to be over legal drinking age (18 or 21 depending on your country), using this app is prohibited for underage people.";
+  @override String get consentWarningExplain => "Finally, we remind you that alcohol is dangerous for you and other people: drink responsibly.";
+  @override String get consentAcceptCTA => "Create the account";
+
+  @override String get tosTitle => "ToS and Privacy Policy";
+
+  @override String get email => "Email";
+  @override String get password => "Password";
+  @override String get cancel => "Cancel";
+
 }

@@ -124,7 +124,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 const Padding(padding: EdgeInsets.only(top: 16.0)),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: Localization.of(context).loginEmail,
+                    hintText: Localization.of(context).email,
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: signUpEmailController,
@@ -133,7 +133,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 const Padding(padding: EdgeInsets.only(top: 16.0)),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: Localization.of(context).loginPassword,
+                    hintText: Localization.of(context).password,
                   ),
                   keyboardType: TextInputType.text,
                   obscureText: true,
@@ -286,7 +286,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
                       decoration: InputDecoration(
-                        hintText: Localization.of(context).loginEmail,
+                        hintText: Localization.of(context).email,
                       ),
                       keyboardType: TextInputType.emailAddress,
                       controller: signInEmailController,
@@ -295,7 +295,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
                       decoration: InputDecoration(
-                        hintText: Localization.of(context).loginPassword,
+                        hintText: Localization.of(context).password,
                       ),
                       keyboardType: TextInputType.text,
                       obscureText: true,

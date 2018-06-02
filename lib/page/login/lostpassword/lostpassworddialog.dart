@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 // FIXME this view would need some proper MVI
 Future<String> showLostPasswordDialog(BuildContext context) async {
@@ -10,9 +11,9 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
   return showDialog<String>(
     context: context,
     builder: (context) => SimpleDialog(
-      title: const Text(
-        'Retrieve password',
-        style: TextStyle(
+      title: Text(
+        Localization.of(context).forgotPasswordTitle,
+        style: const TextStyle(
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
@@ -23,18 +24,18 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: <Widget>[
-              const Text(
-                "Enter your login email and we'll send you instructions to reset your password",
-                style: TextStyle(
+              Text(
+                Localization.of(context).forgotPasswordExplain,
+                style: const TextStyle(
                   fontSize: 15.0,
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 16.0)),
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.email),
-                  hintText: "Email",
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.email),
+                  hintText: Localization.of(context).email,
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -49,7 +50,7 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              text: "Cancel",
+              text: Localization.of(context).cancel,
               textColor: Theme.of(context).textTheme.title.color,
             ),
             MaterialFlatButton.primary(
@@ -62,7 +63,7 @@ Future<String> showLostPasswordDialog(BuildContext context) async {
 
                 Navigator.of(context).pop(emailController.value.text);
               },
-              text: "Reset password",
+              text: Localization.of(context).forgotPasswordResetCTA,
             ),
             const Padding(padding: EdgeInsets.only(right: 8.0)),
           ],
@@ -76,16 +77,16 @@ _showEmptyEmailDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text(
-        "Empty email",
-        style: TextStyle(
+      title: Text(
+        Localization.of(context).forgotPasswordNoEmailTitle,
+        style: const TextStyle(
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
       ),
-      content: const Text(
-        "Please provide an email",
-        style: TextStyle(
+      content: Text(
+        Localization.of(context).forgotPasswordNoEmailExplain,
+        style: const TextStyle(
           fontSize: 15.0,
         ),
       ),
@@ -103,16 +104,18 @@ _showEmptyEmailDialog(BuildContext context) {
 }
 
 showLostPasswordEmailSentSnackBar(BuildContext context) {
-  Scaffold.of(context).showSnackBar(const SnackBar(
-    content: Text("Email with instructions has been send."),
-    duration: Duration(seconds: 3),
+  Scaffold.of(context).showSnackBar(SnackBar(
+    content: Text(
+      Localization.of(context).forgotPasswordSuccessMessage,
+    ),
+    duration: const Duration(seconds: 5),
   ));
 }
 
 showLostPasswordEmailErrorSendingSnackBar(BuildContext context, String error) {
   Scaffold.of(context).showSnackBar(SnackBar(
     content: Text(
-      "An error occurred while sending en email with instructions ($error)",
+      "${Localization.of(context).forgotPasswordErrorMessage} ($error)",
       style: TextStyle(
         color: Colors.red[600],
       ),

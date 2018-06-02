@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 // FIXME this view would need some proper MVI
 Future<bool> showConsentDialog(BuildContext context) async {
   return showDialog<bool>(
     context: context,
     builder: (context) => SimpleDialog(
-      title: const Text(
-        'Create your account',
-        style: TextStyle(
+      title: Text(
+        Localization.of(context).consentTitle,
+        style: const TextStyle(
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),
@@ -20,30 +21,30 @@ Future<bool> showConsentDialog(BuildContext context) async {
         Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: const Text(
-                "By creating your account, you agree to the Terms of Service and Privacy Policy.",
-                style: TextStyle(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                Localization.of(context).consentTOSExplain,
+                style: const TextStyle(
                   fontSize: 15.0,
                 ),
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 10.0)),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: const Text(
-                "You also certify to be over legal drinking age (18 or 21 depending on your country), using this app is prohibited for underage people.",
-                style: TextStyle(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                Localization.of(context).consentAgeExplain,
+                style: const TextStyle(
                   fontSize: 15.0,
                 ),
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 10.0)),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: const Text(
-                "Finally, we remind you that alcohol is dangerous for you and other people: drink responsibly.",
-                style: TextStyle(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                Localization.of(context).consentWarningExplain,
+                style: const TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -59,7 +60,7 @@ Future<bool> showConsentDialog(BuildContext context) async {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              text: "Cancel",
+              text: Localization.of(context).cancel,
               textColor: Theme.of(context).textTheme.title.color,
             ),
             MaterialFlatButton.primary(
@@ -67,7 +68,7 @@ Future<bool> showConsentDialog(BuildContext context) async {
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              text: "Create account",
+              text: Localization.of(context).consentAcceptCTA,
             ),
             const Padding(padding: EdgeInsets.only(right: 8.0)),
           ],

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_html_view/flutter_html_view.dart';
 
+import 'package:beer_me_up/localization/localization.dart';
+
 const String TOS_PAGE_ROUTE = "/tos";
 
 // TODO add some proper MVI architecture
@@ -12,8 +14,8 @@ class TOSPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "ToS and Privacy Policy",
-          style: TextStyle(
+          Localization.of(context).tosTitle,
+          style: const TextStyle(
             fontFamily: "Google Sans",
             fontWeight: FontWeight.w500,
           ),

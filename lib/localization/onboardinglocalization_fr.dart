@@ -19,8 +19,6 @@ class LocalizationFR implements Localization {
   @override String get onboardingSecondCTA => "C'est partit";
 
   @override String get loginCreateYourAccount => "Créer ton compte";
-  @override String get loginEmail => "Email";
-  @override String get loginPassword => "Mot de passe";
   @override String get loginSignUpCTA => "Créer mon compte";
   @override String get loginPrivacyExplain => "Nous protégeons ta vie privée. Nous ne vendons et n'utilisons pas tes données.";
   @override String get loginPrivacyReadCTA => "Touchez ici pour lire nos conditions d'utilisation.";
@@ -32,4 +30,24 @@ class LocalizationFR implements Localization {
   @override String get loginSignInCTA => "Me connecter";
   @override String get loginForgotPasswordCTA => "Mot de passe oublié ?";
   @override String get loginNoAccountCTA => "Tu n'as pas de compte ? Crée-en un";
+
+  @override String get forgotPasswordTitle => "Récupérer ton mot de passe";
+  @override String get forgotPasswordExplain => "Entre ton email et nous allons t'envoyer les instructions pour changer ton mot de passe";
+  @override String get forgotPasswordResetCTA => "Envoyer l'email";
+  @override String get forgotPasswordNoEmailTitle => "Email vide";
+  @override String get forgotPasswordNoEmailExplain => "Entre ton email pour recevoir les instructions";
+  @override String get forgotPasswordSuccessMessage => "Un email avec les instructions a été envoyé.";
+  @override String get forgotPasswordErrorMessage => "Une erreur est survenue lors de l'envoi de l'email avec les instructions";
+
+  @override String get consentTitle => "Création d'un compte";
+  @override String get consentTOSExplain => "En créant un compte, tu acceptes les conditions d'utilisation du service.";
+  @override String get consentAgeExplain => "Tu certifies également être majeur et en âge de boire de l'alcool (18 ou 21 ans selon le pays), utiliser cette app est interdit pour les personnes en dessous de cet âge.";
+  @override String get consentWarningExplain => "Enfin, nous te rappelons que l'alcool est dangereux pour toi et pour les autres : Bois avec modération.";
+  @override String get consentAcceptCTA => "Créer mon compte";
+
+  @override String get tosTitle => "Conditions d'utilisation";
+
+  @override String get email => "Email";
+  @override String get password => "Mot de passe";
+  @override String get cancel => "Annuler";
 }
