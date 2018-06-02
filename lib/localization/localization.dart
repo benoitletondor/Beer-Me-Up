@@ -26,6 +26,21 @@ abstract class Localization {
   String get onboardingSecondThirdExplainFifth;
   String get onboardingSecondSubText;
   String get onboardingSecondCTA;
+
+  String get loginCreateYourAccount;
+  String get loginEmail;
+  String get loginPassword;
+  String get loginSignUpCTA;
+  String get loginPrivacyExplain;
+  String get loginPrivacyReadCTA;
+  String get loginOr;
+  String get loginSignInGoogle;
+  String get loginSignInFacebook;
+  String get loginAlreadyHaveAccountCTA;
+  String get loginSignIn;
+  String get loginSignInCTA;
+  String get loginForgotPasswordCTA;
+  String get loginNoAccountCTA;
 }
 
 class BeerMeUpLocalizationsDelegate extends LocalizationsDelegate<Localization> {

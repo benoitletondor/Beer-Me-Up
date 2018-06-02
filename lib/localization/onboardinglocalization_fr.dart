@@ -17,4 +17,19 @@ class LocalizationFR implements Localization {
   @override String get onboardingSecondThirdExplainFifth => ", à propos de toutes les bières que tu as bu";
   @override String get onboardingSecondSubText => "C'est aussi simple que ça !";
   @override String get onboardingSecondCTA => "C'est partit";
+
+  @override String get loginCreateYourAccount => "Créer ton compte";
+  @override String get loginEmail => "Email";
+  @override String get loginPassword => "Mot de passe";
+  @override String get loginSignUpCTA => "Créer mon compte";
+  @override String get loginPrivacyExplain => "Nous protégeons ta vie privée. Nous ne vendons et n'utilisons pas tes données.";
+  @override String get loginPrivacyReadCTA => "Touchez ici pour lire nos conditions d'utilisation.";
+  @override String get loginOr => "OU";
+  @override String get loginSignInGoogle => "Se connecter avec Google";
+  @override String get loginSignInFacebook => "Se connecter avec Facebook";
+  @override String get loginAlreadyHaveAccountCTA => "Tu as déjà un compte ? Connecte toi";
+  @override String get loginSignIn => "Connecte toi à ton compte";
+  @override String get loginSignInCTA => "Me connecter";
+  @override String get loginForgotPasswordCTA => "Mot de passe oublié ?";
+  @override String get loginNoAccountCTA => "Tu n'as pas de compte ? Crée-en un";
 }

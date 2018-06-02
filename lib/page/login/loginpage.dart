@@ -7,6 +7,7 @@ import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -96,9 +97,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  "Create your account",
-                  style: TextStyle(
+                Text(
+                  Localization.of(context).loginCreateYourAccount,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 22.0,
                     fontFamily: "Google Sans",
@@ -122,8 +123,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 ),
                 const Padding(padding: EdgeInsets.only(top: 16.0)),
                 TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Email",
+                  decoration: InputDecoration(
+                    hintText: Localization.of(context).loginEmail,
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: signUpEmailController,
@@ -131,8 +132,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 ),
                 const Padding(padding: EdgeInsets.only(top: 16.0)),
                 TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Password",
+                  decoration: InputDecoration(
+                    hintText: Localization.of(context).loginPassword,
                   ),
                   keyboardType: TextInputType.text,
                   obscureText: true,
@@ -144,7 +145,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: MaterialRaisedButton.primary(
                     context: context,
                     onPressed: () { intent.signUp(LoginFormData(signUpEmailController.text, signUpPassController.text)); },
-                    text: "Sign-up"
+                    text: Localization.of(context).loginSignUpCTA,
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 25.0)),
@@ -161,16 +162,16 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       Expanded(
                         child: RichText(
                           text: TextSpan(
-                            text: "Like privacy? We feel you. We don’t use or sell your data.",
+                            text: Localization.of(context).loginPrivacyExplain,
                             style: TextStyle(
                               fontSize: 14.0,
                               letterSpacing: -0.5,
                               color: Theme.of(context).textTheme.body1.color,
                             ),
-                            children: const <TextSpan>[
+                            children: <TextSpan>[
                               TextSpan(
-                                text: "Touch to read our privacy policy.",
-                                style: TextStyle(
+                                text: Localization.of(context).loginPrivacyReadCTA,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -194,9 +195,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 16.0)),
-                    const Text(
-                      "OR",
-                      style: TextStyle(
+                    Text(
+                      Localization.of(context).loginOr,
+                      style: const TextStyle(
                         fontSize: 18.0,
                         fontFamily: "Google Sans",
                       ),
@@ -217,7 +218,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithGoogle,
-                    text: "Sign-in with Google",
+                    text: Localization.of(context).loginSignInGoogle,
                     leading: Image.asset("images/google.png"),
                   ),
                 ),
@@ -226,7 +227,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: MaterialRaisedButton.primary(
                     context: context,
                     onPressed: intent.signUpWithFacebook,
-                    text: "Sign-in with Facebook",
+                    text: Localization.of(context).loginSignInFacebook,
                     leading: Image.asset("images/facebook.png"),
                   ),
                 ),
@@ -235,7 +236,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                   child: MaterialFlatButton.primary(
                     context: context,
                     onPressed: intent.showSignIn,
-                    text: "Already have an account? Sign-in",
+                    text: Localization.of(context).loginAlreadyHaveAccountCTA,
                   ),
                 )
               ],
@@ -258,9 +259,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      "Sign-in with your account",
-                      style: TextStyle(
+                    Text(
+                      Localization.of(context).loginSignIn,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 22.0,
                         fontFamily: "Google Sans",
@@ -284,8 +285,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ),
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
-                      decoration: const InputDecoration(
-                        hintText: "Email",
+                      decoration: InputDecoration(
+                        hintText: Localization.of(context).loginEmail,
                       ),
                       keyboardType: TextInputType.emailAddress,
                       controller: signInEmailController,
@@ -293,8 +294,8 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                     ),
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
                     TextField(
-                      decoration: const InputDecoration(
-                        hintText: "Password",
+                      decoration: InputDecoration(
+                        hintText: Localization.of(context).loginPassword,
                       ),
                       keyboardType: TextInputType.text,
                       obscureText: true,
@@ -306,7 +307,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: MaterialRaisedButton.primary(
                           context: context,
                           onPressed: () { intent.signIn(LoginFormData(signInEmailController.text, signInPassController.text)); },
-                          text: "Sign-in"
+                          text: Localization.of(context).loginSignInCTA,
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 16.0)),
@@ -314,7 +315,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: MaterialFlatButton.primary(
                           context: context,
                           onPressed: () { intent.forgotPassword(context); },
-                          text: "Forgot password?"
+                          text: Localization.of(context).loginForgotPasswordCTA,
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -329,9 +330,9 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                           ),
                         ),
                         const Padding(padding: EdgeInsets.only(left: 16.0)),
-                        const Text(
-                          "OR",
-                          style: TextStyle(
+                        Text(
+                          Localization.of(context).loginOr,
+                          style: const TextStyle(
                             fontSize: 18.0,
                             fontFamily: "Google Sans",
                           ),
@@ -352,7 +353,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: MaterialRaisedButton.primary(
                         context: context,
                         onPressed: intent.signInWithGoogle,
-                        text: "Sign-in with Google",
+                        text: Localization.of(context).loginSignInGoogle,
                         leading: Image.asset("images/google.png"),
                       ),
                     ),
@@ -361,7 +362,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: MaterialRaisedButton.primary(
                         context: context,
                         onPressed: intent.signInWithFacebook,
-                        text: "Sign-in with Facebook",
+                        text: Localization.of(context).loginSignInFacebook,
                         leading: Image.asset("images/facebook.png"),
                       ),
                     ),
@@ -370,7 +371,7 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                       child: MaterialFlatButton.primary(
                         context: context,
                         onPressed: intent.showSignUp,
-                        text: "Don't have an account yet? Sign-up",
+                        text: Localization.of(context).loginNoAccountCTA,
                       ),
                     )
                   ],
