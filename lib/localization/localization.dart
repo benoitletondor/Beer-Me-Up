@@ -56,9 +56,15 @@ abstract class Localization {
 
   String get tosTitle;
 
+  String get settingsHaptic;
+  String get settingsAnalytics;
+
   String get email;
   String get password;
   String get cancel;
+  String get settings;
+  String get account;
+  String get logout;
 }
 
 class BeerMeUpLocalizationsDelegate extends LocalizationsDelegate<Localization> {

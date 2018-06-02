@@ -7,6 +7,7 @@ import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
 import 'package:beer_me_up/common/hapticfeedback.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -81,24 +82,25 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 30.0)),
-          const Text(
-            "Settings",
-            style: TextStyle(
+          Text(
+            Localization.of(context).settings,
+            style: const TextStyle(
               fontSize: 18.0,
               fontFamily: "Google Sans",
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),
           ),
+          const Padding(padding: EdgeInsets.only(top: 3.0)),
           Offstage(
             offstage: Theme.of(context).platform != TargetPlatform.iOS,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Haptic feedback (vibration) on touch",
-                    style: TextStyle(
+                    Localization.of(context).settingsHaptic,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14.0,
                     ),
@@ -120,10 +122,10 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Expanded(
+              Expanded(
                 child: Text(
-                  "Help enhance experience by sending usage statistics",
-                  style: TextStyle(
+                  Localization.of(context).settingsAnalytics,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14.0,
                   ),
@@ -142,9 +144,9 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 30.0)),
-          const Text(
-            "Account",
-            style: TextStyle(
+          Text(
+            Localization.of(context).account,
+            style: const TextStyle(
               fontSize: 18.0,
               fontFamily: "Google Sans",
               color: Colors.white,
@@ -162,7 +164,7 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
           const Padding(padding: EdgeInsets.only(top: 14.0)),
           Center(
             child: MaterialFlatButton(
-              text: "Logout",
+              text: Localization.of(context).logout,
               onPressed: intent.logout,
               textColor: Colors.white,
             ),
@@ -185,8 +187,8 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
   Widget _buildAppBar() {
     return AppBar(
       title: Text(
-        "Settings",
-        style: TextStyle(
+        Localization.of(context).settings,
+        style: const TextStyle(
           fontFamily: "Google Sans",
           fontWeight: FontWeight.w500,
         ),

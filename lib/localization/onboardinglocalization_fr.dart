@@ -47,7 +47,13 @@ class LocalizationFR implements Localization {
 
   @override String get tosTitle => "Conditions d'utilisation";
 
+  @override String get settingsHaptic => "Retour haptique (vibration) au toucher";
+  @override String get settingsAnalytics => "Aider à améliorer l'expérience en envoyant des statistiques d'utilisation";
+
   @override String get email => "Email";
   @override String get password => "Mot de passe";
   @override String get cancel => "Annuler";
+  @override String get settings => "Réglages";
+  @override String get account => "Compte";
+  @override String get logout => "Se déconnecter";
 }
