@@ -11,6 +11,7 @@ import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/hapticfeedback.dart';
 import 'package:beer_me_up/common/widget/materialextendedfab.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'state.dart';
 import 'model.dart';
@@ -116,7 +117,7 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
             "images/fab_icon.png",
             width: 20.0,
           ),
-          text: "Check-in",
+          text: Localization.of(context).homeCheckIn,
           color: Theme.of(context).accentColor,
           textColor: Colors.white,
           onPressed: intent.beerCheckIn,
@@ -142,25 +143,25 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
               intent.showHistory();
             }
           },
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               title: Text(
-                "Profile",
-                style: TextStyle(
+                Localization.of(context).profile,
+                style: const TextStyle(
                   fontFamily: "Google Sans",
                 ),
               ),
             ),
-            BottomNavigationBarItem( // Fake item
+            const BottomNavigationBarItem( // Fake item
               icon: SizedBox(),
               title: SizedBox(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
+              icon: const Icon(Icons.history),
               title: Text(
-                "History",
-                style: TextStyle(
+                Localization.of(context).history,
+                style: const TextStyle(
                   fontFamily: "Google Sans",
                 ),
               ),
@@ -203,11 +204,11 @@ class _HomePageState extends ViewState<HomePage, HomeViewModel, HomeIntent, Home
           }
         },
         itemBuilder: (BuildContext context) {
-          return const [PopupMenuItem<String>(
+          return [PopupMenuItem<String>(
             value: "settings",
             child: Text(
-              "Settings",
-              style: TextStyle(
+              Localization.of(context).settings,
+              style: const TextStyle(
                 fontFamily: "Google Sans",
               ),
             ),
