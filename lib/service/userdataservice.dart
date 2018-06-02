@@ -10,8 +10,8 @@ import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/service/beersearch/beersearchservice.dart';
-import 'package:beer_me_up/service/beersearch/brewerydbservice.dart';
 import 'package:beer_me_up/service/beersearch/untappdservice.dart';
+import 'package:beer_me_up/common/networkexception.dart';
 import 'package:beer_me_up/common/datehelper.dart';
 
 abstract class UserDataService {
@@ -46,8 +46,10 @@ class CheckinFetchResponse {
 }
 
 const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
-const _LIMIT_FOR_WEEKLY_CHECKINS = 100;
+const _LIMIT_FOR_WEEKLY_CHECK_INS = 100;
 const _BEER_VERSION = 1;
+
+const _DEFAULT_TIMEOUT = Duration(seconds: 10);
 
 class _UserDataServiceImpl implements UserDataService {
   final HttpClient _httpClient;
@@ -61,8 +63,8 @@ class _UserDataServiceImpl implements UserDataService {
   @override
   Future<void> initDB(FirebaseUser currentUser) async {
     _userDoc = await _connectDB(currentUser).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => Future.error(Exception("Unable to connect to database. Please check your network connection."))
+      _DEFAULT_TIMEOUT,
+      onTimeout: () => Future.error(NetworkException("Unable to connect to database. Please check your network connection."))
     );
   }
 
@@ -109,8 +111,8 @@ class _UserDataServiceImpl implements UserDataService {
     }
 
     final checkinCollection = await query.getDocuments().timeout(
-      const Duration(seconds: 5),
-      onTimeout: () => Future.error(Exception("Unable to get your check-ins data. Please check your network connection."))
+      _DEFAULT_TIMEOUT,
+      onTimeout: () => Future.error(NetworkException("Unable to get your check-ins data. Please check your network connection."))
     );
 
     final checkinArray = checkinCollection.documents;
@@ -134,8 +136,8 @@ class _UserDataServiceImpl implements UserDataService {
         .collection("beers")
         .getDocuments()
         .timeout(
-        const Duration(seconds: 5),
-        onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
+        _DEFAULT_TIMEOUT,
+        onTimeout: () => Future.error(NetworkException("Unable to retrieve your data. Please check your network connection."))
     );
 
     return beerDocsSnapshot.documents.map((beerSnapshot) =>
@@ -191,8 +193,8 @@ class _UserDataServiceImpl implements UserDataService {
         .document(beer.id);
 
     final beerDoc = await beerDocument.get().timeout(
-      const Duration(seconds: 5),
-      onTimeout: () => Future.error(Exception("Unable to get check-ins details. Please check your network connection."))
+      _DEFAULT_TIMEOUT,
+      onTimeout: () => Future.error(NetworkException("Unable to get check-ins details. Please check your network connection."))
     );
 
     bool beerAlreadyCheckedIn = beerDoc != null && beerDoc.exists;
@@ -210,8 +212,8 @@ class _UserDataServiceImpl implements UserDataService {
       .document(checkIn.beer.id);
 
     DocumentSnapshot beerDocumentValues = await beerDocument.get().timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => Future.error(Exception("Unable save check-in. Please check your network connection."))
+      const Duration(seconds: 30),
+      onTimeout: () => Future.error(NetworkException("Unable save check-in. Please check your network connection."))
     );
 
     final numberOfCheckIns = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["checkin_counter"] : 0;
@@ -359,11 +361,11 @@ class _UserDataServiceImpl implements UserDataService {
         .where("date", isGreaterThanOrEqualTo: weekDates.item1)
         .where("date", isLessThanOrEqualTo: weekDates.item2)
         .orderBy("date", descending: true)
-        .limit(_LIMIT_FOR_WEEKLY_CHECKINS)
+        .limit(_LIMIT_FOR_WEEKLY_CHECK_INS)
         .getDocuments()
         .timeout(
-          const Duration(seconds: 5),
-          onTimeout: () => Future.error(Exception("Unable to retrieve your data. Please check your network connection."))
+          _DEFAULT_TIMEOUT,
+          onTimeout: () => Future.error(NetworkException("Unable to retrieve your data. Please check your network connection."))
         );
 
     return snapshots.documents

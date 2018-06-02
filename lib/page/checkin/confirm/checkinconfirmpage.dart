@@ -102,75 +102,69 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
         ),
       ),
       body: SafeArea(
-        child: Column(
+        child: ListView(
+          physics: const ScrollPhysics(),
+          padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
           children: <Widget>[
-            Expanded(
-              child: ListView(
-                physics: const ScrollPhysics(),
-                padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
+            _buildBeerTile(selectedBeer),
+            const Padding(padding: EdgeInsets.only(top: 16.0)),
+            Row(
+              children: <Widget>[
+                Text(
+                  formatter.format(date),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Google Sans",
+                    fontSize: 18.0,
+                  ),
+                ),
+                MaterialFlatButton(
+                  text: "(Change date)",
+                  textColor: Colors.white,
+                  onPressed: intent.changeDateTime,
+                )
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 16.0)),
+            _buildPointsWidget(points, loadingError),
+            const Padding(padding: EdgeInsets.only(top: 16.0)),
+            const Text(
+              "Select quantity",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Google Sans",
+                fontSize: 18.0,
+              ),
+            ),
+            Offstage(
+              offstage: !quantityNotSelectedError,
+              child: Column(
                 children: <Widget>[
-                  _buildBeerTile(selectedBeer),
-                  const Padding(padding: EdgeInsets.only(top: 16.0)),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        formatter.format(date),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Google Sans",
-                          fontSize: 18.0,
-                        ),
+                  const Padding(padding: EdgeInsets.only(top: 20.0)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: Text(
+                      "Please select a quantity to confirm checkin",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      MaterialFlatButton(
-                        text: "(Change date)",
-                        textColor: Colors.white,
-                        onPressed: intent.changeDateTime,
-                      )
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 16.0)),
-                  _buildPointsWidget(points, loadingError),
-                  const Padding(padding: EdgeInsets.only(top: 16.0)),
-                  const Text(
-                    "Select quantity",
-                    style: TextStyle(
+                    ),
+                    decoration: const BoxDecoration(
                       color: Colors.white,
-                      fontFamily: "Google Sans",
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  Offstage(
-                    offstage: !quantityNotSelectedError,
-                    child: Column(
-                      children: <Widget>[
-                        const Padding(padding: EdgeInsets.only(top: 20.0)),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                          child: Text(
-                            "Please select a quantity to confirm checkin",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 5.0)),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: _buildQuantityTiles(selectedQuantity),
+                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     ),
                   ),
                 ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 5.0)),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: _buildQuantityTiles(selectedQuantity),
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20.0)),

@@ -158,12 +158,23 @@ class _LoginPageState extends ViewState<LoginPage, LoginViewModel, LoginIntent, 
                         size: 22.0,
                       ),
                       const Padding(padding: EdgeInsets.only(left: 10.0)),
-                      const Expanded(
-                        child: Text(
-                          "Like privacy? We feel you. We don’t use or sell your data. Touch to read our privacy policy.",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            letterSpacing: -0.5,
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Like privacy? We feel you. We don’t use or sell your data.",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              letterSpacing: -0.5,
+                              color: Theme.of(context).textTheme.body1.color,
+                            ),
+                            children: const <TextSpan>[
+                              TextSpan(
+                                text: "Touch to read our privacy policy.",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

@@ -8,7 +8,7 @@ import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
-import 'package:beer_me_up/common/widget/materialraisedbutton.dart';
+import 'package:beer_me_up/common/widget/materialflatbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -185,7 +185,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
     return Container(
       padding: const EdgeInsets.only(top: 10.0, bottom: 25.0),
       child: Center(
-        child: MaterialRaisedButton.primary(
+        child: MaterialFlatButton.primary(
           context: context,
           text: "Load more",
           onPressed: intent.loadMore,

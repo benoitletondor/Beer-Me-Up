@@ -98,7 +98,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              hasAlreadyCheckedIn ? "Continue to check beers you have to build your profile." : "Check the next beer you have into the app to build your profile.",
+              hasAlreadyCheckedIn ? "Continue to check the beers you have to build your profile." : "Check the next beer you have into the app to build your profile.",
               style: TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 18.0,

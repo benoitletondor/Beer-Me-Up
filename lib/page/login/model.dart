@@ -7,6 +7,7 @@ import 'package:beer_me_up/page/login/lostpassword/lostpassworddialog.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/page/tos/tospage.dart';
 import 'package:beer_me_up/main.dart';
+import 'consent/consentdialog.dart';
 
 import 'state.dart';
 import 'intent.dart';
@@ -70,6 +71,10 @@ class LoginViewModel extends BaseViewModel<LoginState> {
   }
 
   _signUpWithGoogle(Null event) async {
+    if( !(await _showConsentDialog()) ) {
+      return;
+    }
+
     setState(LoginState.authenticating());
 
     try {
@@ -98,6 +103,10 @@ class LoginViewModel extends BaseViewModel<LoginState> {
   }
 
   _signUpWithFacebook(Null event) async {
+    if( !(await _showConsentDialog()) ) {
+      return;
+    }
+
     setState(LoginState.authenticating());
 
     try {
@@ -140,6 +149,10 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
     if( formData.password.trim().isEmpty ) {
       setState(LoginState.signUpError("Please provide a password"));
+      return;
+    }
+
+    if( !(await _showConsentDialog()) ) {
       return;
     }
 
@@ -192,5 +205,14 @@ class LoginViewModel extends BaseViewModel<LoginState> {
 
   _showPrivacyPolicy(Null event) async {
     pushNamed(TOS_PAGE_ROUTE);
+  }
+
+  Future<bool> _showConsentDialog() async {
+    final result = await showConsentDialog(getBuildContext());
+    if( result == null ) {
+      return false;
+    }
+
+    return result;
   }
 }
