@@ -186,8 +186,8 @@ class ProfileData {
     checkInsList.sort((a, b) => b.drankQuantity.compareTo(a.drankQuantity));
 
     return ProfileData(
-      checkInsData.length >= 3,
-      checkIns.isNotEmpty,
+      checkInsData.length >= 2,
+      checkIns.length >= 2,
       totalPoints > 0,
       favouriteBeer,
       favouriteCategory,

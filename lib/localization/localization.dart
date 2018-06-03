@@ -107,6 +107,8 @@ abstract class Localization {
   String get history;
   String get times;
   String get loadMore;
+  String get errorOccurred;
+  String get retry;
 }
 
 class BeerMeUpLocalizationsDelegate extends LocalizationsDelegate<Localization> {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 class ErrorOccurredWidget extends StatelessWidget {
 
@@ -21,9 +23,9 @@ class ErrorOccurredWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              "An error occurred",
-              style: TextStyle(
+            Text(
+              Localization.of(context).errorOccurred,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: "Google Sans",
                 fontSize: 18.0,
@@ -43,7 +45,7 @@ class ErrorOccurredWidget extends StatelessWidget {
                   MaterialFlatButton.primary(
                     context: context,
                     onPressed: onRetry,
-                    text: "Retry",
+                    text: Localization.of(context).retry,
                   )
                 ],
               ),

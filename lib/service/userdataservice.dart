@@ -376,7 +376,12 @@ class _UserDataServiceImpl implements UserDataService {
   @override
   Future<int> getTotalUserPoints() async {
     final userDoc = await _userDoc.reference.get();
-    return userDoc["points"] as int;
+    final points = userDoc["points"];
+    if( points == null ) {
+      return 0;
+    }
+
+    return points as int;
   }
 
   @override

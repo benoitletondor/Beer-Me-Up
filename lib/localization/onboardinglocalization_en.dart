@@ -98,4 +98,6 @@ class LocalizationEN implements Localization {
   @override String get history => "History";
   @override String get times => "times";
   @override String get loadMore => "Load more";
+  @override String get errorOccurred => "An error occurred";
+  @override String get retry => "Retry";
 }

@@ -62,6 +62,7 @@ class BeerMeUpApp extends StatelessWidget {
         const Locale('en'),
         const Locale('fr'),
       ],
+      debugShowCheckedModeBanner: false,
     );
   }
 }

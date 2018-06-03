@@ -14,7 +14,7 @@ class LocalizationFR implements Localization {
   @override String get onboardingSecondThirdExplainSecond => "ton historique complet";
   @override String get onboardingSecondThirdExplainThird => ", avec des ";
   @override String get onboardingSecondThirdExplainFourth => "stats";
-  @override String get onboardingSecondThirdExplainFifth => ", à propos de toutes les bières que tu as bu";
+  @override String get onboardingSecondThirdExplainFifth => ", de toutes les bières que tu as bu";
   @override String get onboardingSecondSubText => "C'est aussi simple que ça !";
   @override String get onboardingSecondCTA => "C'est partit";
 
@@ -98,4 +98,6 @@ class LocalizationFR implements Localization {
   @override String get history => "Historique";
   @override String get times => "fois";
   @override String get loadMore => "Charger plus";
+  @override String get errorOccurred => "Une erreur est survenue";
+  @override String get retry => "Réessayer";
 }
