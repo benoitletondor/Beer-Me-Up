@@ -36,7 +36,7 @@ The app uses the MVI architecture, the implementation is greatly inspired by [Br
 Beers data is coming from the [Untappd API](https://untappd.com/api)
 
 <p align="center">
-  <img src="https://github.com/benoitletondor/Beer-Me-Up/raw/develop/pbu_80_yellow.png"/>
+  <img src="https://github.com/benoitletondor/Beer-Me-Up/raw/develop/pbu_80_yellow.png" width="200" />
 </p>
 
 ### Copyright
