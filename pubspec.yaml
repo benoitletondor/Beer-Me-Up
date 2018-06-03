@@ -1,0 +1,85 @@
+name: beer_me_up
+description: An app about beers
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  http: 0.11.3+16
+
+  shared_preferences: 0.4.1
+
+  tuple: 1.0.1
+
+  cached_network_image: 0.4.1+1
+
+  sealed_unions: 2.0.0
+  flutter_stream_friends: 0.8.0
+
+  intl: 0.15.6
+  intl_translation: 0.16.7
+
+  google_sign_in: 3.0.3
+  flutter_facebook_login: 1.1.1
+  firebase_auth: 0.5.8
+  cloud_firestore: 0.7.0+2
+  firebase_analytics: 0.3.3
+  firebase_remote_config: 0.0.2
+
+  sentry: 2.0.2
+
+  flutter_html_view: 0.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+# For information on the generic Dart part of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/round_logo.png
+    - images/thinking_face.png
+    - images/large_logo.png
+    - images/toolbar_icon.png
+    - images/beer_icon_background.png
+    - images/fab_icon.png
+    - images/facebook.png
+    - images/google.png
+    - images/beer_bottle.png
+    - images/beer_half_pint.png
+    - images/beer_pint.png
+    - images/beer_icon_big_white_background.png
+    - images/coin.png
+    - images/beer_background.jpg
+    - images/brewerydb.png
+    - images/search_empty_state.png
+    - images/main_empty_state.png
+    - images/arrow_bottom.png
+    - images/untappd.png
+    - images/default_beer.png
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.io/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.io/assets-and-images/#from-packages
+
+  fonts:
+     - family: Google Sans
+       fonts:
+         - asset: fonts/GoogleSans-Regular.ttf
+         - asset: fonts/GoogleSans-Medium.ttf
+           weight: 500
+         - asset: fonts/GoogleSans-Bold.ttf
+           weight: 700
+  #
+  # For details regarding fonts from package dependencies, 
+  # see https://flutter.io/custom-fonts/#from-packages

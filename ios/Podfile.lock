@@ -1,0 +1,256 @@
+PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - BoringSSL (10.0):
+    - BoringSSL/Implementation (= 10.0)
+    - BoringSSL/Interface (= 10.0)
+  - BoringSSL/Implementation (10.0):
+    - BoringSSL/Interface (= 10.0)
+  - BoringSSL/Interface (10.0)
+  - cloud_firestore (0.0.1):
+    - Firebase/Auth
+    - Firebase/Core
+    - Firebase/Database
+    - Firebase/Firestore
+    - Flutter
+  - FBSDKCoreKit (4.31.1):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.31.1):
+    - FBSDKCoreKit
+  - Firebase/Auth (4.11.0):
+    - Firebase/Core
+    - FirebaseAuth (= 4.5.0)
+  - Firebase/Core (4.11.0):
+    - FirebaseAnalytics (= 4.1.0)
+    - FirebaseCore (= 4.0.18)
+  - Firebase/Database (4.11.0):
+    - Firebase/Core
+    - FirebaseDatabase (= 4.1.5)
+  - Firebase/Firestore (4.11.0):
+    - Firebase/Core
+    - FirebaseFirestore (= 0.10.4)
+  - Firebase/RemoteConfig (4.11.0):
+    - Firebase/Core
+    - FirebaseRemoteConfig (= 2.1.2)
+  - firebase_analytics (0.0.1):
+    - Firebase/Core
+    - Flutter
+  - firebase_auth (0.0.1):
+    - Firebase/Auth
+    - Firebase/Core
+    - Flutter
+  - firebase_core (0.0.1):
+    - Firebase/Core
+    - Flutter
+  - firebase_remote_config (0.0.1):
+    - Firebase/RemoteConfig
+    - Flutter
+  - FirebaseABTesting (1.0.0):
+    - FirebaseCore (~> 4.0)
+    - Protobuf (~> 3.1)
+  - FirebaseAnalytics (4.1.0):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - nanopb (~> 0.3)
+  - FirebaseAuth (4.5.0):
+    - FirebaseAnalytics (~> 4.1)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseCore (4.0.18):
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseDatabase (4.1.5):
+    - FirebaseAnalytics (~> 4.1)
+    - FirebaseCore (~> 4.0)
+    - leveldb-library (~> 1.18)
+  - FirebaseFirestore (0.10.4):
+    - FirebaseAnalytics (~> 4.1)
+    - FirebaseCore (~> 4.0)
+    - gRPC-ProtoRPC (~> 1.0)
+    - leveldb-library (~> 1.18)
+    - Protobuf (~> 3.5)
+  - FirebaseInstanceID (2.0.10):
+    - FirebaseCore (~> 4.0)
+  - FirebaseRemoteConfig (2.1.2):
+    - FirebaseABTesting (~> 1.0)
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - Protobuf (~> 3.1)
+  - Flutter (1.0.0)
+  - flutter_custom_tabs (0.0.1):
+    - Flutter
+  - flutter_facebook_login (0.0.1):
+    - FBSDKLoginKit (~> 4.29)
+    - Flutter
+  - google_sign_in (0.0.1):
+    - Flutter
+    - GoogleSignIn (~> 4.0)
+  - GoogleSignIn (4.1.2):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.3)":
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3)":
+    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.3)"
+  - gRPC (1.10.0):
+    - gRPC-RxLibrary (= 1.10.0)
+    - gRPC/Main (= 1.10.0)
+  - gRPC-Core (1.10.0):
+    - gRPC-Core/Implementation (= 1.10.0)
+    - gRPC-Core/Interface (= 1.10.0)
+  - gRPC-Core/Implementation (1.10.0):
+    - BoringSSL (~> 10.0)
+    - gRPC-Core/Interface (= 1.10.0)
+    - nanopb (~> 0.3)
+  - gRPC-Core/Interface (1.10.0)
+  - gRPC-ProtoRPC (1.10.0):
+    - gRPC (= 1.10.0)
+    - gRPC-RxLibrary (= 1.10.0)
+    - Protobuf (~> 3.0)
+  - gRPC-RxLibrary (1.10.0)
+  - gRPC/Main (1.10.0):
+    - gRPC-Core (= 1.10.0)
+    - gRPC-RxLibrary (= 1.10.0)
+  - GTMOAuth2 (1.1.6):
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.1.14):
+    - GTMSessionFetcher/Full (= 1.1.14)
+  - GTMSessionFetcher/Core (1.1.14)
+  - GTMSessionFetcher/Full (1.1.14):
+    - GTMSessionFetcher/Core (= 1.1.14)
+  - leveldb-library (1.20)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - path_provider (0.0.1):
+    - Flutter
+  - Protobuf (3.5.0)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore/ios`)
+  - firebase_analytics (from `Pods/.symlinks/plugins/firebase_analytics/ios`)
+  - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth/ios`)
+  - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
+  - firebase_remote_config (from `Pods/.symlinks/plugins/firebase_remote_config/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
+  - flutter_custom_tabs (from `Pods/.symlinks/plugins/flutter_custom_tabs/ios`)
+  - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login/ios`)
+  - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in/ios`)
+  - path_provider (from `Pods/.symlinks/plugins/path_provider/ios`)
+  - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `Pods/.symlinks/plugins/url_launcher/ios`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Bolts
+    - BoringSSL
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - Firebase
+    - FirebaseABTesting
+    - FirebaseAnalytics
+    - FirebaseAuth
+    - FirebaseCore
+    - FirebaseDatabase
+    - FirebaseFirestore
+    - FirebaseInstanceID
+    - FirebaseRemoteConfig
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - gRPC
+    - gRPC-Core
+    - gRPC-ProtoRPC
+    - gRPC-RxLibrary
+    - GTMOAuth2
+    - GTMSessionFetcher
+    - leveldb-library
+    - nanopb
+    - Protobuf
+
+EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: Pods/.symlinks/plugins/cloud_firestore/ios
+  firebase_analytics:
+    :path: Pods/.symlinks/plugins/firebase_analytics/ios
+  firebase_auth:
+    :path: Pods/.symlinks/plugins/firebase_auth/ios
+  firebase_core:
+    :path: Pods/.symlinks/plugins/firebase_core/ios
+  firebase_remote_config:
+    :path: Pods/.symlinks/plugins/firebase_remote_config/ios
+  Flutter:
+    :path: Pods/.symlinks/flutter/ios-release
+  flutter_custom_tabs:
+    :path: Pods/.symlinks/plugins/flutter_custom_tabs/ios
+  flutter_facebook_login:
+    :path: Pods/.symlinks/plugins/flutter_facebook_login/ios
+  google_sign_in:
+    :path: Pods/.symlinks/plugins/google_sign_in/ios
+  path_provider:
+    :path: Pods/.symlinks/plugins/path_provider/ios
+  shared_preferences:
+    :path: Pods/.symlinks/plugins/shared_preferences/ios
+  url_launcher:
+    :path: Pods/.symlinks/plugins/url_launcher/ios
+
+SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  BoringSSL: 32764dbaf5f5888cf51fbaa172a010126b41bcd4
+  cloud_firestore: a2d49d9c7219fce31033eb1a2ee953d7733c91d6
+  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
+  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
+  Firebase: cc13dfab1038c8b45d7903e01fc690451d6d0b24
+  firebase_analytics: fcc60a9de4b8e07aa5af8941303a7f5fe6e0383f
+  firebase_auth: 27a5a77a032d557c18f8e223aaf8ec1368f6cdbc
+  firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
+  firebase_remote_config: 237de54ea095a512fbf7ee93ff36910e175b0c7b
+  FirebaseABTesting: d07d0ee833b842d5153549e4c7e2e2cb1c23a3f9
+  FirebaseAnalytics: 3dfae28d4a5e06f86c4fae830efc2ad3fadb19bc
+  FirebaseAuth: 147bf340a0706b44ca1753d6b41ebafd9687cfe6
+  FirebaseCore: b981f47e5254cbcfdeb483355300d743f6fcab2c
+  FirebaseDatabase: 5f0bc6134c5c237cf55f9e1249d406770a75eafd
+  FirebaseFirestore: 796df79c29cf8ecf806564f4d347665bdafa6ef0
+  FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
+  FirebaseRemoteConfig: df64ce784a45e9b9d4988030a59da6baede8bdb0
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_custom_tabs: 8dcb85ffe874ee8fd8139bb3960743efeaf521ee
+  flutter_facebook_login: e3d2f0a348889fe0f49c302bc044b8cc66c691be
+  google_sign_in: cbeb57b96679823d14df6b2240b629b983a42d79
+  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  gRPC: f54f0e6d603052b4562447da442ce2ff30bcdacc
+  gRPC-Core: a030b1678ded49c88ec5ba7c90ee8ee5f47ec6e1
+  gRPC-ProtoRPC: 22712b23eb1bda656a59715fa5c1da0ea1493ea4
+  gRPC-RxLibrary: a41a4652d220f230ba1c0491a94ce2ee04c6180a
+  GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
+  GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
+  url_launcher: 92b89c1029a0373879933c21642958c874539095
+
+PODFILE CHECKSUM: 8e313a2c02406808061b90670d33ba78f9fe2930
+
+COCOAPODS: 1.5.0

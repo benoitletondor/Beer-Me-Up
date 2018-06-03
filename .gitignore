@@ -9,4 +9,6 @@ ios/.generated/
 packages
 .flutter-plugins
 /android/app/google-services.json
+/android/key
 /ios/Runner/GoogleService-Info.plist
+/lib/private.dart
