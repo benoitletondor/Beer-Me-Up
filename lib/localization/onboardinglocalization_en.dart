@@ -52,6 +52,22 @@ class LocalizationEN implements Localization {
 
   @override String get homeCheckIn => "Check-in";
 
+  @override String get homeProfileWelcome => "Welcome into your own beer museum";
+  @override String get homeProfileWelcomeContinue => "Continue to check the beers you have to build your profile.";
+  @override String get homeProfileWelcomeStart => "Check the next beer you have into the app to build your profile.";
+  @override String get homeProfileThisWeek => "This week";
+  @override String get homeProfileOneBeerStart => "You only had ";
+  @override String get homeProfileOneBeerEnd => " beer";
+  @override String get homeProfileMultipleBeersStart => "You had ";
+  @override String get homeProfileMultipleBeersEnd => " different beers";
+  @override String get homeProfileYourWeek => "Your week";
+  @override String get homeAllTime => "All time";
+  @override String get homeTotalPoints => "Total of points: ";
+  @override String get homeFavouriteBeer => "Your favourite beer";
+  @override String get homeFavouriteCategory => "Your favourite category";
+  @override String get homeEmptyWeek => "Nothing checked-in this week so far";
+  @override String get homeLastTime => "Last time:";
+
   @override String get email => "Email";
   @override String get password => "Password";
   @override String get cancel => "Cancel";
@@ -60,4 +76,6 @@ class LocalizationEN implements Localization {
   @override String get logout => "Logout";
   @override String get profile => "Profile";
   @override String get history => "History";
+  @override String get times => "times";
+
 }

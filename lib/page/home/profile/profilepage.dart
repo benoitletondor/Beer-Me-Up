@@ -2,13 +2,13 @@ import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -83,8 +83,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              "Welcome into your own beer museum",
-              style: TextStyle(
+              Localization.of(context).homeProfileWelcome,
+              style: const TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -98,7 +98,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              hasAlreadyCheckedIn ? "Continue to check the beers you have to build your profile." : "Check the next beer you have into the app to build your profile.",
+              hasAlreadyCheckedIn ? Localization.of(context).homeProfileWelcomeContinue : Localization.of(context).homeProfileWelcomeStart,
               style: TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 18.0,
@@ -151,19 +151,19 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "This week",
-                    style: TextStyle(
+                  Text(
+                    Localization.of(context).homeProfileThisWeek,
+                    style: const TextStyle(
                       fontFamily: "Google Sans",
                       fontSize: 30.0,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 2.0)),
                   Offstage(
-                    offstage: profileData.numberOfBeers <= 1,
+                    offstage: profileData.numberOfBeers > 1,
                     child: RichText(
                       text: TextSpan(
-                        text: "You only had ",
+                        text: Localization.of(context).homeProfileOneBeerStart,
                         style: TextStyle(
                           fontSize: 16.0,
                           color: Theme.of(context).textTheme.body1.color,
@@ -175,18 +175,18 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const TextSpan(
-                            text: " beer",
+                          TextSpan(
+                            text: Localization.of(context).homeProfileOneBeerEnd,
                           ),
                         ],
                       ),
                     ),
                   ),
                   Offstage(
-                    offstage: profileData.numberOfBeers > 1,
+                    offstage: profileData.numberOfBeers <= 1,
                     child: RichText(
                       text: TextSpan(
-                        text: "You had ",
+                        text: Localization.of(context).homeProfileMultipleBeersStart,
                         style: TextStyle(
                           fontSize: 16.0,
                           color: Theme.of(context).textTheme.body1.color,
@@ -198,8 +198,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const TextSpan(
-                            text: " different beers",
+                          TextSpan(
+                            text: Localization.of(context).homeProfileMultipleBeersEnd,
                           ),
                         ],
                       ),
@@ -239,9 +239,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       Padding(padding: const EdgeInsets.only(top: 30.0)),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: const Text(
-          "Your week",
-          style: TextStyle(
+        child: Text(
+          Localization.of(context).homeProfileYourWeek,
+          style: const TextStyle(
             fontFamily: "Google Sans",
             fontSize: 18.0,
           ),
@@ -257,9 +257,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   List<Widget> _buildAllTimeSection(ProfileData profileData) {
     return <Widget>[
       Container(
-        child: const Text(
-          "All time",
-          style: TextStyle(
+        child: Text(
+          Localization.of(context).homeAllTime,
+          style: const TextStyle(
             fontFamily: "Google Sans",
             fontSize: 30.0,
           ),
@@ -272,7 +272,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         child: new Row(
           children: <Widget>[
             Text(
-              "Total of points: ",
+              Localization.of(context).homeTotalPoints,
               style: const TextStyle(
                 fontSize: 16.0,
               ),
@@ -300,9 +300,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Text(
-                "Your favourite beer",
-                style: TextStyle(
+              child: Text(
+                Localization.of(context).homeFavouriteBeer,
+                style: const TextStyle(
                   fontFamily: "Google Sans",
                   fontSize: 18.0,
                 ),
@@ -311,7 +311,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             BeerTile(
               beer: profileData.favouriteBeer?.beer,
               title: profileData.favouriteBeer?.beer?.name,
-              subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} times - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
+              subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} ${Localization.of(context).times} - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
             )
           ],
         ),
@@ -324,9 +324,9 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             const Padding(padding: EdgeInsets.only(top: 20.0)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Text(
-                "Your favourite category",
-                style: TextStyle(
+              child: Text(
+                Localization.of(context).homeFavouriteCategory,
+                style: const TextStyle(
                   fontFamily: "Google Sans",
                   fontSize: 18.0,
                 ),
@@ -360,17 +360,17 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "This week",
-                    style: TextStyle(
+                  Text(
+                    Localization.of(context).homeProfileThisWeek,
+                    style: const TextStyle(
                       fontFamily: "Google Sans",
                       fontSize: 30.0,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 2.0)),
                   Text(
-                    "Nothing checked-in this week so far",
-                    style: TextStyle(
+                    Localization.of(context).homeEmptyWeek,
+                    style: const TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
@@ -389,7 +389,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                   const Padding(padding: EdgeInsets.only(left: 8.0)),
                   const Text(
                     "0",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white,
                     ),
@@ -419,8 +419,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     return BeerTile(
       beer: beerCheckIn.beer,
       title: beerCheckIn.beer.name,
-      subtitle: "${beerCheckIn.numberOfCheckIns} times, ${beerCheckIn.drankQuantity.toStringAsPrecision(2)}L",
-      thirdTitle: "Last time: ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
+      subtitle: "${beerCheckIn.numberOfCheckIns} ${Localization.of(context).times}, ${beerCheckIn.drankQuantity.toStringAsPrecision(2)}L",
+      thirdTitle: "${Localization.of(context).homeLastTime} ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
     );
   }
 }

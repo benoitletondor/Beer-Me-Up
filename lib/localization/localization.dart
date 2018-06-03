@@ -61,6 +61,22 @@ abstract class Localization {
 
   String get homeCheckIn;
 
+  String get homeProfileWelcome;
+  String get homeProfileWelcomeContinue;
+  String get homeProfileWelcomeStart;
+  String get homeProfileThisWeek;
+  String get homeProfileOneBeerStart;
+  String get homeProfileOneBeerEnd;
+  String get homeProfileMultipleBeersStart;
+  String get homeProfileMultipleBeersEnd;
+  String get homeProfileYourWeek;
+  String get homeAllTime;
+  String get homeTotalPoints;
+  String get homeFavouriteBeer;
+  String get homeFavouriteCategory;
+  String get homeEmptyWeek;
+  String get homeLastTime;
+
   String get email;
   String get password;
   String get cancel;
@@ -69,6 +85,7 @@ abstract class Localization {
   String get logout;
   String get profile;
   String get history;
+  String get times;
 }
 
 class BeerMeUpLocalizationsDelegate extends LocalizationsDelegate<Localization> {
