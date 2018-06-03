@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -25,13 +25,13 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.468996567214-i32v48h3f65gi0ehrj4qbu2rl53mquhb</string>
+				<string>com.googleusercontent.apps.468996567214-flj778tdllmohc8b5k1ahd5eehfak12b</string>
 				<string>fb204596980298393</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>204596980298393</string>
 	<key>FacebookDisplayName</key>

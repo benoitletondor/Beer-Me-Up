@@ -152,7 +152,7 @@ DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
   - firebase_remote_config (from `Pods/.symlinks/plugins/firebase_remote_config/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
   - flutter_custom_tabs (from `Pods/.symlinks/plugins/flutter_custom_tabs/ios`)
   - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in/ios`)
@@ -199,7 +199,7 @@ EXTERNAL SOURCES:
   firebase_remote_config:
     :path: Pods/.symlinks/plugins/firebase_remote_config/ios
   Flutter:
-    :path: Pods/.symlinks/flutter/ios
+    :path: Pods/.symlinks/flutter/ios-release
   flutter_custom_tabs:
     :path: Pods/.symlinks/plugins/flutter_custom_tabs/ios
   flutter_facebook_login:
