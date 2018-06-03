@@ -1,7 +1,7 @@
 import 'package:beer_me_up/localization/localization.dart';
 
 class LocalizationFR implements Localization {
-  @override String get onboardingFirstTitle => "Tu t'ai déjà demandé...";
+  @override String get onboardingFirstTitle => "Tu t'aies déjà demandé...";
   @override String get onboardingFirstSubText => "\"C'est quoi le nom de cette bière géniale que j'ai bu hier soir ?\"";
   @override String get onboardingFirstCTA => "Ouais ! Carrément !";
   @override String get onboardingSecondTitle => "Comment ça marche ?";
@@ -16,7 +16,7 @@ class LocalizationFR implements Localization {
   @override String get onboardingSecondThirdExplainFourth => "stats";
   @override String get onboardingSecondThirdExplainFifth => ", de toutes les bières que tu as bu";
   @override String get onboardingSecondSubText => "C'est aussi simple que ça !";
-  @override String get onboardingSecondCTA => "C'est partit";
+  @override String get onboardingSecondCTA => "C'est parti";
 
   @override String get loginCreateYourAccount => "Créer ton compte";
   @override String get loginSignUpCTA => "Créer mon compte";
