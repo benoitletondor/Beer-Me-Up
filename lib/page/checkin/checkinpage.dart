@@ -8,6 +8,7 @@ import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -60,7 +61,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
   Future<Null> _search(String value) async {
     _timer?.cancel();
-    _timer = Timer(Duration(milliseconds: 600), () {
+    _timer = Timer(Duration(milliseconds: 700), () {
       _timer.cancel();
       intent.input(value);
     });
@@ -119,21 +120,23 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 16.0)),
-              const Text(
-                "Can't find any beer matching your search",
-                style: TextStyle(
+              Text(
+                Localization.of(context).checkInEmptyResult,
+                style: const TextStyle(
                   color: Colors.black38,
                   fontFamily: "Google Sans",
                   fontSize: 18.0,
                 ),
+                textAlign: TextAlign.center,
               ),
-              const Padding(padding: EdgeInsets.only(top: 5.0)),
-              const Text(
-                "Try to type more or check the spelling",
-                style: TextStyle(
+              const Padding(padding: EdgeInsets.only(top: 16.0)),
+              Text(
+                Localization.of(context).checkInEmptyResultAdvice,
+                style: const TextStyle(
                   color: Colors.black38,
                   fontSize: 16.0,
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -213,8 +216,8 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
           color: Colors.white,
           fontSize: 16.0
         ),
-        decoration: const InputDecoration(
-          hintText: "Type a beer name",
+        decoration: InputDecoration(
+          hintText: Localization.of(context).checkInHint,
           hintStyle: const TextStyle(color: Color(0x99FFFFFF), fontSize: 16.0),
           border: InputBorder.none,
         ),

@@ -13,6 +13,7 @@ import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/service/config.dart';
 import 'package:beer_me_up/main.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -93,9 +94,9 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: const Text(
-          "Confirm check-in",
-          style: TextStyle(
+        title: Text(
+          Localization.of(context).checkInConfirmTitle,
+          style: const TextStyle(
             fontFamily: "Google Sans",
             fontWeight: FontWeight.w500,
           ),
@@ -119,7 +120,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
                   ),
                 ),
                 MaterialFlatButton(
-                  text: "(Change date)",
+                  text: "(${Localization.of(context).checkInChangeDateCTA})",
                   textColor: Colors.white,
                   onPressed: intent.changeDateTime,
                 )
@@ -128,9 +129,9 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
             const Padding(padding: EdgeInsets.only(top: 16.0)),
             _buildPointsWidget(points, loadingError),
             const Padding(padding: EdgeInsets.only(top: 16.0)),
-            const Text(
-              "Select quantity",
-              style: TextStyle(
+            Text(
+              Localization.of(context).checkInSelectQuantity,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "Google Sans",
                 fontSize: 18.0,
@@ -144,8 +145,8 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: Text(
-                      "Please select a quantity to confirm checkin",
-                      style: TextStyle(
+                      Localization.of(context).checkInNoQuantitySelected,
+                      style: const TextStyle(
                         color: Colors.red,
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -171,7 +172,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
             Center(
               child: MaterialRaisedButton.accent(
                 context: context,
-                text: "Check-in",
+                text: Localization.of(context).checkInConfirmCTA,
                 onPressed: intent.checkInConfirmed,
               ),
             ),
@@ -209,7 +210,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
               child: Column(
                 children: <Widget>[
                   Text(
-                    quantity.toString(),
+                    quantity.quantityToString(context),
                     style: TextStyle(
                       fontFamily: "Google Sans",
                       fontWeight: FontWeight.w500,
@@ -437,15 +438,15 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
   String _pointDetailTypeDescription(PointType type) {
     switch(type) {
       case PointType.DEFAULT:
-        return "Yet another beer";
+        return Localization.of(context).checkInConfirmDefaultPoints;
       case PointType.FIRST_BEER_CHECKIN:
-        return "First time ever with this beer";
+        return Localization.of(context).checkInConfirmFirstTimeBeer;
       case PointType.FIRST_WEEK_BEER_CHECKIN:
-        return "First time this week with this beer";
+        return Localization.of(context).checkInConfirmFirstTimeWeekBeer;
       case PointType.FIRST_WEEK_CATEGORY_CHECKIN:
-        return "First time this week with this kind of beer";
+        return Localization.of(context).checkInConfirmFirstTimeWeekCategory;
       case PointType.FIRST_WEEK_CHECKIN:
-        return "First beer of the week";
+        return Localization.of(context).checkInConfirmFirstWeekBeer;
     }
 
     return "";

@@ -26,13 +26,13 @@ class LocalizationFR implements Localization {
   @override String get loginSignInGoogle => "Se connecter avec Google";
   @override String get loginSignInFacebook => "Se connecter avec Facebook";
   @override String get loginAlreadyHaveAccountCTA => "Tu as déjà un compte ? Connecte toi";
-  @override String get loginSignIn => "Connecte toi à ton compte";
+  @override String get loginSignIn => "Connectes toi à ton compte";
   @override String get loginSignInCTA => "Me connecter";
   @override String get loginForgotPasswordCTA => "Mot de passe oublié ?";
   @override String get loginNoAccountCTA => "Tu n'as pas de compte ? Crée-en un";
 
   @override String get forgotPasswordTitle => "Récupérer ton mot de passe";
-  @override String get forgotPasswordExplain => "Entre ton email et nous allons t'envoyer les instructions pour changer ton mot de passe";
+  @override String get forgotPasswordExplain => "Entres ton email et nous allons t'envoyer les instructions pour changer ton mot de passe";
   @override String get forgotPasswordResetCTA => "Envoyer l'email";
   @override String get forgotPasswordNoEmailTitle => "Email vide";
   @override String get forgotPasswordNoEmailExplain => "Entre ton email pour recevoir les instructions";
@@ -53,6 +53,10 @@ class LocalizationFR implements Localization {
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Bienvenue dans ton musée personnel de la bière";
 
+  @override String get checkInEmptyResult => "Aucune bière avec ce nom";
+  @override String get checkInEmptyResultAdvice => "Essayes de compléter ou de vérifier l'orthographe";
+  @override String get checkInHint => "Tapes un nom de bière";
+
   @override String get homeProfileWelcomeContinue => "Continues de check-in les bières que tu bois pour construire ton profil.";
   @override String get homeProfileWelcomeStart => "Check-in la prochaine bière que tu bois pour construire ton profil.";
   @override String get homeProfileThisWeek => "Cette semaine";
@@ -69,6 +73,20 @@ class LocalizationFR implements Localization {
   @override String get homeLastTime => "Dernière fois :";
 
   @override String get homeHistoryWelcomeStart => "Check-in la prochaine bière que tu bois pour commencer ton historique";
+
+  @override String get checkInConfirmTitle => "Confirmes le check-in";
+  @override String get checkInChangeDateCTA => "Changer la date";
+  @override String get checkInSelectQuantity => "Selectionnes la quantité";
+  @override String get checkInNoQuantitySelected => "Sélectionnes une quantité pour confirmer le check-in";
+  @override String get checkInConfirmCTA => "Check-in";
+  @override String get checkInConfirmDefaultPoints => "Encore une bière";
+  @override String get checkInConfirmFirstTimeBeer => "Première fois avec cette bière";
+  @override String get checkInConfirmFirstTimeWeekBeer => "Première fois de la semaine avec cette bière";
+  @override String get checkInConfirmFirstTimeWeekCategory => "Première fois de la semaine avec ce type de bière";
+  @override String get checkInConfirmFirstWeekBeer => "Première bière de la semaine";
+  @override String get checkInConfirmPintQuantity => "Pinte";
+  @override String get checkInConfirmHalfPintQuantity => "Demi";
+  @override String get checkInConfirmBottleQuantity => "Bouteille";
 
   @override String get email => "Email";
   @override String get password => "Mot de passe";

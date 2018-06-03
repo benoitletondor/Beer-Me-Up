@@ -70,6 +70,24 @@ class LocalizationEN implements Localization {
 
   @override String get homeHistoryWelcomeStart => "Check the next beer you have into the app to start your history";
 
+  @override String get checkInEmptyResult => "Can't find any beer matching your search";
+  @override String get checkInEmptyResultAdvice => "Try to type more or check the spelling";
+  @override String get checkInHint => "Type a beer name";
+
+  @override String get checkInConfirmTitle => "Confirm check-in";
+  @override String get checkInChangeDateCTA => "Change date";
+  @override String get checkInSelectQuantity => "Select quantity";
+  @override String get checkInNoQuantitySelected => "Please select a quantity to confirm checkin";
+  @override String get checkInConfirmCTA => "Check-in";
+  @override String get checkInConfirmDefaultPoints => "Yet another beer";
+  @override String get checkInConfirmFirstTimeBeer => "First time ever with this beer";
+  @override String get checkInConfirmFirstTimeWeekBeer => "First time this week with this beer";
+  @override String get checkInConfirmFirstTimeWeekCategory => "First time this week with this kind of beer";
+  @override String get checkInConfirmFirstWeekBeer => "First beer of the week";
+  @override String get checkInConfirmPintQuantity => "Pint";
+  @override String get checkInConfirmHalfPintQuantity => "Half-pint";
+  @override String get checkInConfirmBottleQuantity => "Bottle";
+
   @override String get email => "Email";
   @override String get password => "Password";
   @override String get cancel => "Cancel";

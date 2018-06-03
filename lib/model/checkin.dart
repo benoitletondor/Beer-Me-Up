@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
+import 'package:beer_me_up/localization/localization.dart';
 import 'package:beer_me_up/model/beer.dart';
 
 class CheckIn {
@@ -48,14 +50,14 @@ class CheckInQuantity {
 
   const CheckInQuantity._(this.value);
 
-  String toString() {
+  String quantityToString(BuildContext context) {
     switch(this) {
       case PINT:
-        return "Pint";
+        return Localization.of(context).checkInConfirmPintQuantity;
       case HALF_PINT:
-        return "Half-pint";
+        return Localization.of(context).checkInConfirmHalfPintQuantity;
       case BOTTLE:
-        return "Bottle";
+        return Localization.of(context).checkInConfirmBottleQuantity;
     }
 
     return null;

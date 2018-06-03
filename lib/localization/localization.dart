@@ -79,6 +79,24 @@ abstract class Localization {
 
   String get homeHistoryWelcomeStart;
 
+  String get checkInEmptyResult;
+  String get checkInEmptyResultAdvice;
+  String get checkInHint;
+
+  String get checkInConfirmTitle;
+  String get checkInChangeDateCTA;
+  String get checkInSelectQuantity;
+  String get checkInNoQuantitySelected;
+  String get checkInConfirmCTA;
+  String get checkInConfirmDefaultPoints;
+  String get checkInConfirmFirstTimeBeer;
+  String get checkInConfirmFirstTimeWeekBeer;
+  String get checkInConfirmFirstTimeWeekCategory;
+  String get checkInConfirmFirstWeekBeer;
+  String get checkInConfirmPintQuantity;
+  String get checkInConfirmHalfPintQuantity;
+  String get checkInConfirmBottleQuantity;
+
   String get email;
   String get password;
   String get cancel;
