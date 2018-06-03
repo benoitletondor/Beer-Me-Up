@@ -83,7 +83,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              Localization.of(context).homeProfileWelcome,
+              Localization.of(context).homeWelcome,
               style: const TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 20.0,

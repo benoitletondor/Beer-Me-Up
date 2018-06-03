@@ -9,6 +9,7 @@ import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/localization/localization.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -93,8 +94,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              "Welcome into your own beer museum",
-              style: TextStyle(
+              Localization.of(context).homeWelcome,
+              style: const TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -108,8 +109,8 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              "Check the next beer you have into the app to start your history",
-              style: TextStyle(
+              Localization.of(context).homeHistoryWelcomeStart,
+              style: const TextStyle(
                 fontFamily: "Google Sans",
                 fontSize: 20.0,
               ),
@@ -187,7 +188,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
       child: Center(
         child: MaterialFlatButton.primary(
           context: context,
-          text: "Load more",
+          text: Localization.of(context).loadMore,
           onPressed: intent.loadMore,
         ),
       ),
