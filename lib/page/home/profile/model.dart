@@ -187,7 +187,7 @@ class ProfileData {
 
     return ProfileData(
       checkInsData.length >= 2,
-      checkIns.length >= 2,
+      checkIns.length > 0,
       totalPoints > 0,
       favouriteBeer,
       favouriteCategory,
