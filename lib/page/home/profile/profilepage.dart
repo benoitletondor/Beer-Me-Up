@@ -62,7 +62,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         return snapshot.data.join(
           (loading) => _buildLoadingWidget(),
           (empty) => _buildEmptyWidget(empty.hasAlreadyCheckedIn),
-          (loadNoAllTime) => _buildLoadWidget(loadNoAllTime.profileData),
+          (loadNoAllTime) => _buildEmptyWidget(true),
           (loadNoWeek) => _buildLoadWidget(loadNoWeek.profileData),
           (load) => _buildLoadWidget(load.profileData),
           (error) => _buildErrorWidget(error: error.error),
