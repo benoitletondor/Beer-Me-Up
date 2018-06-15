@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
-import 'package:beer_me_up/localization/onboardinglocalization_en.dart';
-import 'package:beer_me_up/localization/onboardinglocalization_fr.dart';
+import 'package:beer_me_up/localization/localization_en.dart';
+import 'package:beer_me_up/localization/localization_fr.dart';
 
 abstract class Localization {
   static Localization of(BuildContext context) {
