@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
@@ -54,7 +55,11 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
       printException(e, stackTrace, "Error looking for beers matching $userInput");
       currentPredictions.clear();
 
-      setState(CheckInState.error(e.toString()));
+      if( e is HttpException ) {
+        setState(CheckInState.error("An error occurred while processing the request."));
+      } else {
+        setState(CheckInState.error(e.toString()));
+      }
     }
   }
 
