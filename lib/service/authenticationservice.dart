@@ -33,6 +33,15 @@ abstract class AuthenticationService {
   Future<void> setAnalyticsEnabled(bool enabled);
 }
 
+class AuthCancelledException implements Exception {
+  final String message;
+
+  AuthCancelledException(this.message);
+
+  @override
+  String toString() => message;
+}
+
 const String _USER_SAW_ONBOARDING_KEY = "sawOnboarding";
 const String _ANALYTICS_ENABLED_KEY = "analyticsEnabled";
 const String _HAPTIC_FEEDBACK_ENABLED_KEY = "hapticFeedbackEnabled";
@@ -97,7 +106,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     }
 
     if( googleUser == null ) {
-      throw Exception("User cancelled");
+      throw AuthCancelledException("User cancelled");
     }
 
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -131,7 +140,7 @@ class _AuthenticationServiceImpl implements AuthenticationService {
     // ignore: missing_enum_constant_in_switch
     switch (result.status) {
       case FacebookLoginStatus.cancelledByUser:
-        throw Exception("User cancelled");
+        throw AuthCancelledException("User cancelled");
       case FacebookLoginStatus.error:
         throw Exception("Error occurred: ${result.errorMessage}");
     }
@@ -161,11 +170,11 @@ class _AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<FirebaseUser> signUpWithAccount(String email, String password) async {
     if( email == null || email.isEmpty ) {
-      throw Exception("Email is empty");
+      throw AuthCancelledException("Email is empty");
     }
 
     if( password == null || password.isEmpty ){
-      throw Exception("Password is empty");
+      throw AuthCancelledException("Password is empty");
     }
 
     try {

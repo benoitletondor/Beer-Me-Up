@@ -54,21 +54,28 @@ Future<bool> showConsentDialog(BuildContext context) async {
           ],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            MaterialFlatButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              text: Localization.of(context).cancel,
-              textColor: Theme.of(context).textTheme.title.color,
-            ),
-            MaterialFlatButton.primary(
-              context: context,
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              text: Localization.of(context).consentAcceptCTA,
+            Expanded(
+              child: Wrap(
+                alignment: WrapAlignment.end,
+                spacing: 4.0,
+                children: <Widget>[
+                  MaterialFlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    text: Localization.of(context).cancel,
+                    textColor: Theme.of(context).textTheme.title.color,
+                  ),
+                  MaterialFlatButton.primary(
+                    context: context,
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    text: Localization.of(context).consentAcceptCTA,
+                  ),
+                ],
+              ),
             ),
             const Padding(padding: EdgeInsets.only(right: 8.0)),
           ],

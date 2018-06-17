@@ -94,7 +94,7 @@ class LocalizationFR implements Localization {
   @override String get settings => "Réglages";
   @override String get account => "Compte";
   @override String get logout => "Se déconnecter";
-  @override String get profile => "Profile";
+  @override String get profile => "Profil";
   @override String get history => "Historique";
   @override String get times => "fois";
   @override String get loadMore => "Charger plus";
