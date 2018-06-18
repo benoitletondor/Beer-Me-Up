@@ -53,6 +53,7 @@ class LocalizationFR implements Localization {
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Bienvenue dans ton musée personnel de la bière";
 
+  @override String get checkInEmptyHistoryHeader => "Check-in récents:";
   @override String get checkInEmptyResult => "Aucune bière avec ce nom";
   @override String get checkInEmptyResultAdvice => "Essaye de compléter ou de vérifier l'orthographe";
   @override String get checkInHint => "Tape un nom de bière";

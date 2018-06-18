@@ -83,6 +83,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
         return snapshot.data.join(
           (empty) => _buildEmptyScreen(),
+          (emptyLastBeers) => _buildEmptyScreenWithLastBeers(emptyLastBeers.beers),
           (searching) => _buildEmptyLoadingScreen(),
           (searchingWithPredictions) => _buildLoadingScreen(searchingWithPredictions.previousPredictions),
           (predictions) => _buildResultScreen(predictions.predictions),
@@ -180,6 +181,26 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
     );
   }
 
+  Widget _buildEmptyScreenWithLastBeers(List<Beer> beers) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _BeersListView(
+        beers: beers,
+        onTap: (beer) => intent.beerSelected(beer),
+        header: Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0, top: 20.0),
+          child: Text(
+            Localization.of(context).checkInEmptyHistoryHeader,
+            style: const TextStyle(
+              fontSize: 17.0,
+              fontFamily: "Google Sans",
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildErrorScreen(String error) {
     return Scaffold(
       appBar: _buildAppBar(),
@@ -229,12 +250,14 @@ class _AppBarPlacesAutoCompleteTextField extends StatelessWidget {
 }
 
 class _BeersListView extends StatelessWidget {
+  final Widget header;
   final List<Beer> beers;
   final ValueChanged<Beer> onTap;
 
   _BeersListView({
     @required this.beers,
     this.onTap,
+    this.header,
   });
 
   @override
@@ -243,13 +266,17 @@ class _BeersListView extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView.builder(
-            itemCount: beers.length + 1,
+            itemCount: beers.length + 1 + (this.header == null ? 0 : 1),
             itemBuilder: (BuildContext context, int index) {
-              if( index == beers.length ) {
+              if( index == 0 && this.header != null ) {
+                return this.header;
+              }
+
+              if( index == beers.length + (this.header == null ? 0 : 1)) {
                 return const _BeerContentProviderAttributionWidget();
               }
 
-              final Beer beer = beers[index];
+              final Beer beer = beers[index - (this.header == null ? 0 : 1)];
 
               return BeerTile(
                 beer: beer,

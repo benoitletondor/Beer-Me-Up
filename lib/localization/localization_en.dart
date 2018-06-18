@@ -70,6 +70,7 @@ class LocalizationEN implements Localization {
 
   @override String get homeHistoryWelcomeStart => "Check the next beer you have into the app to start your history";
 
+  @override String get checkInEmptyHistoryHeader => "Recently checked-in:";
   @override String get checkInEmptyResult => "Can't find any beer matching your search";
   @override String get checkInEmptyResultAdvice => "Try to type more or check the spelling";
   @override String get checkInHint => "Type a beer name";

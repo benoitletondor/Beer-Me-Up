@@ -4,30 +4,34 @@ import 'package:beer_me_up/common/mvi/state.dart';
 
 import 'package:beer_me_up/model/beer.dart';
 
-class CheckInState extends Union6Impl<
+class CheckInState extends Union7Impl<
     CheckInStateInputEmpty,
+    CheckInStateInputEmptyLastBeerCheckIns,
     CheckInStateSearching,
     CheckInStateSearchingWithPredictions,
     CheckInStatePredictionsAvailable,
     CheckInStateNoPredictionsAvailable,
     CheckInStateError> {
 
-  static final Sextet<
+  static final Septet<
       CheckInStateInputEmpty,
+      CheckInStateInputEmptyLastBeerCheckIns,
       CheckInStateSearching,
       CheckInStateSearchingWithPredictions,
       CheckInStatePredictionsAvailable,
       CheckInStateNoPredictionsAvailable,
-      CheckInStateError> factory = Sextet<
+      CheckInStateError> factory = Septet<
         CheckInStateInputEmpty,
+        CheckInStateInputEmptyLastBeerCheckIns,
         CheckInStateSearching,
         CheckInStateSearchingWithPredictions,
         CheckInStatePredictionsAvailable,
         CheckInStateNoPredictionsAvailable,
         CheckInStateError>();
 
-  CheckInState._(Union6<
+  CheckInState._(Union7<
       CheckInStateInputEmpty,
+      CheckInStateInputEmptyLastBeerCheckIns,
       CheckInStateSearching,
       CheckInStateSearchingWithPredictions,
       CheckInStatePredictionsAvailable,
@@ -35,14 +39,33 @@ class CheckInState extends Union6Impl<
       CheckInStateError> union) : super(union);
 
   factory CheckInState.empty() => CheckInState._(factory.first(CheckInStateInputEmpty()));
-  factory CheckInState.searching() => CheckInState._(factory.second(CheckInStateSearching()));
-  factory CheckInState.searchingWithPredictions(List<Beer> previousPredictions) => CheckInState._(factory.third(CheckInStateSearchingWithPredictions(previousPredictions)));
-  factory CheckInState.predictions(List<Beer> predictions) => CheckInState._(factory.fourth(CheckInStatePredictionsAvailable(predictions)));
-  factory CheckInState.noPredictions() => CheckInState._(factory.fifth(CheckInStateNoPredictionsAvailable()));
-  factory CheckInState.error(String error) => CheckInState._(factory.sixth(CheckInStateError(error)));
+  factory CheckInState.emptyLastBeers(List<Beer> beers) => CheckInState._(factory.second(CheckInStateInputEmptyLastBeerCheckIns(beers)));
+  factory CheckInState.searching() => CheckInState._(factory.third(CheckInStateSearching()));
+  factory CheckInState.searchingWithPredictions(List<Beer> previousPredictions) => CheckInState._(factory.fourth(CheckInStateSearchingWithPredictions(previousPredictions)));
+  factory CheckInState.predictions(List<Beer> predictions) => CheckInState._(factory.fifth(CheckInStatePredictionsAvailable(predictions)));
+  factory CheckInState.noPredictions() => CheckInState._(factory.sixth(CheckInStateNoPredictionsAvailable()));
+  factory CheckInState.error(String error) => CheckInState._(factory.seventh(CheckInStateError(error)));
 }
 
 class CheckInStateInputEmpty extends State {}
+
+class CheckInStateInputEmptyLastBeerCheckIns extends State {
+  final List<Beer> beers;
+
+  CheckInStateInputEmptyLastBeerCheckIns(this.beers);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CheckInStateInputEmptyLastBeerCheckIns &&
+              runtimeType == other.runtimeType &&
+              beers == other.beers;
+
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      beers.hashCode;
+}
 
 class CheckInStateSearching extends State {}
 
