@@ -61,7 +61,7 @@ class _CheckInPageState extends ViewState<CheckInPage, CheckInViewModel, CheckIn
 
   Future<Null> _search(String value) async {
     _timer?.cancel();
-    _timer = Timer(Duration(milliseconds: 700), () {
+    _timer = Timer(Duration(milliseconds: 800), () {
       _timer.cancel();
       intent.input(value);
     });
