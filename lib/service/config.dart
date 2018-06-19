@@ -11,6 +11,7 @@ abstract class Config {
   int getFirstWeekBeerCheckInPoints();
   int getFirstWeekCategoryCheckInPoints();
   int getFirstWeekCheckInPoints();
+  String getBeerProviderKeys();
 }
 
 class _ConfigImpl implements Config {
@@ -24,6 +25,8 @@ class _ConfigImpl implements Config {
   static const _DEFAULT_FIRST_WEEK_CATEGORY_CHECKIN_POINTS_VALUE = 20;
   static const _FIRST_WEEK_CHECKIN_POINTS_KEY = "first_week_checkin";
   static const _DEFAULT_FIRST_WEEK_CHECKIN_POINTS_VALUE = 10;
+  static const _BEER_PROVIDER_KEYS_KEY = "beer_api_keys";
+  static const _DEFAULT_BEER_PROVIDER_API_VALUE = "";
 
   RemoteConfig _remoteConfig;
 
@@ -40,6 +43,7 @@ class _ConfigImpl implements Config {
         _FIRST_WEEK_BEER_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_BEER_CHECKIN_POINTS_VALUE,
         _FIRST_WEEK_CATEGORY_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_CATEGORY_CHECKIN_POINTS_VALUE,
         _FIRST_WEEK_CHECKIN_POINTS_KEY: _DEFAULT_FIRST_WEEK_CHECKIN_POINTS_VALUE,
+        _BEER_PROVIDER_KEYS_KEY: _DEFAULT_BEER_PROVIDER_API_VALUE,
       });
 
       _remoteConfig = remoteConfig;
@@ -97,6 +101,15 @@ class _ConfigImpl implements Config {
       return _remoteConfig.getInt(_FIRST_WEEK_CHECKIN_POINTS_KEY);
     } else {
       return _DEFAULT_FIRST_WEEK_CHECKIN_POINTS_VALUE;
+    }
+  }
+
+  @override
+  String getBeerProviderKeys() {
+    if( _remoteConfig != null ) {
+      return _remoteConfig.getString(_BEER_PROVIDER_KEYS_KEY);
+    } else {
+      return _DEFAULT_BEER_PROVIDER_API_VALUE;
     }
   }
 

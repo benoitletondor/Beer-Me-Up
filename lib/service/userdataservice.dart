@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:beer_me_up/main.dart';
 import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/model/beer.dart';
@@ -15,7 +16,7 @@ import 'package:beer_me_up/common/networkexception.dart';
 import 'package:beer_me_up/common/datehelper.dart';
 
 abstract class UserDataService {
-  static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient(), UntappdService());
+  static final UserDataService instance = _UserDataServiceImpl(Firestore.instance, HttpClient(), UntappdService(BeerMeUpApp.config));
 
   Future<void> initDB(FirebaseUser currentUser);
 
@@ -23,6 +24,7 @@ abstract class UserDataService {
   Stream<CheckIn> listenForCheckIn();
   Future<CheckinDetails> getCheckinDetails(Beer beer, DateTime date);
   Future<void> saveBeerCheckIn(CheckIn checkIn);
+  Future<List<Beer>> fetchLastCheckedInBeers();
 
   Future<List<BeerCheckInsData>> fetchBeerCheckInsData();
   Future<List<CheckIn>> fetchThisWeekCheckIns();
@@ -47,6 +49,7 @@ class CheckinFetchResponse {
 
 const _NUMBER_OF_RESULTS_FOR_HISTORY = 20;
 const _LIMIT_FOR_WEEKLY_CHECK_INS = 100;
+const _LIMIT_FOR_LAST_CHECK_INS_BEERS = 5;
 const _BEER_VERSION = 1;
 
 const _DEFAULT_TIMEOUT = Duration(seconds: 10);
@@ -387,5 +390,20 @@ class _UserDataServiceImpl implements UserDataService {
   @override
   Future<List<Beer>> findBeersMatching(String pattern) {
     return _beerSearchService.findBeersMatching(_httpClient, pattern);
+  }
+
+  @override
+  Future<List<Beer>> fetchLastCheckedInBeers() async {
+    final querySnapshot = await _userDoc
+      .reference
+      .collection("beers")
+      .orderBy("last_checkin", descending: true)
+      .limit(_LIMIT_FOR_LAST_CHECK_INS_BEERS)
+      .getDocuments();
+    
+    return querySnapshot
+      .documents
+      .map((doc) => _parseBeerFromValue(doc["beer"], doc["beer_version"]))
+      .toList(growable: false);
   }
 }

@@ -13,7 +13,10 @@ import 'package:beer_me_up/model/beer.dart';
 class CheckInViewModel extends BaseViewModel<CheckInState> {
   final UserDataService _dataService;
 
-  final List<Beer> currentPredictions = List();
+  String _currentUserInput;
+
+  final List<Beer> _lastBeersCheckedIn = List();
+  final List<Beer> _currentPredictions = List();
 
   CheckInViewModel(
       this._dataService,
@@ -25,17 +28,44 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
   }
 
   @override
+  Stream<CheckInState> bind(BuildContext context) {
+    _loadLastBeersCheckedIn();
+
+    return super.bind(context);
+  }
+
+  @override
   CheckInState initialState() => CheckInState.empty();
 
+  _loadLastBeersCheckedIn() async {
+    try {
+      this._lastBeersCheckedIn.addAll(await _dataService.fetchLastCheckedInBeers());
+
+      if( this._lastBeersCheckedIn.isNotEmpty && (_currentUserInput == null || _currentUserInput.trim().isEmpty) ) {
+        setState(CheckInState.emptyLastBeers(this._lastBeersCheckedIn));
+      }
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, "Error loading last beers checked-in");
+    }
+  }
+
   _onUserInput(String userInput) async {
+    _currentUserInput = userInput;
+
     if( userInput == null || userInput.trim().isEmpty ) {
-      currentPredictions.clear();
-      setState(CheckInState.empty());
+      _currentPredictions.clear();
+
+      if( _lastBeersCheckedIn.isEmpty ) {
+        setState(CheckInState.empty());
+      } else {
+        setState(CheckInState.emptyLastBeers(_lastBeersCheckedIn));
+      }
+
       return;
     }
 
-    if( currentPredictions.isNotEmpty ) {
-      setState(CheckInState.searchingWithPredictions(currentPredictions));
+    if( _currentPredictions.isNotEmpty ) {
+      setState(CheckInState.searchingWithPredictions(_currentPredictions));
     } else {
       setState(CheckInState.searching());
     }
@@ -43,17 +73,17 @@ class CheckInViewModel extends BaseViewModel<CheckInState> {
     try {
       final matchingBeers = await _dataService.findBeersMatching(userInput);
 
-      currentPredictions.clear();
+      _currentPredictions.clear();
 
       if( matchingBeers.isNotEmpty ) {
-        currentPredictions.addAll(matchingBeers);
+        _currentPredictions.addAll(matchingBeers);
         setState(CheckInState.predictions(matchingBeers));
       } else {
         setState(CheckInState.noPredictions());
       }
     } catch( e, stackTrace ) {
       printException(e, stackTrace, "Error looking for beers matching $userInput");
-      currentPredictions.clear();
+      _currentPredictions.clear();
 
       if( e is HttpException ) {
         setState(CheckInState.error("An error occurred while processing the request."));

@@ -53,11 +53,12 @@ class LocalizationFR implements Localization {
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Bienvenue dans ton musée personnel de la bière";
 
+  @override String get checkInEmptyHistoryHeader => "Check-in récents:";
   @override String get checkInEmptyResult => "Aucune bière avec ce nom";
   @override String get checkInEmptyResultAdvice => "Essaye de compléter ou de vérifier l'orthographe";
   @override String get checkInHint => "Tape un nom de bière";
 
-  @override String get homeProfileWelcomeContinue => "Continue de check-in les bières que tu bois pour construire ton profil.";
+  @override String get homeProfileWelcomeContinue => "Continue de check-in: Encore 1 pour accéder à ton profil.";
   @override String get homeProfileWelcomeStart => "Check-in la prochaine bière que tu bois pour construire ton profil.";
   @override String get homeProfileThisWeek => "Cette semaine";
   @override String get homeProfileOneBeerStart => "Tu as bu seulement ";

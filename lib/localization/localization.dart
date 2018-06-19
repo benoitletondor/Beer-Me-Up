@@ -79,6 +79,7 @@ abstract class Localization {
 
   String get homeHistoryWelcomeStart;
 
+  String get checkInEmptyHistoryHeader;
   String get checkInEmptyResult;
   String get checkInEmptyResultAdvice;
   String get checkInHint;
