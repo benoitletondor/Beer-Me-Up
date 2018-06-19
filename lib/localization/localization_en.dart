@@ -53,7 +53,7 @@ class LocalizationEN implements Localization {
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Welcome into your own beer museum";
 
-  @override String get homeProfileWelcomeContinue => "Continue to check the beers you have to build your profile.";
+  @override String get homeProfileWelcomeContinue => "Continue to check-in: One more to access your profile.";
   @override String get homeProfileWelcomeStart => "Check the next beer you have into the app to build your profile.";
   @override String get homeProfileThisWeek => "This week";
   @override String get homeProfileOneBeerStart => "You only had ";
