@@ -185,10 +185,14 @@ class ProfileData {
     final List<BeerCheckInsData> checkInsList = weekBeersMap.values.toList(growable: false);
     checkInsList.sort((a, b) => b.drankQuantity.compareTo(a.drankQuantity));
 
+    final int numberOfCheckIns = checkInsData.isEmpty ? 0 : checkInsData
+        .map((checkInData) => checkInData.numberOfCheckIns)
+        .reduce((a, b) => a+b);
+
     return ProfileData(
-      checkInsData.length >= 2,
+      numberOfCheckIns >= 2,
       checkIns.length > 0,
-      totalPoints > 0,
+      numberOfCheckIns > 0,
       favouriteBeer,
       favouriteCategory,
       checkInsList,

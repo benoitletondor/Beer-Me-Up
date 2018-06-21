@@ -10,11 +10,11 @@ class LocalizationFR implements Localization {
   @override String get onboardingSecondSecondExplainFirst => "2. Chaque fois que tu bois une bière, ";
   @override String get onboardingSecondSecondExplainSecond => "check-in la";
   @override String get onboardingSecondSecondExplainThird => " dans l'app";
-  @override String get onboardingSecondThirdExplainFirst => "3. Accéde à ";
+  @override String get onboardingSecondThirdExplainFirst => "3. Accède à ";
   @override String get onboardingSecondThirdExplainSecond => "ton historique complet";
   @override String get onboardingSecondThirdExplainThird => ", avec des ";
   @override String get onboardingSecondThirdExplainFourth => "stats";
-  @override String get onboardingSecondThirdExplainFifth => ", de toutes les bières que tu as bu";
+  @override String get onboardingSecondThirdExplainFifth => ", de toutes les bières que tu as bues";
   @override String get onboardingSecondSubText => "C'est aussi simple que ça !";
   @override String get onboardingSecondCTA => "C'est parti";
 
@@ -26,7 +26,7 @@ class LocalizationFR implements Localization {
   @override String get loginSignInGoogle => "Se connecter avec Google";
   @override String get loginSignInFacebook => "Se connecter avec Facebook";
   @override String get loginAlreadyHaveAccountCTA => "Tu as déjà un compte ? Connecte toi";
-  @override String get loginSignIn => "Connectes toi à ton compte";
+  @override String get loginSignIn => "Connecte toi à ton compte";
   @override String get loginSignInCTA => "Me connecter";
   @override String get loginForgotPasswordCTA => "Mot de passe oublié ?";
   @override String get loginNoAccountCTA => "Tu n'as pas de compte ? Crée-en un";
@@ -80,7 +80,7 @@ class LocalizationFR implements Localization {
   @override String get checkInSelectQuantity => "Selectionne la quantité";
   @override String get checkInNoQuantitySelected => "Sélectionne une quantité pour confirmer le check-in";
   @override String get checkInConfirmCTA => "Check-in";
-  @override String get checkInConfirmDefaultPoints => "Encore une bière";
+  @override String get checkInConfirmDefaultPoints => "Une bière de plus";
   @override String get checkInConfirmFirstTimeBeer => "Première fois avec cette bière";
   @override String get checkInConfirmFirstTimeWeekBeer => "Première fois de la semaine avec cette bière";
   @override String get checkInConfirmFirstTimeWeekCategory => "Première fois de la semaine avec ce type de bière";
