@@ -26,7 +26,7 @@ class LocalizationFR implements Localization {
   @override String get loginSignInGoogle => "Se connecter avec Google";
   @override String get loginSignInFacebook => "Se connecter avec Facebook";
   @override String get loginAlreadyHaveAccountCTA => "Tu as déjà un compte ? Connecte toi";
-  @override String get loginSignIn => "Connectes toi à ton compte";
+  @override String get loginSignIn => "Connecte toi à ton compte";
   @override String get loginSignInCTA => "Me connecter";
   @override String get loginForgotPasswordCTA => "Mot de passe oublié ?";
   @override String get loginNoAccountCTA => "Tu n'as pas de compte ? Crée-en un";
