@@ -68,9 +68,10 @@ class LocalizationFR implements Localization {
   @override String get homeProfileYourWeek => "Ta semaine";
   @override String get homeAllTime => "Depuis le début";
   @override String get homeTotalPoints => "Total des points : ";
-  @override String get homeFavoriteBeers => "Tes bières préférées";
-  @override String get homeMostDrankBeer => "La bière que tu as le plus bue";
-  @override String get homeMostDrankCategory => "Le type de bière que tu as le plus bu";
+  @override String get homeFavoriteBeers => "Tes bières les mieux notées";
+  @override String get homeFavoriteBeersDescription => "(Tu peux changer les notes depuis l'onglet historique)";
+  @override String get homeMostDrankBeer => "La bière que tu as bue le plus";
+  @override String get homeMostDrankCategory => "Le type de bière que tu as bu le plus";
   @override String get homeEmptyWeek => "Aucune bière check-in pour le moment";
   @override String get homeLastTime => "Dernière fois :";
   @override String get homeNewCheckInTitle => "Nouveau check-in ! Note cette bière:";
@@ -94,8 +95,8 @@ class LocalizationFR implements Localization {
   @override String get checkInConfirmBottleQuantity => "Bouteille";
 
   @override String get checkInDisplayTitle => "Ton check-in";
-  @override String get checkInDisplaySelectYourRating => "Note cette bière";
-  @override String get checkInDisplayYourRating => "Ta note :";
+  @override String get checkInDisplaySelectYourRating => "Note cette bière :";
+  @override String get checkInDisplayYourRating => "Ta note pour cette bière :";
   @override String get checkInDisplayChangeYourRatingHint => "(Touche une étoile pour la changer)";
 
   @override String get email => "Email";

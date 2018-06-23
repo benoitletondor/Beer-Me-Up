@@ -303,7 +303,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
         ),
       ),
       Offstage(
-        offstage: profileData.hasTopBeers == null,
+        offstage: !profileData.hasTopBeers,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -318,6 +318,16 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                 ),
               ),
             ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                Localization.of(context).homeFavoriteBeersDescription,
+                style: const TextStyle(
+                  fontSize: 13.0,
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 5.0)),
             _buildFavoriteBeers(profileData.beersRating),
           ],
         ),
@@ -494,13 +504,10 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   }
 
   Widget _buildStar(int index, bool selected) {
-    return Container(
-      padding: const EdgeInsets.all(2.0),
-      child: Icon(
-        selected ? Icons.star : Icons.star_border,
-        color: Colors.amberAccent[400],
-        size: 12.0,
-      ),
+    return Icon(
+      selected ? Icons.star : Icons.star_border,
+      color: Colors.amberAccent[400],
+      size: 14.0,
     );
   }
 

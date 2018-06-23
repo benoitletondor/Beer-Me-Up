@@ -63,7 +63,8 @@ class LocalizationEN implements Localization {
   @override String get homeProfileYourWeek => "Your week";
   @override String get homeAllTime => "All time";
   @override String get homeTotalPoints => "Total of points: ";
-  @override String get homeFavoriteBeers => "Your favorite beers";
+  @override String get homeFavoriteBeers => "Your best rated beers";
+  @override String get homeFavoriteBeersDescription => "(You can edit your ratings from the history tab)";
   @override String get homeMostDrankBeer => "The beer you had the most";
   @override String get homeMostDrankCategory => "The beer category your had the most";
   @override String get homeEmptyWeek => "Nothing checked-in this week so far";
@@ -95,8 +96,8 @@ class LocalizationEN implements Localization {
 
   @override String get checkInDisplayTitle => "Your check-in";
   @override String get checkInDisplaySelectYourRating => "Rate this beer";
-  @override String get checkInDisplayYourRating => "Your rating:";
-  @override String get checkInDisplayChangeYourRatingHint => "(Select a star to change it)";
+  @override String get checkInDisplayYourRating => "Your rating for this beer:";
+  @override String get checkInDisplayChangeYourRatingHint => "(Touch a star to change it)";
 
   @override String get email => "Email";
   @override String get password => "Password";
