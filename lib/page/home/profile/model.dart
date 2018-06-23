@@ -20,6 +20,7 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   int _totalPoints;
 
   StreamSubscription<CheckIn> _checkInSubscription;
+  StreamSubscription<Tuple2<Beer, int>> _ratingSubcription;
 
   ProfileViewModel(
       this._dataService,
@@ -44,6 +45,8 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   unbind() {
     _checkInSubscription?.cancel();
     _checkInSubscription = null;
+    _ratingSubcription?.cancel();
+    _ratingSubcription = null;
 
     super.unbind();
   }
@@ -81,6 +84,11 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     _checkInSubscription?.cancel();
     _checkInSubscription = _dataService.listenForCheckIn().listen((checkIn) {
       _handleCheckIn(checkIn);
+    });
+
+    _ratingSubcription?.cancel();
+    _ratingSubcription = _dataService.listenForNewRatings().listen((rating) {
+      _handleNewRating(rating);
     });
   }
 
@@ -120,6 +128,33 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     }
   }
 
+  _handleNewRating(Tuple2<Beer, int> rating) async {
+    setState(ProfileState.loading());
+
+    try {
+      final List<BeerCheckInsData> dataForThisBeer = _checkInsData
+        .where((checkInData) => checkInData.beer == rating.item1)
+        .toList(growable: false);
+
+      _checkInsData.removeWhere((checkInData) => checkInData.beer == rating.item1);
+
+      dataForThisBeer.forEach((checkInData) {
+        _checkInsData.add(BeerCheckInsData(
+          checkInData.beer,
+          checkInData.numberOfCheckIns,
+          checkInData.lastCheckinTime,
+          checkInData.drankQuantity,
+          rating.item2,
+        ));
+      });
+
+      _setStateWithProfileData(await _buildProfileData());
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, "Error updating profile after rating");
+      setState(ProfileState.error(e.toString()));
+    }
+  }
+
   _setStateWithProfileData(ProfileData profileData) {
     if( !profileData.hasAllTime && !profileData.hasWeek ) {
       setState(ProfileState.empty(profileData.hasAlreadyCheckedIn));
@@ -134,9 +169,10 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
 
   _rateCheckIn(CheckIn checkIn) async {
     pushRoute(
-      MaterialPageRoute(
-        builder: (BuildContext context) => CheckInDisplayPage(checkIn: checkIn),
-      )
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              CheckInDisplayPage(checkIn: checkIn),
+        )
     );
 
     _setStateWithProfileData(await _buildProfileData());
