@@ -75,28 +75,31 @@ class BeerTile extends StatelessWidget {
       children.add(thirdWidget);
     }
 
-    return InkWell(
-      onTap: onTap != null ? () {
-        performSelectionHaptic(context);
-        onTap();
-      } : null,
-      child: Semantics(
-        enabled: onTap != null,
-        child: Container(
-          decoration: decoration,
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-          child: Row(
-            children: <Widget>[
-              _buildThumbnailImage(beer),
-              const Padding(padding: EdgeInsets.only(right: 16.0)),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: children,
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: onTap != null ? () {
+          performSelectionHaptic(context);
+          onTap();
+        } : null,
+        child: Semantics(
+          enabled: onTap != null,
+          child: Container(
+            decoration: decoration,
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+            child: Row(
+              children: <Widget>[
+                _buildThumbnailImage(beer),
+                const Padding(padding: EdgeInsets.only(right: 16.0)),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: children,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

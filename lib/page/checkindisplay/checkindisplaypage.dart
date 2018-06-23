@@ -313,17 +313,20 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
   }
 
   Widget _buildStar(int index, bool selected) {
-    return InkWell(
-      onTap: () {
-        performSelectionHaptic(context);
-        intent.rate(index);
-      },
-      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          selected ? Icons.star : Icons.star_border,
-          color: Colors.amberAccent[400],
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: () {
+          performSelectionHaptic(context);
+          intent.rate(index);
+        },
+        borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            selected ? Icons.star : Icons.star_border,
+            color: Colors.amberAccent[400],
+          ),
         ),
       ),
     );
