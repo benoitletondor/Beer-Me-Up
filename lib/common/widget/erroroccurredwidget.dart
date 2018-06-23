@@ -10,10 +10,12 @@ class ErrorOccurredWidget extends StatelessWidget {
     Key key,
     @required this.error,
     this.onRetry,
+    this.invertColors = false,
   }) : super(key: key);
 
   final String error;
   final VoidCallback onRetry;
+  final bool invertColors;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +27,20 @@ class ErrorOccurredWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).errorOccurred,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: "Google Sans",
                 fontSize: 18.0,
+                color: invertColors ? Colors.white : Theme.of(context).textTheme.body1.color
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 10.0)),
             Text(
               error,
               textAlign: TextAlign.center,
+              style: TextStyle(
+                color: invertColors ? Colors.white : Theme.of(context).textTheme.body1.color
+              ),
             ),
             Offstage(
               offstage: onRetry == null,
@@ -42,8 +48,8 @@ class ErrorOccurredWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Padding(padding: EdgeInsets.only(top: 10.0)),
-                  MaterialFlatButton.primary(
-                    context: context,
+                  MaterialFlatButton(
+                    textColor: invertColors ? Colors.white : Theme.of(context).primaryColor,
                     onPressed: onRetry,
                     text: Localization.of(context).retry,
                   )

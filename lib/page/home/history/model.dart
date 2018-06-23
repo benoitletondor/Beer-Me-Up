@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
+import 'package:beer_me_up/page/checkindisplay/checkindisplaypage.dart';
 import 'package:beer_me_up/model/checkin.dart';
 
 import 'state.dart';
@@ -18,10 +19,12 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   HistoryViewModel(
       this._dataService,
       Stream<Null> onErrorRetryButtonPressed,
-      Stream<Null> onLoadMoreButtonPressed,) {
+      Stream<Null> onLoadMoreButtonPressed,
+      Stream<CheckIn> onCheckInPressed,) {
 
     onErrorRetryButtonPressed.listen(_retryLoading);
     onLoadMoreButtonPressed.listen(_loadMore);
+    onCheckInPressed.listen(_checkInPressed);
   }
 
   @override
@@ -130,6 +133,14 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
 
       setState(HistoryState.load(_items));
     }
+  }
+
+  _checkInPressed(CheckIn checkIn) async {
+    pushRoute(
+      MaterialPageRoute(
+        builder: (BuildContext context) => CheckInDisplayPage(checkIn: checkIn),
+      )
+    );
   }
 }
 

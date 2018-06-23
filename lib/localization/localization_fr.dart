@@ -89,6 +89,11 @@ class LocalizationFR implements Localization {
   @override String get checkInConfirmHalfPintQuantity => "Demi";
   @override String get checkInConfirmBottleQuantity => "Bouteille";
 
+  @override String get checkInDisplayTitle => "Ton check-in";
+  @override String get checkInDisplaySelectYourRating => "Note cette bière";
+  @override String get checkInDisplayYourRating => "Ta note :";
+  @override String get checkInDisplayChangeYourRatingHint => "(Touche une étoile pour la changer)";
+
   @override String get email => "Email";
   @override String get password => "Mot de passe";
   @override String get cancel => "Annuler";

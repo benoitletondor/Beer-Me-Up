@@ -67,6 +67,16 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
     Navigator.of(context).pushReplacement(newRoute);
     return true;
   }
+
+  bool pushRoute<T extends Object, TO extends Object>(Route<T> newRoute) {
+    final context = _context;
+    if( context == null ) {
+      return false;
+    }
+
+    Navigator.of(context).push(newRoute);
+    return true;
+  }
   
   bool pushNamedAndRemoveUntil(String name, RoutePredicate predicate) {
     final context = _context;

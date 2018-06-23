@@ -98,6 +98,11 @@ abstract class Localization {
   String get checkInConfirmHalfPintQuantity;
   String get checkInConfirmBottleQuantity;
 
+  String get checkInDisplayTitle;
+  String get checkInDisplaySelectYourRating;
+  String get checkInDisplayYourRating;
+  String get checkInDisplayChangeYourRatingHint;
+
   String get email;
   String get password;
   String get cancel;

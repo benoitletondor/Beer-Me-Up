@@ -31,6 +31,9 @@ abstract class UserDataService {
   Future<int> getTotalUserPoints();
 
   Future<List<Beer>> findBeersMatching(String pattern);
+
+  Future<int> fetchRatingForBeer(Beer beer);
+  Future<void> saveRatingForBeer(Beer beer, int rating);
 }
 
 class CheckinDetails {
@@ -405,5 +408,39 @@ class _UserDataServiceImpl implements UserDataService {
       .documents
       .map((doc) => _parseBeerFromValue(doc["beer"], doc["beer_version"]))
       .toList(growable: false);
+  }
+
+  @override
+  Future<int> fetchRatingForBeer(Beer beer) async {
+    final documentSnapshot = await _userDoc
+        .reference
+        .collection("beers")
+        .document(beer.id)
+        .get();
+
+    if( !documentSnapshot.exists ) {
+      return null;
+    }
+
+    return documentSnapshot.data["rating"];
+  }
+
+  @override
+  Future<void> saveRatingForBeer(Beer beer, int rating) async {
+    if( rating < 1 || rating > 5 ) {
+      throw Exception("Invalid rating: $rating");
+    }
+
+    final beerDocument = _userDoc
+        .reference
+        .collection("beers")
+        .document(beer.id);
+
+    await beerDocument.setData(
+      {
+        "rating": rating,
+      },
+      merge: true,
+    );
   }
 }

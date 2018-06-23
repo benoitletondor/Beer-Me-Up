@@ -89,6 +89,11 @@ class LocalizationEN implements Localization {
   @override String get checkInConfirmHalfPintQuantity => "Half-pint";
   @override String get checkInConfirmBottleQuantity => "Bottle";
 
+  @override String get checkInDisplayTitle => "Your check-in";
+  @override String get checkInDisplaySelectYourRating => "Rate this beer";
+  @override String get checkInDisplayYourRating => "Your rating:";
+  @override String get checkInDisplayChangeYourRatingHint => "(Select a star to change it)";
+
   @override String get email => "Email";
   @override String get password => "Password";
   @override String get cancel => "Cancel";
