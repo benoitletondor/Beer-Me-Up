@@ -152,6 +152,7 @@ class _UserDataServiceImpl implements UserDataService {
           beerSnapshot.data["checkin_counter"],
           beerSnapshot.data["last_checkin"],
           beerSnapshot.data["drank_quantity"],
+          beerSnapshot.data["rating"],
         )
     ).toList(growable: false);
   }

@@ -1,14 +1,17 @@
-import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/model/beercheckinsdata.dart';
+import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/localization/localization.dart';
+import 'package:beer_me_up/common/widget/materialflatbutton.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -33,6 +36,7 @@ class ProfilePage extends StatefulWidget {
     final _model = model ?? ProfileViewModel(
       dataService ?? UserDataService.instance,
       _intent.retry,
+      _intent.rateCheckIn,
     );
 
     return ProfilePage._(key: key, intent: _intent, model: _model);
@@ -123,6 +127,12 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
   Widget _buildLoadWidget(ProfileData profileData) {
     List<Widget> content = new List();
 
+    if( profileData.checkInToRate != null ) {
+      content.add(_buildRateCheckInWidget(profileData.checkInToRate));
+    }
+
+    content.add(const Padding(padding: EdgeInsets.only(top: 20.0)));
+
     if( profileData.hasWeek ) {
       content.addAll(_buildThisWeekSection(profileData));
     } else {
@@ -134,7 +144,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     }
 
     return ListView(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 45.0),
+      padding: const EdgeInsets.only(bottom: 45.0),
       children: content,
     );
   }
@@ -292,32 +302,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           ],
         ),
       ),
-      const Padding(padding: EdgeInsets.only(top: 20.0)),
       Offstage(
-        offstage: profileData.favouriteBeer == null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                Localization.of(context).homeFavouriteBeer,
-                style: const TextStyle(
-                  fontFamily: "Google Sans",
-                  fontSize: 18.0,
-                ),
-              ),
-            ),
-            BeerTile(
-              beer: profileData.favouriteBeer?.beer,
-              title: profileData.favouriteBeer?.beer?.name,
-              subtitle: "${profileData.favouriteBeer?.numberOfCheckIns} ${Localization.of(context).times} - ${profileData.favouriteBeer?.drankQuantity?.toStringAsPrecision(2)}L",
-            )
-          ],
-        ),
-      ),
-      Offstage(
-        offstage: profileData.favouriteCategory == null,
+        offstage: profileData.hasTopBeers == null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -325,7 +311,51 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                Localization.of(context).homeFavouriteCategory,
+                Localization.of(context).homeFavoriteBeers,
+                style: const TextStyle(
+                  fontFamily: "Google Sans",
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            _buildFavoriteBeers(profileData.beersRating),
+          ],
+        ),
+      ),
+      Offstage(
+        offstage: profileData.mostDrankBeer == null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.only(top: 20.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                Localization.of(context).homeMostDrankBeer,
+                style: const TextStyle(
+                  fontFamily: "Google Sans",
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            BeerTile(
+              beer: profileData.mostDrankBeer?.beer,
+              title: profileData.mostDrankBeer?.beer?.name,
+              subtitle: "${profileData.mostDrankBeer?.numberOfCheckIns} ${Localization.of(context).times} - ${profileData.mostDrankBeer?.drankQuantity?.toStringAsPrecision(2)}L",
+            )
+          ],
+        ),
+      ),
+      Offstage(
+        offstage: profileData.mostDrankCategory == null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.only(top: 20.0)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                Localization.of(context).homeMostDrankCategory,
                 style: const TextStyle(
                   fontFamily: "Google Sans",
                   fontSize: 18.0,
@@ -336,7 +366,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                profileData.favouriteCategory?.name ?? "",
+                profileData.mostDrankCategory?.name ?? "",
                 style: const TextStyle(
                   fontSize: 15.0,
                 ),
@@ -421,6 +451,126 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       title: beerCheckIn.beer.name,
       subtitle: "${beerCheckIn.numberOfCheckIns} ${Localization.of(context).times}, ${beerCheckIn.drankQuantity.toStringAsPrecision(2)}L",
       thirdTitle: "${Localization.of(context).homeLastTime} ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
+    );
+  }
+
+  Widget _buildFavoriteBeers(Map<int, List<Beer>> beersRating) {
+    if( beersRating.isEmpty ) {
+      return Container();
+    }
+
+    final List<Widget> beers = List();
+    for(int i = 5; i>0; i--) {
+      final List<Beer> starBeers = beersRating[i];
+      if( starBeers == null ) {
+        continue;
+      }
+
+      starBeers.forEach((beer) {
+        beers.add(BeerTile(
+          beer: beer,
+          title: beer.name,
+          thirdWidget: _buildStars(i),
+        ));
+      });
+    }
+
+    return Column (
+      children: beers,
+    );
+  }
+
+  Widget _buildStars(int rating) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        _buildStar(1, rating >= 1),
+        _buildStar(2, rating >= 2),
+        _buildStar(3, rating >= 3),
+        _buildStar(4, rating >= 4),
+        _buildStar(5, rating >= 5),
+      ],
+    );
+  }
+
+  Widget _buildStar(int index, bool selected) {
+    return Container(
+      padding: const EdgeInsets.all(2.0),
+      child: Icon(
+        selected ? Icons.star : Icons.star_border,
+        color: Colors.amberAccent[400],
+        size: 12.0,
+      ),
+    );
+  }
+
+  Widget _buildRateCheckInWidget(CheckIn checkInToRate) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Padding(padding: EdgeInsets.only(top: 10.0)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "New check-in! Rate your beer:",
+              style: const TextStyle(
+                fontFamily: "Google Sans",
+                color: Colors.white,
+                fontSize: 18.0,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "(You can edit your ratings later from the history tab)",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12.0,
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 10.0)),
+          BeerTile(
+            beer: checkInToRate.beer,
+            invertColors: true,
+            title: checkInToRate.beer.name,
+            subtitle: checkInToRate.beer.style?.name,
+            thirdWidget: Row(
+              children: <Widget>[
+                Image.asset(
+                  "images/coin.png",
+                  width: 13.0,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 5.0)),
+                Text(
+                  checkInToRate.points.toString(),
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 10.0)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              MaterialFlatButton(
+                textColor: Colors.white,
+                text: "Rate this beer",
+                onPressed: () { intent.rateCheckIn(checkInToRate); },
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -63,8 +63,9 @@ class LocalizationEN implements Localization {
   @override String get homeProfileYourWeek => "Your week";
   @override String get homeAllTime => "All time";
   @override String get homeTotalPoints => "Total of points: ";
-  @override String get homeFavouriteBeer => "Your favourite beer";
-  @override String get homeFavouriteCategory => "Your favourite category";
+  @override String get homeFavoriteBeers => "Your favorite beers";
+  @override String get homeMostDrankBeer => "The beer you had the most";
+  @override String get homeMostDrankCategory => "The beer category your had the most";
   @override String get homeEmptyWeek => "Nothing checked-in this week so far";
   @override String get homeLastTime => "Last time:";
 

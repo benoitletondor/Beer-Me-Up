@@ -12,6 +12,7 @@ class BeerTile extends StatelessWidget {
   final String subtitle;
   final String thirdTitle;
   final Widget thirdWidget;
+  final bool invertColors;
   final GestureTapCallback onTap;
   final BoxDecoration decoration;
 
@@ -23,6 +24,7 @@ class BeerTile extends StatelessWidget {
     this.thirdWidget,
     this.onTap,
     this.decoration,
+    this.invertColors = false,
   });
 
   @override
@@ -36,9 +38,10 @@ class BeerTile extends StatelessWidget {
       title,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
+      style: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 16.0,
+        color: invertColors ? Colors.white : Theme.of(context).textTheme.body1.color,
       ),
     ));
 
@@ -47,8 +50,9 @@ class BeerTile extends StatelessWidget {
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 15.0,
+          color: invertColors ? Colors.white : Theme.of(context).textTheme.body1.color,
         ),
       ));
     }
@@ -60,7 +64,7 @@ class BeerTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: Colors.blueGrey[500],
+          color: invertColors ? Colors.grey[200] : Colors.blueGrey[500],
           fontSize: 14.0,
         ),
       ));

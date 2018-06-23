@@ -68,8 +68,9 @@ class LocalizationFR implements Localization {
   @override String get homeProfileYourWeek => "Ta semaine";
   @override String get homeAllTime => "Depuis le début";
   @override String get homeTotalPoints => "Total des points : ";
-  @override String get homeFavouriteBeer => "Ta bière préférée";
-  @override String get homeFavouriteCategory => "Ton type de bière préféré";
+  @override String get homeFavoriteBeers => "Tes bières préférées";
+  @override String get homeMostDrankBeer => "La bière que tu as le plus bue";
+  @override String get homeMostDrankCategory => "Le type de bière que tu as le plus bu";
   @override String get homeEmptyWeek => "Aucune bière check-in pour le moment";
   @override String get homeLastTime => "Dernière fois :";
 

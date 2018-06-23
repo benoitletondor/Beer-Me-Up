@@ -72,8 +72,9 @@ abstract class Localization {
   String get homeProfileYourWeek;
   String get homeAllTime;
   String get homeTotalPoints;
-  String get homeFavouriteBeer;
-  String get homeFavouriteCategory;
+  String get homeFavoriteBeers;
+  String get homeMostDrankBeer;
+  String get homeMostDrankCategory;
   String get homeEmptyWeek;
   String get homeLastTime;
 
