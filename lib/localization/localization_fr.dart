@@ -69,7 +69,7 @@ class LocalizationFR implements Localization {
   @override String get homeAllTime => "Depuis le début";
   @override String get homeTotalPoints => "Total des points : ";
   @override String get homeFavoriteBeers => "Tes bières les mieux notées";
-  @override String get homeFavoriteBeersDescription => "(Tu peux changer les notes depuis l'onglet historique)";
+  @override String get homeFavoriteBeersDescription => "(Tu peux modifier les notes depuis l'onglet historique)";
   @override String get homeMostDrankBeer => "La bière que tu as bue le plus";
   @override String get homeMostDrankCategory => "Le type de bière que tu as bu le plus";
   @override String get homeEmptyWeek => "Aucune bière check-in pour le moment";
