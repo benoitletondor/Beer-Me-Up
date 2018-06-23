@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+import 'package:tuple/tuple.dart';
+export 'package:tuple/tuple.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:beer_me_up/main.dart';
@@ -31,6 +34,10 @@ abstract class UserDataService {
   Future<int> getTotalUserPoints();
 
   Future<List<Beer>> findBeersMatching(String pattern);
+
+  Future<int> fetchRatingForBeer(Beer beer);
+  Future<void> saveRatingForBeer(Beer beer, int rating);
+  Stream<Tuple2<Beer, int>> listenForNewRatings();
 }
 
 class CheckinDetails {
@@ -149,6 +156,7 @@ class _UserDataServiceImpl implements UserDataService {
           beerSnapshot.data["checkin_counter"],
           beerSnapshot.data["last_checkin"],
           beerSnapshot.data["drank_quantity"],
+          beerSnapshot.data["rating"],
         )
     ).toList(growable: false);
   }
@@ -405,5 +413,78 @@ class _UserDataServiceImpl implements UserDataService {
       .documents
       .map((doc) => _parseBeerFromValue(doc["beer"], doc["beer_version"]))
       .toList(growable: false);
+  }
+
+  @override
+  Future<int> fetchRatingForBeer(Beer beer) async {
+    final documentSnapshot = await _userDoc
+        .reference
+        .collection("beers")
+        .document(beer.id)
+        .get();
+
+    if( !documentSnapshot.exists ) {
+      return null;
+    }
+
+    return documentSnapshot.data["rating"];
+  }
+
+  @override
+  Future<void> saveRatingForBeer(Beer beer, int rating) async {
+    if( rating < 1 || rating > 5 ) {
+      throw Exception("Invalid rating: $rating");
+    }
+
+    final beerDocument = _userDoc
+        .reference
+        .collection("beers")
+        .document(beer.id);
+
+    await beerDocument.setData(
+      {
+        "rating": rating,
+      },
+      merge: true,
+    );
+  }
+
+  @override
+  Stream<Tuple2<Beer, int>> listenForNewRatings() {
+    final StreamController<Tuple2<Beer, int>> _controller = StreamController();
+
+    final subscription = _userDoc
+      .reference
+      .collection("beers")
+      .snapshots()
+      .listen((querySnapshot) {
+        querySnapshot.documentChanges
+          .where((documentChange) => documentChange.type == DocumentChangeType.modified)
+          .forEach((documentChange) {
+            final int rating = documentChange.document.data["rating"];
+            if( rating != null ) {
+              _controller.add(
+                Tuple2(
+                  _parseBeerFromValue(documentChange.document.data["beer"], documentChange.document.data["beer_version"]),
+                  rating
+                )
+              );
+            }
+          });
+      },
+      onDone: _controller.close,
+      onError: (e, stackTrace) {
+        printException(e, stackTrace, "Error listening for checkin");
+        _controller.close();
+      },
+      cancelOnError: true,
+    );
+
+    _controller.onCancel = () {
+      subscription.cancel();
+      _controller.close();
+    };
+
+    return _controller.stream;
   }
 }

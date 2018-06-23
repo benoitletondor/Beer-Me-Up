@@ -35,6 +35,7 @@ class HistoryPage extends StatefulWidget {
       dataService ?? UserDataService.instance,
       _intent.retry,
       _intent.loadMore,
+      _intent.checkInTapped,
     );
 
     return HistoryPage._(key: key, intent: _intent, model: _model);
@@ -179,6 +180,7 @@ class _HistoryPageState extends ViewState<HistoryPage, HistoryViewModel, History
           ),
         ],
       ),
+      onTap: () { intent.checkInTapped(checkIn); },
     );
   }
 

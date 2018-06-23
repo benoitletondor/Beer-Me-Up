@@ -198,7 +198,7 @@ class _CheckInConfirmPageState extends ViewState<CheckInConfirmPage, CheckInConf
       onTap: () { intent.quantitySelected(quantity); },
       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
       child: Container(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

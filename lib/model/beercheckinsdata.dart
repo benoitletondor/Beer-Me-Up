@@ -5,8 +5,9 @@ class BeerCheckInsData {
   final int numberOfCheckIns;
   final DateTime lastCheckinTime;
   final double drankQuantity;
+  final int rating;
 
-  BeerCheckInsData(this.beer, this.numberOfCheckIns, this.lastCheckinTime, this.drankQuantity);
+  BeerCheckInsData(this.beer, this.numberOfCheckIns, this.lastCheckinTime, this.drankQuantity, this.rating);
 
   @override
   bool operator ==(Object other) =>
@@ -16,12 +17,14 @@ class BeerCheckInsData {
               beer == other.beer &&
               numberOfCheckIns == other.numberOfCheckIns &&
               lastCheckinTime == other.lastCheckinTime &&
-              drankQuantity == other.drankQuantity;
+              drankQuantity == other.drankQuantity &&
+              rating == other.rating;
 
   @override
   int get hashCode =>
       beer.hashCode ^
       numberOfCheckIns.hashCode ^
       lastCheckinTime.hashCode ^
-      drankQuantity.hashCode;
+      drankQuantity.hashCode ^
+      rating != null ? rating.hashCode : 0;
 }

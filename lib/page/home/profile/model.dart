@@ -8,6 +8,7 @@ import 'package:beer_me_up/model/beercheckinsdata.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/common/datehelper.dart';
+import 'package:beer_me_up/page/checkindisplay/checkindisplaypage.dart';
 
 import 'state.dart';
 
@@ -19,12 +20,15 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   int _totalPoints;
 
   StreamSubscription<CheckIn> _checkInSubscription;
+  StreamSubscription<Tuple2<Beer, int>> _ratingSubcription;
 
   ProfileViewModel(
       this._dataService,
-      Stream<Null> onErrorRetryButtonPressed,) {
+      Stream<Null> onErrorRetryButtonPressed,
+      Stream<CheckIn> onRateCheckInPressed) {
 
     onErrorRetryButtonPressed.listen(_retryLoading);
+    onRateCheckInPressed.listen(_rateCheckIn);
   }
 
   @override
@@ -41,6 +45,8 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
   unbind() {
     _checkInSubscription?.cancel();
     _checkInSubscription = null;
+    _ratingSubcription?.cancel();
+    _ratingSubcription = null;
 
     super.unbind();
   }
@@ -70,14 +76,19 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
     _totalPoints = await _dataService.getTotalUserPoints();
   }
 
-  Future<ProfileData> _buildProfileData() async {
-    return ProfileData.fromData(_totalPoints, _checkInsData, _checkIns);
+  Future<ProfileData> _buildProfileData([CheckIn checkInToRate]) async {
+    return ProfileData.fromData(_totalPoints, _checkInsData, _checkIns, checkInToRate);
   }
 
   void _bindToUpdates() {
     _checkInSubscription?.cancel();
     _checkInSubscription = _dataService.listenForCheckIn().listen((checkIn) {
       _handleCheckIn(checkIn);
+    });
+
+    _ratingSubcription?.cancel();
+    _ratingSubcription = _dataService.listenForNewRatings().listen((rating) {
+      _handleNewRating(rating);
     });
   }
 
@@ -90,9 +101,11 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
         _checkIns.add(checkIn);
       }
 
+      final int rating = await _dataService.fetchRatingForBeer(checkIn.beer);
+
       int dataIndex = _checkInsData.indexWhere((checkInData) => checkInData.beer == checkIn.beer);
       if( dataIndex < 0 ) {
-        _checkInsData.add(BeerCheckInsData(checkIn.beer, 1, checkIn.date, checkIn.quantity.value));
+        _checkInsData.add(BeerCheckInsData(checkIn.beer, 1, checkIn.date, checkIn.quantity.value, rating));
       } else {
         final currentData = _checkInsData[dataIndex];
         _checkInsData.removeAt(dataIndex);
@@ -102,14 +115,42 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
           currentData.numberOfCheckIns + 1,
           checkIn.date.isAfter(currentData.lastCheckinTime) ? checkIn.date : currentData.lastCheckinTime,
           currentData.drankQuantity + checkIn.quantity.value,
+          rating,
         ));
       }
 
       _totalPoints += checkIn.points;
 
-      _setStateWithProfileData(await _buildProfileData());
+      _setStateWithProfileData(await _buildProfileData(rating == null ? checkIn : null));
     } catch (e, stackTrace) {
       printException(e, stackTrace, "Error updating profile");
+      setState(ProfileState.error(e.toString()));
+    }
+  }
+
+  _handleNewRating(Tuple2<Beer, int> rating) async {
+    setState(ProfileState.loading());
+
+    try {
+      final List<BeerCheckInsData> dataForThisBeer = _checkInsData
+        .where((checkInData) => checkInData.beer == rating.item1)
+        .toList(growable: false);
+
+      _checkInsData.removeWhere((checkInData) => checkInData.beer == rating.item1);
+
+      dataForThisBeer.forEach((checkInData) {
+        _checkInsData.add(BeerCheckInsData(
+          checkInData.beer,
+          checkInData.numberOfCheckIns,
+          checkInData.lastCheckinTime,
+          checkInData.drankQuantity,
+          rating.item2,
+        ));
+      });
+
+      _setStateWithProfileData(await _buildProfileData());
+    } catch (e, stackTrace) {
+      printException(e, stackTrace, "Error updating profile after rating");
       setState(ProfileState.error(e.toString()));
     }
   }
@@ -125,33 +166,51 @@ class ProfileViewModel extends BaseViewModel<ProfileState> {
       setState(ProfileState.loadNoAllTime(profileData));
     }
   }
+
+  _rateCheckIn(CheckIn checkIn) async {
+    pushRoute(
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              CheckInDisplayPage(checkIn: checkIn),
+        )
+    );
+
+    _setStateWithProfileData(await _buildProfileData());
+  }
 }
 
 class ProfileData {
   final bool hasAllTime;
   final bool hasWeek;
   final bool hasAlreadyCheckedIn;
+  final bool hasTopBeers;
 
-  final BeerStyle favouriteCategory;
-  final BeerCheckInsData favouriteBeer;
+  final BeerStyle mostDrankCategory;
+  final BeerCheckInsData mostDrankBeer;
   final int totalPoints;
 
   final List<BeerCheckInsData> weekBeers;
   final int numberOfBeers;
   final int weekPoints;
 
-  ProfileData(this.hasAllTime, this.hasWeek, this.hasAlreadyCheckedIn, this.favouriteBeer, this.favouriteCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints);
+  final Map<int, List<Beer>> beersRating;
+  final CheckIn checkInToRate;
 
-  factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns) {
+  ProfileData(this.hasAllTime, this.hasWeek, this.hasAlreadyCheckedIn, this.hasTopBeers, this.mostDrankBeer, this.mostDrankCategory, this.weekBeers, this.numberOfBeers, this.weekPoints, this.totalPoints, this.beersRating, this.checkInToRate);
+
+  factory ProfileData.fromData(int totalPoints, List<BeerCheckInsData> checkInsData, List<CheckIn> checkIns, [CheckIn checkInToRate]) {
     final Map<BeerStyle, double> categoriesCounter = Map();
 
-    BeerCheckInsData favouriteBeer;
-    BeerStyle favouriteCategory;
-    double favouriteCategoryCounter = 0.0;
+    BeerCheckInsData mostDrankBeer;
+    BeerStyle mostDrankCategory;
+    double mostDrankCategoryCounter = 0.0;
+
+    int numberOfRatings = 0;
+    final Map<int, List<Beer>> beersRating = Map();
 
     for(BeerCheckInsData checkinData in checkInsData) {
-      if( favouriteBeer == null || checkinData.drankQuantity > favouriteBeer.drankQuantity ) {
-        favouriteBeer = checkinData;
+      if( mostDrankBeer == null || checkinData.drankQuantity > mostDrankBeer.drankQuantity ) {
+        mostDrankBeer = checkinData;
       }
 
       final style = checkinData.beer.style;
@@ -159,10 +218,21 @@ class ProfileData {
         categoriesCounter[style] = categoriesCounter.containsKey(style) ? categoriesCounter[style] + checkinData.drankQuantity : checkinData.drankQuantity;
 
         final double categoryCount = categoriesCounter[style];
-        if( favouriteCategory == null || categoryCount > favouriteCategoryCounter ) {
-          favouriteCategory = style;
-          favouriteCategoryCounter = categoryCount;
+        if( mostDrankCategory == null || categoryCount > mostDrankCategoryCounter ) {
+          mostDrankCategory = style;
+          mostDrankCategoryCounter = categoryCount;
         }
+      }
+
+      if( checkinData.rating != null && numberOfRatings < 10 ) {
+        List<Beer> beersForRating = beersRating[checkinData.rating];
+        if( beersForRating == null ){
+          beersForRating = List();
+          beersRating[checkinData.rating] = beersForRating;
+        }
+
+        numberOfRatings++;
+        beersForRating.add(checkinData.beer);
       }
     }
 
@@ -177,6 +247,7 @@ class ProfileData {
         (data == null ? 0 : data.numberOfCheckIns) + 1,
         data == null ? checkin.date : (data.lastCheckinTime.isBefore(checkin.date) ? checkin.date : data.lastCheckinTime),
         (data == null ? 0.0 : data.drankQuantity) + checkin.quantity.value,
+        null,
       );
 
       points += checkin.points;
@@ -193,12 +264,15 @@ class ProfileData {
       numberOfCheckIns >= 2,
       checkIns.length > 0,
       numberOfCheckIns > 0,
-      favouriteBeer,
-      favouriteCategory,
+      beersRating.isNotEmpty,
+      mostDrankBeer,
+      mostDrankCategory,
       checkInsList,
       weekBeersMap.length,
       points,
       totalPoints,
+      beersRating,
+      checkInToRate,
     );
   }
 }
