@@ -77,6 +77,9 @@ abstract class Localization {
   String get homeMostDrankCategory;
   String get homeEmptyWeek;
   String get homeLastTime;
+  String get homeNewCheckInTitle;
+  String get homeNewCheckInEditRatingHint;
+  String get homeNewCheckInRateCTA;
 
   String get homeHistoryWelcomeStart;
 

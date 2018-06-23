@@ -68,6 +68,9 @@ class LocalizationEN implements Localization {
   @override String get homeMostDrankCategory => "The beer category your had the most";
   @override String get homeEmptyWeek => "Nothing checked-in this week so far";
   @override String get homeLastTime => "Last time:";
+  @override String get homeNewCheckInTitle => "New check-in! Rate your beer:";
+  @override String get homeNewCheckInEditRatingHint => "(You can edit your ratings later from the history tab)";
+  @override String get homeNewCheckInRateCTA => "Rate this beer";
 
   @override String get homeHistoryWelcomeStart => "Check the next beer you have into the app to start your history";
 

@@ -73,6 +73,9 @@ class LocalizationFR implements Localization {
   @override String get homeMostDrankCategory => "Le type de bière que tu as le plus bu";
   @override String get homeEmptyWeek => "Aucune bière check-in pour le moment";
   @override String get homeLastTime => "Dernière fois :";
+  @override String get homeNewCheckInTitle => "Nouveau check-in ! Note cette bière:";
+  @override String get homeNewCheckInEditRatingHint => "(Tu peux modifier tes notes plus tard depuis l'onglet historique)";
+  @override String get homeNewCheckInRateCTA => "Note cette bière";
 
   @override String get homeHistoryWelcomeStart => "Check-in la prochaine bière que tu bois pour commencer ton historique";
 

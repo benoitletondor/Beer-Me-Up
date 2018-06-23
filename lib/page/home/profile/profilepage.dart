@@ -517,7 +517,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              "New check-in! Rate your beer:",
+              Localization.of(context).homeNewCheckInTitle,
               style: const TextStyle(
                 fontFamily: "Google Sans",
                 color: Colors.white,
@@ -528,7 +528,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              "(You can edit your ratings later from the history tab)",
+              Localization.of(context).homeNewCheckInEditRatingHint,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12.0,
@@ -564,7 +564,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             children: <Widget>[
               MaterialFlatButton(
                 textColor: Colors.white,
-                text: "Rate this beer",
+                text: Localization.of(context).homeNewCheckInRateCTA,
                 onPressed: () { intent.rateCheckIn(checkInToRate); },
               )
             ],
