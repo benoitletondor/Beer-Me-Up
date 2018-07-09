@@ -19,11 +19,11 @@ dependencies:
   flutter_stream_friends: 0.8.0
 
   intl: 0.15.6
-  intl_translation: 0.16.7
+  intl_translation: 0.16.8
 
   google_sign_in: 3.0.4
   flutter_facebook_login: 1.1.1
-  firebase_auth: 0.5.11
+  firebase_auth: 0.5.12
   cloud_firestore: 0.7.3
   firebase_analytics: 1.0.1
   firebase_remote_config: 0.0.2

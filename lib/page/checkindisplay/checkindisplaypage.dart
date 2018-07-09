@@ -7,11 +7,11 @@ import 'package:beer_me_up/service/userdataservice.dart';
 import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
-import 'package:beer_me_up/common/hapticfeedback.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:beer_me_up/localization/localization.dart';
 import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beer.dart';
+import 'package:beer_me_up/common/widget/ratingstars.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -90,7 +90,13 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 10.0)),
-          _buildRatingStars(0),
+          RatingStars(
+            rating: 0,
+            size: 24.0,
+            onTap: intent.rate,
+            paddingBetweenStars: 8.0,
+            alignment: MainAxisAlignment.center,
+          ),
         ],
       );
     } else {
@@ -113,7 +119,13 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 10.0)),
-          _buildRatingStars(rating),
+          RatingStars(
+            rating: rating,
+            size: 24.0,
+            onTap: intent.rate,
+            paddingBetweenStars: 8.0,
+            alignment: MainAxisAlignment.center,
+          ),
         ],
       );
     }
@@ -296,39 +308,6 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
         color: Theme.of(context).primaryColor,
       ),
       child: ratingWidget,
-    );
-  }
-
-  Widget _buildRatingStars(int rating) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        _buildStar(1, rating >= 1),
-        _buildStar(2, rating >= 2),
-        _buildStar(3, rating >= 3),
-        _buildStar(4, rating >= 4),
-        _buildStar(5, rating >= 5),
-      ],
-    );
-  }
-
-  Widget _buildStar(int index, bool selected) {
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        onTap: () {
-          performSelectionHaptic(context);
-          intent.rate(index);
-        },
-        borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            selected ? Icons.star : Icons.star_border,
-            color: Colors.amberAccent[400],
-          ),
-        ),
-      ),
     );
   }
 }
