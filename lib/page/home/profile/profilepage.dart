@@ -12,6 +12,7 @@ import 'package:beer_me_up/common/mvi/viewstate.dart';
 import 'package:beer_me_up/common/widget/beertile.dart';
 import 'package:beer_me_up/localization/localization.dart';
 import 'package:beer_me_up/common/widget/materialflatbutton.dart';
+import 'package:beer_me_up/common/widget/ratingstars.dart';
 
 import 'model.dart';
 import 'intent.dart';
@@ -470,44 +471,37 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     }
 
     final List<Widget> beers = List();
+    int numberOfBeers = 0;
     for(int i = 5; i>0; i--) {
       final List<Beer> starBeers = beersRating[i];
       if( starBeers == null ) {
         continue;
       }
 
+      if( numberOfBeers >= 10 ) {
+        break;
+      }
+
       starBeers.forEach((beer) {
+        if( numberOfBeers >= 10 ) {
+          return;
+        }
+
         beers.add(BeerTile(
           beer: beer,
           title: beer.name,
-          thirdWidget: _buildStars(i),
+          thirdWidget: RatingStars(
+            rating: i,
+            size: 14.0,
+          ),
         ));
+
+        numberOfBeers++;
       });
     }
 
     return Column (
       children: beers,
-    );
-  }
-
-  Widget _buildStars(int rating) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        _buildStar(1, rating >= 1),
-        _buildStar(2, rating >= 2),
-        _buildStar(3, rating >= 3),
-        _buildStar(4, rating >= 4),
-        _buildStar(5, rating >= 5),
-      ],
-    );
-  }
-
-  Widget _buildStar(int index, bool selected) {
-    return Icon(
-      selected ? Icons.star : Icons.star_border,
-      color: Colors.amberAccent[400],
-      size: 14.0,
     );
   }
 

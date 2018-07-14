@@ -105,7 +105,7 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.11"
+    version: "0.5.12"
   firebase_core:
     dependency: transitive
     description:
@@ -239,7 +239,7 @@ packages:
       name: intl_translation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.7"
+    version: "0.16.8"
   io:
     dependency: transitive
     description:

@@ -205,7 +205,6 @@ class ProfileData {
     BeerStyle mostDrankCategory;
     double mostDrankCategoryCounter = 0.0;
 
-    int numberOfRatings = 0;
     final Map<int, List<Beer>> beersRating = Map();
 
     for(BeerCheckInsData checkinData in checkInsData) {
@@ -224,14 +223,13 @@ class ProfileData {
         }
       }
 
-      if( checkinData.rating != null && numberOfRatings < 10 ) {
+      if( checkinData.rating != null ) {
         List<Beer> beersForRating = beersRating[checkinData.rating];
         if( beersForRating == null ){
           beersForRating = List();
           beersRating[checkinData.rating] = beersForRating;
         }
 
-        numberOfRatings++;
         beersForRating.add(checkinData.beer);
       }
     }
