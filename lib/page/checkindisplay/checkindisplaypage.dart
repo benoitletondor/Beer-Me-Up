@@ -182,7 +182,7 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
               const Padding(padding: EdgeInsets.only(top: 25.0)),
               _buildRatingWidget(ratingWidget),
               Offstage(
-                offstage: checkIn.beer.description == null,
+                offstage: checkIn.beer.description == null || checkIn.beer.description.isEmpty,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
