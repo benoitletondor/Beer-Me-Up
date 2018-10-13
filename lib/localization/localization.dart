@@ -58,6 +58,7 @@ abstract class Localization {
 
   String get settingsHaptic;
   String get settingsAnalytics;
+  String get settingsToS;
 
   String get homeCheckIn;
   String get homeWelcome;

@@ -35,6 +35,7 @@ class SettingsPage extends StatefulWidget {
       _intent.logout,
       _intent.toggleHapticFeedback,
       _intent.toggleAnalytics,
+      _intent.tos,
     );
 
     return SettingsPage._(key: key, intent: _intent, model: _model);
@@ -81,7 +82,12 @@ class _SettingsPageState extends ViewState<SettingsPage, SettingsViewModel, Sett
               child: Image.asset("images/large_logo.png"),
             ),
           ),
-          const Padding(padding: EdgeInsets.only(top: 30.0)),
+          MaterialFlatButton(
+            text: Localization.of(context).settingsToS,
+            onPressed: intent.tos,
+            textColor: Colors.white,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 15.0)),
           Text(
             Localization.of(context).settings,
             style: const TextStyle(

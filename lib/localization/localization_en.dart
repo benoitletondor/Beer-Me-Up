@@ -49,6 +49,7 @@ class LocalizationEN implements Localization {
 
   @override String get settingsHaptic => "Haptic feedback (vibration) on touch";
   @override String get settingsAnalytics => "Help enhance experience by sending usage statistics";
+  @override String get settingsToS => "Read terms and conditions";
 
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Welcome into your own beer museum";
