@@ -9,13 +9,15 @@ abstract class ViewModel<S> {
 abstract class BaseViewModel<S> extends ViewModel<S> {
 
   StreamController<S> _controller;
-  BuildContext _context;
   S _currentState;
+  BuildContext _context;
+  NavigatorState _navigator;
 
   @override
   Stream<S> bind(BuildContext context) {
     this._controller = StreamController();
     this._context = context;
+    this._navigator = context != null ? Navigator.of(context) : null;
     this._currentState = initialState();
     _controller.add(_currentState);
     return _controller.stream;
@@ -25,10 +27,16 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
   unbind() {
     _controller.close();
     _controller = null;
+    _navigator = null;
     _context = null;
   }
 
   getBuildContext() => _context;
+
+  @visibleForTesting
+  void setNavigator(NavigatorState navigator) {
+    _navigator = navigator;
+  }
 
   bool setState(S newState) {
     final controller = _controller;
@@ -49,80 +57,80 @@ abstract class BaseViewModel<S> extends ViewModel<S> {
   S getState() => _currentState;
 
   bool pushReplacementNamed(String name) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).pushReplacementNamed(name);
+    navigator.pushReplacementNamed(name);
     return true;
   }
 
   bool pushReplacement<T extends Object, TO extends Object>(Route<T> newRoute) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).pushReplacement(newRoute);
+    navigator.pushReplacement(newRoute);
     return true;
   }
 
   bool pushRoute<T extends Object, TO extends Object>(Route<T> newRoute) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).push(newRoute);
+    navigator.push(newRoute);
     return true;
   }
   
   bool pushNamedAndRemoveUntil(String name, RoutePredicate predicate) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).pushNamedAndRemoveUntil(name, predicate);
+    navigator.pushNamedAndRemoveUntil(name, predicate);
     return true;
   }
 
   Future<dynamic> pushNamed(String name) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return null;
     }
 
-    return Navigator.of(context).pushNamed(name);
+    return navigator.pushNamed(name);
   }
 
   Future<dynamic> push(Route<dynamic> route) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return null;
     }
 
-    return Navigator.of(context).push(route);
+    return _navigator.push(route);
   }
 
   bool pop([dynamic result]) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).pop(result);
+    navigator.pop(result);
     return true;
   }
 
   bool popUntil(RoutePredicate predicate) {
-    final context = _context;
-    if( context == null ) {
+    final navigator = _navigator;
+    if( navigator == null ) {
       return false;
     }
 
-    Navigator.of(context).popUntil(predicate);
+    navigator.popUntil(predicate);
     return true;
   }
 

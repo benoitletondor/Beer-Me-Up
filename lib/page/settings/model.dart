@@ -27,7 +27,6 @@ class SettingsViewModel extends BaseViewModel<SettingsState> {
     onToSButtonPressed.listen(_showToS);
   }
 
-
   @override
   Stream<SettingsState> bind(BuildContext context) {
     _loadData();

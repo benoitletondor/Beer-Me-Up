@@ -7,7 +7,9 @@ class SettingsState extends Union2Impl<SettingsStateLoading, SettingsStateLoad> 
   static final Doublet<SettingsStateLoading, SettingsStateLoad> factory
     = const Doublet<SettingsStateLoading, SettingsStateLoad>();
 
-  SettingsState._(Union2<SettingsStateLoading, SettingsStateLoad> union) : super(union);
+  final Union2<SettingsStateLoading, SettingsStateLoad> _union;
+
+  SettingsState._(this._union) : super(_union);
 
   factory SettingsState.loading() => SettingsState._(factory.first(SettingsStateLoading()));
   factory SettingsState.load(String email, bool hapticFeedbackEnabled, bool analyticsEnabled) => SettingsState._(factory.second(SettingsStateLoad(email, hapticFeedbackEnabled, analyticsEnabled)));
