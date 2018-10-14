@@ -55,9 +55,11 @@ void main() {
 
     items.analyticsSettingStream.add(false);
     expect(await items.stateStream.next, SettingsState.load(email, true, false));
+    verify(items.authService.setAnalyticsEnabled(false));
 
     items.analyticsSettingStream.add(true);
     expect(await items.stateStream.next, SettingsState.load(email, true, true));
+    verify(items.authService.setAnalyticsEnabled(true));
   });
 
   test('test haptic feedback enabled change is sent to the UI', () async {
@@ -74,9 +76,11 @@ void main() {
 
     items.hapticFeedbackSettingStream.add(false);
     expect(await items.stateStream.next, SettingsState.load(email, false, true));
+    verify(items.authService.setHapticFeedbackEnabled(false));
 
     items.hapticFeedbackSettingStream.add(true);
     expect(await items.stateStream.next, SettingsState.load(email, true, true));
+    verify(items.authService.setHapticFeedbackEnabled(true));
   });
 
   test('clicking on ToS button push the ToS page', () async {
