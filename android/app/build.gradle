@@ -34,8 +34,8 @@ android {
         applicationId "com.benoitletondor.beermeup"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 11
-        versionName "1.1.1"
+        versionCode 12
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -52,6 +52,11 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+
+            minifyEnabled true
+            useProguard true
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

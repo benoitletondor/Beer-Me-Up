@@ -547,7 +547,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                 Offstage(
                   offstage: checkInToRate.rating == null,
                   child: RatingStars(
-                    rating: checkInToRate.rating,
+                    rating: checkInToRate.rating ?? 0,
                     size: 18.0,
                     paddingBetweenStars: 0.0,
                     alignment: MainAxisAlignment.start,
