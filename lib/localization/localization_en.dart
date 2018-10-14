@@ -49,6 +49,7 @@ class LocalizationEN implements Localization {
 
   @override String get settingsHaptic => "Haptic feedback (vibration) on touch";
   @override String get settingsAnalytics => "Help enhance experience by sending usage statistics";
+  @override String get settingsToS => "Read terms and conditions";
 
   @override String get homeCheckIn => "Check-in";
   @override String get homeWelcome => "Welcome into your own beer museum";
@@ -64,14 +65,13 @@ class LocalizationEN implements Localization {
   @override String get homeAllTime => "All time";
   @override String get homeTotalPoints => "Total of points: ";
   @override String get homeFavoriteBeers => "Your best rated beers";
-  @override String get homeFavoriteBeersDescription => "(You can edit your ratings from the history tab)";
   @override String get homeMostDrankBeer => "The beer you had the most";
   @override String get homeMostDrankCategory => "The beer category your had the most";
   @override String get homeEmptyWeek => "Nothing checked-in this week so far";
   @override String get homeLastTime => "Last time:";
-  @override String get homeNewCheckInTitle => "New check-in! Rate your beer:";
-  @override String get homeNewCheckInEditRatingHint => "(You can edit your ratings later from the history tab)";
+  @override String get homeNewCheckInTitle => "New check-in!";
   @override String get homeNewCheckInRateCTA => "Rate this beer";
+  @override String get homeNewCheckInEditRating => "Change rating";
 
   @override String get homeHistoryWelcomeStart => "Check the next beer you have into the app to start your history";
 
@@ -94,10 +94,9 @@ class LocalizationEN implements Localization {
   @override String get checkInConfirmHalfPintQuantity => "Half-pint";
   @override String get checkInConfirmBottleQuantity => "Bottle";
 
-  @override String get checkInDisplayTitle => "Your check-in";
-  @override String get checkInDisplaySelectYourRating => "Rate this beer";
-  @override String get checkInDisplayYourRating => "Your rating for this beer:";
-  @override String get checkInDisplayChangeYourRatingHint => "(Touch a star to change it)";
+  @override String get ratingSelectYourRating => "Rate this beer";
+  @override String get ratingYourRating => "Your rating for this beer:";
+  @override String get ratingChangeYourRatingHint => "(Touch a star to change it)";
 
   @override String get email => "Email";
   @override String get password => "Password";

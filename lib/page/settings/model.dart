@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/service/authenticationservice.dart';
 import 'package:beer_me_up/page/home/homepage.dart';
+import 'package:beer_me_up/page/tos/tospage.dart';
 
 import 'state.dart';
 
@@ -17,13 +18,14 @@ class SettingsViewModel extends BaseViewModel<SettingsState> {
       this._authService,
       Stream<Null> onLogoutButtonPressed,
       Stream<bool> onHapticFeedbackSettingChanged,
-      Stream<bool> onAnalyticsSettingChanged) {
+      Stream<bool> onAnalyticsSettingChanged,
+      Stream<Null> onToSButtonPressed,) {
 
     onLogoutButtonPressed.listen(_logout);
     onHapticFeedbackSettingChanged.listen(_hapticFeedbackSettingChanged);
     onAnalyticsSettingChanged.listen(_analyticsSettingChanged);
+    onToSButtonPressed.listen(_showToS);
   }
-
 
   @override
   Stream<SettingsState> bind(BuildContext context) {
@@ -73,5 +75,9 @@ class SettingsViewModel extends BaseViewModel<SettingsState> {
 
     this.analyticsEnabled = analyticsEnabled;
     setState(SettingsState.load(email, hapticFeedbackEnabled, analyticsEnabled));
+  }
+
+  _showToS(Null event) async {
+    pushNamed(TOS_PAGE_ROUTE);
   }
 }

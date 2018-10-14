@@ -58,6 +58,7 @@ abstract class Localization {
 
   String get settingsHaptic;
   String get settingsAnalytics;
+  String get settingsToS;
 
   String get homeCheckIn;
   String get homeWelcome;
@@ -73,14 +74,13 @@ abstract class Localization {
   String get homeAllTime;
   String get homeTotalPoints;
   String get homeFavoriteBeers;
-  String get homeFavoriteBeersDescription;
   String get homeMostDrankBeer;
   String get homeMostDrankCategory;
   String get homeEmptyWeek;
   String get homeLastTime;
   String get homeNewCheckInTitle;
-  String get homeNewCheckInEditRatingHint;
   String get homeNewCheckInRateCTA;
+  String get homeNewCheckInEditRating;
 
   String get homeHistoryWelcomeStart;
 
@@ -103,10 +103,9 @@ abstract class Localization {
   String get checkInConfirmHalfPintQuantity;
   String get checkInConfirmBottleQuantity;
 
-  String get checkInDisplayTitle;
-  String get checkInDisplaySelectYourRating;
-  String get checkInDisplayYourRating;
-  String get checkInDisplayChangeYourRatingHint;
+  String get ratingSelectYourRating;
+  String get ratingYourRating;
+  String get ratingChangeYourRatingHint;
 
   String get email;
   String get password;

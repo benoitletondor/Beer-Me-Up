@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:beer_me_up/common/exceptionprint.dart';
 import 'package:beer_me_up/common/mvi/viewmodel.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
-import 'package:beer_me_up/page/checkindisplay/checkindisplaypage.dart';
+import 'package:beer_me_up/page/rating/ratingpage.dart';
 import 'package:beer_me_up/model/checkin.dart';
 
 import 'state.dart';
@@ -138,7 +138,7 @@ class HistoryViewModel extends BaseViewModel<HistoryState> {
   _checkInPressed(CheckIn checkIn) async {
     pushRoute(
       MaterialPageRoute(
-        builder: (BuildContext context) => CheckInDisplayPage(checkIn: checkIn),
+        builder: (BuildContext context) => RatingPage(beer: checkIn.beer),
       )
     );
   }

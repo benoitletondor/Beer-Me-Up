@@ -7,34 +7,35 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  http: 0.11.3+16
+  http: 0.11.3+17
 
-  shared_preferences: 0.4.2
+  shared_preferences: 0.4.3
 
-  tuple: 1.0.1
+  tuple: 1.0.2
 
-  cached_network_image: 0.4.1+1
+  cached_network_image: 0.4.2
 
-  sealed_unions: 2.0.0
+  sealed_unions: 3.0.1
   flutter_stream_friends: 0.8.0
 
-  intl: 0.15.6
-  intl_translation: 0.16.8
+  intl: 0.15.7
+  intl_translation: 0.17.0
 
-  google_sign_in: 3.0.4
+  google_sign_in: 3.2.1
   flutter_facebook_login: 1.1.1
-  firebase_auth: 0.5.12
-  cloud_firestore: 0.7.3
-  firebase_analytics: 1.0.1
-  firebase_remote_config: 0.0.2
+  firebase_auth: 0.6.2+1
+  cloud_firestore: 0.8.1+1
+  firebase_analytics: 1.0.4
+  firebase_remote_config: 0.0.6+1
 
-  sentry: 2.0.2
+  sentry: 2.1.1
 
-  flutter_html_view: 0.5.2
+  flutter_html_view: 0.5.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: 3.0.0
 
 
 # For information on the generic Dart part of this file, see the
