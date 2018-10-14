@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/model/beercheckinsdata.dart';
-import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:beer_me_up/service/userdataservice.dart';
@@ -38,6 +37,8 @@ class ProfilePage extends StatefulWidget {
       dataService ?? UserDataService.instance,
       _intent.retry,
       _intent.rateCheckIn,
+      _intent.beerDetails,
+      _intent.hideCheckInRating,
     );
 
     return ProfilePage._(key: key, intent: _intent, model: _model);
@@ -319,15 +320,6 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                Localization.of(context).homeFavoriteBeersDescription,
-                style: const TextStyle(
-                  fontSize: 13.0,
-                ),
-              ),
-            ),
             const Padding(padding: EdgeInsets.only(top: 5.0)),
             _buildFavoriteBeers(profileData.beersRating),
           ],
@@ -353,6 +345,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
               beer: profileData.mostDrankBeer?.beer,
               title: profileData.mostDrankBeer?.beer?.name,
               subtitle: "${profileData.mostDrankBeer?.numberOfCheckIns} ${Localization.of(context).times} - ${profileData.mostDrankBeer?.drankQuantity?.toStringAsPrecision(2)}L",
+              onTap: () { intent.beerDetails(profileData.mostDrankBeer.beer); },
             )
           ],
         ),
@@ -462,6 +455,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       title: beerCheckIn.beer.name,
       subtitle: "${beerCheckIn.numberOfCheckIns} ${Localization.of(context).times}, ${beerCheckIn.drankQuantity.toStringAsPrecision(2)}L",
       thirdTitle: "${Localization.of(context).homeLastTime} ${_beerCheckinDateFormatter.format(beerCheckIn.lastCheckinTime)}",
+      onTap: () { intent.beerDetails(beerCheckIn.beer); },
     );
   }
 
@@ -494,6 +488,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             rating: i,
             size: 14.0,
           ),
+          onTap: () { intent.beerDetails(beer); },
         ));
 
         numberOfBeers++;
@@ -505,7 +500,7 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
     );
   }
 
-  Widget _buildRateCheckInWidget(CheckIn checkInToRate) {
+  Widget _buildRateCheckInWidget(CheckInToRate checkInToRate) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
@@ -514,47 +509,69 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Padding(padding: EdgeInsets.only(top: 10.0)),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              Localization.of(context).homeNewCheckInTitle,
-              style: const TextStyle(
-                fontFamily: "Google Sans",
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              Localization.of(context).homeNewCheckInEditRatingHint,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12.0,
-              ),
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    Localization.of(context).homeNewCheckInTitle,
+                    style: const TextStyle(
+                      fontFamily: "Google Sans",
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
+                Material(
+                  type: MaterialType.transparency,
+                  child: IconButton(
+                    iconSize: 22.0,
+                    padding: const EdgeInsets.all(0.0),
+                    icon: const Icon(Icons.close),
+                    color: Colors.white,
+                    onPressed: intent.hideCheckInRating,
+                  ),
+                ),
+              ],
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 10.0)),
           BeerTile(
-            beer: checkInToRate.beer,
+            beer: checkInToRate.checkIn.beer,
             invertColors: true,
-            title: checkInToRate.beer.name,
-            subtitle: checkInToRate.beer.style?.name,
-            thirdWidget: Row(
+            title: checkInToRate.checkIn.beer.name,
+            subtitle: checkInToRate.checkIn.beer.style?.name,
+            thirdWidget: Column(
               children: <Widget>[
-                Image.asset(
-                  "images/coin.png",
-                  width: 13.0,
-                ),
-                const Padding(padding: EdgeInsets.only(left: 5.0)),
-                Text(
-                  checkInToRate.points.toString(),
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.white,
+                Offstage(
+                  offstage: checkInToRate.rating == null,
+                  child: RatingStars(
+                    rating: checkInToRate.rating,
+                    size: 18.0,
+                    paddingBetweenStars: 0.0,
+                    alignment: MainAxisAlignment.start,
                   ),
+                ),
+                Offstage(
+                  offstage: checkInToRate.rating == null,
+                  child: const Padding(padding: EdgeInsets.only(top: 10.0)),
+                ),
+                Row(
+                  children: <Widget>[
+                    Image.asset(
+                      "images/coin.png",
+                      width: 13.0,
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 5.0)),
+                    Text(
+                      checkInToRate.checkIn.points.toString(),
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -565,8 +582,8 @@ class _ProfilePageState extends ViewState<ProfilePage, ProfileViewModel, Profile
             children: <Widget>[
               MaterialFlatButton(
                 textColor: Colors.white,
-                text: Localization.of(context).homeNewCheckInRateCTA,
-                onPressed: () { intent.rateCheckIn(checkInToRate); },
+                text: checkInToRate.rating == null ? Localization.of(context).homeNewCheckInRateCTA : Localization.of(context).homeNewCheckInEditRating,
+                onPressed: () { intent.rateCheckIn(checkInToRate.checkIn); },
               )
             ],
           ),

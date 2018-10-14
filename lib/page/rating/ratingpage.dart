@@ -1,6 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 
 import 'package:beer_me_up/service/userdataservice.dart';
@@ -9,7 +7,6 @@ import 'package:beer_me_up/common/widget/loadingwidget.dart';
 import 'package:beer_me_up/common/widget/erroroccurredwidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:beer_me_up/localization/localization.dart';
-import 'package:beer_me_up/model/checkin.dart';
 import 'package:beer_me_up/model/beer.dart';
 import 'package:beer_me_up/common/widget/ratingstars.dart';
 
@@ -17,72 +14,71 @@ import 'model.dart';
 import 'intent.dart';
 import 'state.dart';
 
-const String BEER_DISPLAY_PAGE_ROUTE = "/beerDisplay";
+const String RATING_PAGE_ROUTE = "/rating";
 
-class CheckInDisplayPage extends StatefulWidget {
-  final CheckInDisplayIntent intent;
-  final CheckInDisplayViewModel model;
+class RatingPage extends StatefulWidget {
+  final RatingIntent intent;
+  final RatingViewModel model;
 
-  CheckInDisplayPage._({
+  RatingPage._({
     Key key,
     @required this.intent,
     @required this.model}) : super(key: key);
 
-  factory CheckInDisplayPage({Key key,
-    @required CheckIn checkIn,
-    CheckInDisplayIntent intent,
-    CheckInDisplayViewModel model,
+  factory RatingPage({Key key,
+    @required Beer beer,
+    RatingIntent intent,
+    RatingViewModel model,
     UserDataService dataService}) {
 
-    final _intent = intent ?? CheckInDisplayIntent();
-    final _model = model ?? CheckInDisplayViewModel(
+    final _intent = intent ?? RatingIntent();
+    final _model = model ?? RatingViewModel(
       dataService ?? UserDataService.instance,
-      checkIn,
+      beer,
       _intent.rate,
       _intent.retryLoadRating,
     );
 
-    return CheckInDisplayPage._(key: key, intent: _intent, model: _model);
+    return RatingPage._(key: key, intent: _intent, model: _model);
   }
 
   @override
-  State<StatefulWidget> createState() => _CheckInDisplayPageState(intent: intent, model: model);
+  State<StatefulWidget> createState() => _RatingPageState(intent: intent, model: model);
 }
 
-class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisplayViewModel, CheckInDisplayIntent, CheckInDisplayState> {
-  final DateFormat formatter = DateFormat.MMMd().add_Hm();
+class _RatingPageState extends ViewState<RatingPage, RatingViewModel, RatingIntent, RatingState> {
 
-  _CheckInDisplayPageState({
-    @required CheckInDisplayIntent intent,
-    @required CheckInDisplayViewModel model
+  _RatingPageState({
+    @required RatingIntent intent,
+    @required RatingViewModel model
   }) : super(intent, model);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: stream,
-      builder: (BuildContext context, AsyncSnapshot<CheckInDisplayState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<RatingState> snapshot) {
         if (!snapshot.hasData) {
           return Container();
         }
 
         return snapshot.data.join(
-          (loading) => _buildLoadingScreen(loading.checkIn),
-          (load) => _buildLoadScreen(load.checkIn, load.rating),
-          (error) => _buildErrorScreen(error.checkIn, error.error),
+          (loading) => _buildLoadingScreen(loading.beer),
+          (load) => _buildLoadScreen(load.beer, load.rating),
+          (error) => _buildErrorScreen(error.beer, error.error),
         );
       },
     );
   }
 
-  Widget _buildLoadScreen(CheckIn checkIn, int rating) {
+  Widget _buildLoadScreen(Beer beer, int rating) {
     Widget ratingWidget;
     if( rating == null ) {
       ratingWidget = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            Localization.of(context).checkInDisplaySelectYourRating,
+            Localization.of(context).ratingSelectYourRating,
             style: const TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,
@@ -104,7 +100,7 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            Localization.of(context).checkInDisplayYourRating,
+            Localization.of(context).ratingYourRating,
             style: const TextStyle(
               fontFamily: "Google Sans",
               fontSize: 18.0,
@@ -112,7 +108,7 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
             ),
           ),
           Text(
-            Localization.of(context).checkInDisplayChangeYourRatingHint,
+            Localization.of(context).ratingChangeYourRatingHint,
             style: const TextStyle(
               fontSize: 14.0,
               color: Colors.white,
@@ -131,21 +127,21 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
     }
 
     return _buildScreen(
-      checkIn,
+      beer,
       ratingWidget,
     );
   }
 
-  Widget _buildLoadingScreen(CheckIn checkIn) {
+  Widget _buildLoadingScreen(Beer beer) {
     return _buildScreen(
-      checkIn,
+      beer,
       LoadingWidget(invertColors: true),
     );
   }
 
-  _buildErrorScreen(CheckIn checkIn, String error) {
+  _buildErrorScreen(Beer beer, String error) {
     return _buildScreen(
-      checkIn,
+      beer,
       ErrorOccurredWidget(
         error: error,
         onRetry: intent.retryLoadRating,
@@ -154,11 +150,11 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
     );
   }
 
-  Widget _buildScreen(CheckIn checkIn, Widget ratingWidget) {
+  Widget _buildScreen(Beer beer, Widget ratingWidget) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            Localization.of(context).checkInDisplayTitle,
+            beer.name,
             style: const TextStyle(
               fontFamily: "Google Sans",
               fontWeight: FontWeight.w500,
@@ -170,25 +166,17 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
             physics: const ScrollPhysics(),
             padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
             children: <Widget>[
-              Text(
-                formatter.format(checkIn.date),
-                style: const TextStyle(
-                  fontFamily: "Google Sans",
-                  fontSize: 19.0,
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 10.0)),
-              _buildBeerTile(checkIn.beer),
+              _buildBeerTile(beer),
               const Padding(padding: EdgeInsets.only(top: 25.0)),
               _buildRatingWidget(ratingWidget),
               Offstage(
-                offstage: checkIn.beer.description == null || checkIn.beer.description.isEmpty,
+                offstage: beer.description == null || beer.description.isEmpty,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Padding(padding: EdgeInsets.only(top: 25.0)),
                     Text(
-                      checkIn.beer.name,
+                      beer.name,
                       style: const TextStyle(
                         fontFamily: "Google Sans",
                         fontSize: 20.0,
@@ -197,7 +185,7 @@ class _CheckInDisplayPageState extends ViewState<CheckInDisplayPage, CheckInDisp
                     ),
                     const Padding(padding: EdgeInsets.only(top: 5.0)),
                     Text(
-                      checkIn.beer.description ?? "",
+                      beer.description ?? "",
                       style: const TextStyle(
                         fontSize: 15.0,
                         height: 1.2,
