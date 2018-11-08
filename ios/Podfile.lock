@@ -104,8 +104,6 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - Protobuf (~> 3.5)
   - Flutter (1.0.0)
-  - flutter_custom_tabs (0.0.1):
-    - Flutter
   - flutter_facebook_login (0.0.1):
     - FBSDKLoginKit (~> 4.29)
     - Flutter
@@ -196,10 +194,6 @@ PODS:
   - Protobuf (3.6.1)
   - shared_preferences (0.0.1):
     - Flutter
-  - url_launcher (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore/ios`)
@@ -208,13 +202,10 @@ DEPENDENCIES:
   - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
   - firebase_remote_config (from `Pods/.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
-  - flutter_custom_tabs (from `Pods/.symlinks/plugins/flutter_custom_tabs/ios`)
   - flutter_facebook_login (from `Pods/.symlinks/plugins/flutter_facebook_login/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in/ios`)
   - path_provider (from `Pods/.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences/ios`)
-  - url_launcher (from `Pods/.symlinks/plugins/url_launcher/ios`)
-  - video_player (from `Pods/.symlinks/plugins/video_player/ios`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -260,8 +251,6 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/firebase_remote_config/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
-  flutter_custom_tabs:
-    :path: Pods/.symlinks/plugins/flutter_custom_tabs/ios
   flutter_facebook_login:
     :path: Pods/.symlinks/plugins/flutter_facebook_login/ios
   google_sign_in:
@@ -270,10 +259,6 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/path_provider/ios
   shared_preferences:
     :path: Pods/.symlinks/plugins/shared_preferences/ios
-  url_launcher:
-    :path: Pods/.symlinks/plugins/url_launcher/ios
-  video_player:
-    :path: Pods/.symlinks/plugins/video_player/ios
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -296,7 +281,6 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 78ba376fcd5b94c001f9999b2cbd3d1f1e56e78d
   FirebaseRemoteConfig: 2e3c434293906cdf9710ac593f87a75214c140a0
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_custom_tabs: 8dcb85ffe874ee8fd8139bb3960743efeaf521ee
   flutter_facebook_login: e3d2f0a348889fe0f49c302bc044b8cc66c691be
   google_sign_in: cbeb57b96679823d14df6b2240b629b983a42d79
   GoogleAppMeasurement: 2b3a023a61239c8d002e6e4fcf4abce8eddce0e0
@@ -315,8 +299,6 @@ SPEC CHECKSUMS:
   path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
-  url_launcher: 92b89c1029a0373879933c21642958c874539095
-  video_player: 906796a841943c8d370ac7c13b18039aa9b56498
 
 PODFILE CHECKSUM: 8e313a2c02406808061b90670d33ba78f9fe2930
 
