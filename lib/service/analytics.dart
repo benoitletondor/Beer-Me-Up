@@ -161,15 +161,6 @@ class OptOutAwareFirebaseAnalytics implements FirebaseAnalytics {
   }
 
   @override
-  Future<Null> logLogin() async {
-    if( await _shouldTrackUser() ) {
-      return await _wrapped.logLogin();
-    }
-
-    return null;
-  }
-
-  @override
   Future<Null> logLevelUp({@required int level, String character}) async {
     if( await _shouldTrackUser() ) {
       return await _wrapped.logLevelUp(level: level, character: character);
@@ -298,6 +289,33 @@ class OptOutAwareFirebaseAnalytics implements FirebaseAnalytics {
   Future<Null> setUserId(String id) async {
     if( await _shouldTrackUser() ) {
       return await _wrapped.setUserId(id);
+    }
+
+    return null;
+  }
+
+  @override
+  Future<void> resetAnalyticsData() async {
+    if( await _shouldTrackUser() ) {
+      return await _wrapped.resetAnalyticsData();
+    }
+
+    return null;
+  }
+
+  @override
+  Future<void> setAnalyticsCollectionEnabled(bool enabled) async {
+    if( await _shouldTrackUser() ) {
+      return await _wrapped.setAnalyticsCollectionEnabled(enabled);
+    }
+
+    return null;
+  }
+
+  @override
+  Future<void> logLogin({String loginMethod}) async {
+    if( await _shouldTrackUser() ) {
+      return await _wrapped.logLogin(loginMethod: loginMethod);
     }
 
     return null;
