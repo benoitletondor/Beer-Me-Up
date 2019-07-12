@@ -28,7 +28,7 @@ class BeerMeUpApp extends StatelessWidget {
 
     // Set-up error reporting
     FlutterError.onError = (FlutterErrorDetails error) {
-      printException(error.exception, error.stack, error.context);
+      printException(error.exception, error.stack, error.context.toString());
     };
 
     return MaterialApp(
