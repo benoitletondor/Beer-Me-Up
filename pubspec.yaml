@@ -7,30 +7,30 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  http: 0.12.0
+  http: 0.12.0+2
 
-  shared_preferences: 0.4.3
+  shared_preferences: 0.5.2+1
 
   tuple: 1.0.2
 
-  cached_network_image: 0.5.0
+  cached_network_image: 0.8.0
 
-  sealed_unions: 3.0.1
+  sealed_unions: 3.0.2+1
   flutter_stream_friends: 0.8.0
 
-  intl: 0.15.7
-  intl_translation: 0.17.2
+  intl: 0.15.8
+  intl_translation: 0.17.4
 
-  google_sign_in: 3.2.2
-  flutter_facebook_login: 1.1.1
-  firebase_auth: 0.6.2+1
-  cloud_firestore: 0.8.2+2
-  firebase_analytics: 1.0.5
-  firebase_remote_config: 0.0.6+1
+  google_sign_in: 4.0.1+3
+  flutter_facebook_login: 2.0.0
+  firebase_auth: 0.11.1
+  cloud_firestore: 0.12.0
+  firebase_analytics: 3.0.1
+  firebase_remote_config: 0.2.0+1
 
-  sentry: 2.1.1
+  sentry: 2.2.0
 
-  flutter_html: 0.8.2
+  flutter_html: 0.10.1
 
 dev_dependencies:
   flutter_test:

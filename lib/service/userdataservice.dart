@@ -154,7 +154,7 @@ class _UserDataServiceImpl implements UserDataService {
         BeerCheckInsData(
           _parseBeerFromValue(beerSnapshot.data["beer"], beerSnapshot.data["beer_version"]),
           beerSnapshot.data["checkin_counter"],
-          beerSnapshot.data["last_checkin"],
+          beerSnapshot.data["last_checkin"].toDate(),
           beerSnapshot.data["drank_quantity"],
           beerSnapshot.data["rating"],
         )
@@ -229,7 +229,7 @@ class _UserDataServiceImpl implements UserDataService {
 
     final numberOfCheckIns = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["checkin_counter"] : 0;
     final drankQuantity = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["drank_quantity"] : 0.0;
-    final lastCheckinDate = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["last_checkin"] : null;
+    final lastCheckinDate = beerDocumentValues != null && beerDocumentValues.exists ? beerDocumentValues.data["last_checkin"].toDate() : null;
 
     final lastCheckin = lastCheckinDate != null ? checkIn.date.isAfter(lastCheckinDate) ? checkIn.date : lastCheckinDate : checkIn.date;
     await beerDocument
@@ -238,7 +238,7 @@ class _UserDataServiceImpl implements UserDataService {
           "beer": _createValueForBeer(checkIn.beer),
           "beer_id": checkIn.beer.id,
           "beer_version": _BEER_VERSION,
-          "last_checkin": lastCheckin,
+          "last_checkin": Timestamp.fromDate(lastCheckin),
           "checkin_counter": numberOfCheckIns + 1,
           "drank_quantity": drankQuantity + checkIn.quantity.value,
         },
@@ -248,7 +248,7 @@ class _UserDataServiceImpl implements UserDataService {
     await beerDocument
       .collection("history")
       .add({
-        "date": checkIn.date,
+        "date": Timestamp.fromDate(checkIn.date),
         "quantity": checkIn.quantity.value,
       });
 
@@ -256,8 +256,8 @@ class _UserDataServiceImpl implements UserDataService {
         .reference
         .collection("history")
         .add({
-          "creation_date": checkIn.creationDate,
-          "date": checkIn.date,
+          "creation_date": Timestamp.fromDate(checkIn.creationDate),
+          "date": Timestamp.fromDate(checkIn.date),
           "beer": _createValueForBeer(checkIn.beer),
           "beer_id": checkIn.beer.id,
           "beer_version": _BEER_VERSION,
@@ -309,8 +309,8 @@ class _UserDataServiceImpl implements UserDataService {
 
   CheckIn _parseCheckinFromDocument(DocumentSnapshot doc) {
     return CheckIn(
-      creationDate: doc["creation_date"],
-      date: doc["date"],
+      creationDate: doc["creation_date"].toDate(),
+      date: doc["date"].toDate(),
       beer: _parseBeerFromValue(doc["beer"], doc["beer_version"]),
       quantity: _parseQuantityFromValue(doc["quantity"]),
       points: doc["points"],
